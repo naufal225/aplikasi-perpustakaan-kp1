@@ -20,6 +20,8 @@ Route::get("/", function() {
 
 Route::post("/login", [LoginController::class, "authenticate"])->middleware("guest");
 
+Route::get("/logout", [LoginController::class, "logout"])->middleware("auth");
+
 Route::get('/dashboard', function () {
     return view('dashboard', [
         "title" => "Dashboard"
