@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("nama_lengkap");
             $table->text("alamat");
             $table->string("email");
+            $table->string("password");
             $table->string("no_telp");
             $table->timestamps();
         });
