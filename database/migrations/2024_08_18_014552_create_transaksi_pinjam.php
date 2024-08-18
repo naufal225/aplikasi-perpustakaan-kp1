@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('petugas', function (Blueprint $table) {
+        Schema::create('transaksi_pinjam', function (Blueprint $table) {
             $table->id();
-            $table->string("kode_petugas")->unique();
-            $table->string("nama_lengkap");
-            $table->text("alamat");
-            $table->string("email");
-            $table->string("no_telp");
             $table->timestamps();
         });
     }
@@ -27,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('petugas');
+        Schema::dropIfExists('transaksi_pinjam');
     }
 };
