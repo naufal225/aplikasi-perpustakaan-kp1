@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('transaksi_pinjam', function (Blueprint $table) {
             $table->id();
-            $table->string("kode_transaksi")->unique();
-            $table->foreign("id_buku");
-            $table->foreign("id_member");
+            $table->string("kode_peminjaman")->unique();
+            $table->foreignId("id_buku");
+            $table->foreignId("id_member");
             $table->date("tgl_peminjaman");
             $table->date("estimasi_tgl_kembali");
             $table->enum("status", ["belum telat", "telat", "selesai"])->default("belum telat");

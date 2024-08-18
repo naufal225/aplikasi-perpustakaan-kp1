@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     use HasFactory;
+
+    public function transaksiPinjam() {
+        return $this->hasMany(TransaksiPinjam::class);
+    }
+    public function transaksiKembali() {
+        return $this->hasMany(TransaksiKembali::class);
+    }
 }

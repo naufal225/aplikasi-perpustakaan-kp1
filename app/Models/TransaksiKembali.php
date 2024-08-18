@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class TransaksiKembali extends Model
 {
     use HasFactory;
+
+    public function transaksiPinjam() {
+        return $this->belongsTo(TransaksiPinjam::class, "id_peminjaman");
+    }
 }
