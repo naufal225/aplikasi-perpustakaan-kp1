@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('petugas', function (Blueprint $table) {
+        Schema::create('members', function (Blueprint $table) {
             $table->id();
-            $table->string("kode_petugas")->unique();
-            $table->string("nama_lengkap");
-            $table->text("alamat");
-            $table->string("email");
-            $table->string("password");
-            $table->string("no_telp");
+            $table->string('kode_member')->unique();
+            $table->string('nama_lengkap');
+            $table->text('alamat');
+            $table->string('no_telp');
+            $table->string('email')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
     }

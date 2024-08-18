@@ -4,6 +4,6 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="d-flex justify-content-between me-5">
-        <h5 class="text-white ms-3 my-2">Selamat Datang, Budi</h5>
+        <h5 class="text-white ms-3 my-2">Selamat Datang, {{ Auth::user()->nama_lengkap }}</h5>
     </div>
   </header>
