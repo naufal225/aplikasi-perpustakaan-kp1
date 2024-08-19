@@ -9,6 +9,7 @@ class TransaksiPinjam extends Model
 {
     use HasFactory;
 
+    protected $table = "transaksi_pinjam";
     public function buku() {
         return $this->belongsTo(Buku::class, "id_buku");
     }

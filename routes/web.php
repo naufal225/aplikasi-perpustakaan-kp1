@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,8 +23,4 @@ Route::post("/login", [LoginController::class, "authenticate"])->middleware("gue
 
 Route::get("/logout", [LoginController::class, "logout"])->middleware("auth");
 
-Route::get('/dashboard', function () {
-    return view('dashboard', [
-        "title" => "Dashboard"
-    ]);
-})->middleware("auth");
+Route::get('/dashboard', [DashboardController::class, "index"])->middleware("auth");

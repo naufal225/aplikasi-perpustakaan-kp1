@@ -9,6 +9,8 @@ class TransaksiKembali extends Model
 {
     use HasFactory;
 
+    protected $table = "transaksi_kembali";
+    
     public function transaksiPinjam() {
         return $this->belongsTo(TransaksiPinjam::class, "id_peminjaman");
     }
