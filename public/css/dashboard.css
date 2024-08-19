@@ -29,7 +29,15 @@ body {
 @media (max-width: 767.98px) {
   .sidebar {
     top: 1rem;
+
   }
+  
+}
+
+@media (min-width: 767px) {
+  .container-chart {
+    width: 800px;
+}
 }
 
 .sidebar-sticky {

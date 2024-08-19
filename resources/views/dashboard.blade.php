@@ -28,10 +28,10 @@
     <div style="height: 60px;" class="col-md-2 my-2 me-5 border border-dark bg-success rounded d-flex justify-content-center align-items-center text-white my-auto">
         <div class="d-flex w-100">
             <div class="pe-2 border-end border-dark mt-2">
-                <h2 class="mb-0 text-center">{{ $jumlahKembali }}</h2>
+                <h2 class="mb-1 text-center">{{ $jumlahKembali }}</h2>
             </div>
             <div class="ps-2">
-                <h6 class="mt-2 text-center">Transaksi Kembali</h6>
+                <h6 class="mt-3 text-center">Transaksi Kembali</h6>
             </div>
         </div>
     </div>
@@ -46,7 +46,7 @@
         </div>
     </div>
 </div>
-<div class="mt-5 border-dark border ms-2 p-3" style="width: 800px;"><canvas id="chart"></canvas></div>
-
+<div class="mt-5 border-dark border ms-2 p-lg-5 container-chart" style=""><canvas id="chart"></canvas></div>
+<hr>
 
 @endsection

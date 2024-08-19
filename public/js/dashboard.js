@@ -1,10 +1,10 @@
 const apiUrl = "http://127.0.0.1:8000/api/getData";
 
+
+
 document.addEventListener("DOMContentLoaded", function() {
   const ctx = document.getElementById("chart");
 
-
-  
   fetch(apiUrl)
     .then(response => response.json())
     .then(response => data = [
@@ -35,17 +35,15 @@ document.addEventListener("DOMContentLoaded", function() {
         },
         options: {
             responsive: true,
-            plugins: {
-              legend: {
-                position: "right"
-              },
-              tooltip: {
-                callbacks: {
-                    label: function(tooltipItem) {
-                        return `${tooltipItem.label}: ${tooltipItem.raw}`;
-                    }
+            legend: {
+              display: true,
+              position: "right",
+              labels: {
+                padding: 20,
+                font: {
+                  size: 20
                 }
-            }
+              }
             },
             scales: {
                 y: {

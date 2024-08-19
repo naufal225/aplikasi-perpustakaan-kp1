@@ -1,5 +1,5 @@
 <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-    <div class="position-sticky d-flex flex-column vh-100 pt-3">
+    <div class="position-sticky d-flex flex-column vh-100 pt-5 pt-lg-3 mt-2 mt-lg-0">
       <ul class="nav flex-column">
         <li class="nav-item">
           <a class="nav-link {{ Request::is('home') ? 'active' : '' }}" aria-current="page" href="#">
@@ -45,8 +45,8 @@
         </li>
       </ul>
       <div class="mt-auto mb-5 row">
-        <div class="col-md-11">
-            <a href="/logout" class="btn btn-danger m-2 p-2 w-100">Logout</a>
+        <div class="col-11 ms-auto">
+            <a href="/logout" class="btn btn-danger m-2 p-2 w-75">Logout</a>
         </div>
       </div>
     </div>
