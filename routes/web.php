@@ -24,3 +24,7 @@ Route::post("/login", [LoginController::class, "authenticate"])->middleware("gue
 Route::get("/logout", [LoginController::class, "logout"])->middleware("auth");
 
 Route::get('/home', [DashboardController::class, "index"])->middleware("auth");
+
+Route::get('/kelola-data-member', function() {
+    return view('datamember');
+})->middleware("auth");

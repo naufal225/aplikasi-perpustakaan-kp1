@@ -2,13 +2,13 @@
     <div class="position-sticky d-flex flex-column vh-100 pt-5 pt-lg-3 mt-2 mt-lg-0">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('home') ? 'active' : '' }}" aria-current="page" href="#">
+          <a class="nav-link {{ Request::is('home') ? 'active' : '' }}" aria-current="page" href="/home">
             <span data-feather="home"></span>
             Dashboard
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" aria-current="page" href="#">
+          <a class="nav-link {{ Request::is('kelola-data-member') ? 'active' : '' }}" aria-current="page" href="/kelola-data-member">
             <span data-feather="users"></span>
             Kelola Data Member
           </a>
