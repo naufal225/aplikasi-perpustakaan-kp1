@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function() {
               display: true,
               position: "right",
               labels: {
-                padding: 20,
+                padding: 40,
                 font: {
                   size: 20
                 }
