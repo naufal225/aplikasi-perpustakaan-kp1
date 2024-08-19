@@ -2,7 +2,7 @@
     <div class="position-sticky d-flex flex-column vh-100 pt-3">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('/') ? 'active' : '' }}" aria-current="page" href="#">
+          <a class="nav-link {{ Request::is('home') ? 'active' : '' }}" aria-current="page" href="#">
             <span data-feather="home"></span>
             Dashboard
           </a>

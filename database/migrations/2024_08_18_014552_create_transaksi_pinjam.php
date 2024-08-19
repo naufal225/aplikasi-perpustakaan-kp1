@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId("id_member");
             $table->date("tgl_peminjaman");
             $table->date("estimasi_tgl_kembali");
-            $table->enum("status", ["belum telat", "telat", "selesai"])->default("belum telat");
+            $table->enum("status", ["belum telat", "telat"])->default("belum telat");
             $table->enum("keterangan", ["belum selesai", "selesai"])->default("belum selesai");
             $table->timestamps();
         });

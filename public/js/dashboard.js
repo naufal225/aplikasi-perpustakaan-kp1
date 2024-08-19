@@ -1,53 +1,59 @@
-/* globals Chart:false, feather:false */
+const apiUrl = "http://127.0.0.1:8000/api/getData";
 
-(function () {
-  'use strict'
+document.addEventListener("DOMContentLoaded", function() {
+  const ctx = document.getElementById("chart");
 
-  feather.replace({ 'aria-hidden': 'true' })
 
-  // Graphs
-  var ctx = document.getElementById('myChart')
-  // eslint-disable-next-line no-unused-vars
-  var myChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: [
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday'
-      ],
-      datasets: [{
-        data: [
-          15339,
-          21345,
-          18483,
-          24003,
-          23489,
-          24092,
-          12034
-        ],
-        lineTension: 0,
-        backgroundColor: 'transparent',
-        borderColor: '#007bff',
-        borderWidth: 4,
-        pointBackgroundColor: '#007bff'
-      }]
-    },
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: false
-          }
-        }]
+  
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(response => data = [
+      {
+        label:'Transaksi Kembali', count: response.jumlahTransaksiKembali, backgroundColor: "#5CB85C"
       },
-      legend: {
-        display: false
+      {
+        label:'Transaksi Pinjam', count:response.jumlahTransaksiPinjam, backgroundColor: "#5BC0DE"
+      },
+      {
+        label:"Jumlah Keterlambatan", count:response.jumlahKeterlambatan, backgroundColor: "#D9534F"
       }
+    ])
+    .then(data => new Chart(
+      ctx.getContext("2d"), {
+        type: 'doughnut',
+        data: {
+            labels: data.map(row => row.label),
+            datasets: [
+                {
+                    label: 'Jumlah',
+                    data: data.map(row => row.count),
+                    backgroundColor: data.map(row => row.backgroundColor),
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: "right"
+              },
+              tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return `${tooltipItem.label}: ${tooltipItem.raw}`;
+                    }
+                }
+            }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
     }
-  })
-})()
+    ))
+    .catch(e => console.error(e));
+})
