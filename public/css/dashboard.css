@@ -31,13 +31,17 @@ body {
     top: 1rem;
 
   }
+  .chart-container {
+    min-height: 500px;
+  }
+
+  #chart {
+    min-height: 400px;
+  }
   
 }
 
 @media (min-width: 767px) {
-  .container-chart {
-    width: 800px;
-}
 }
 
 .sidebar-sticky {
