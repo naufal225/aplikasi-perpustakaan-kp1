@@ -42,6 +42,9 @@ body {
 }
 
 @media (min-width: 767px) {
+  .chart-container, #chart {
+    min-height: 400px;
+  }
 }
 
 .sidebar-sticky {

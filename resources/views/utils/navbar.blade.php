@@ -8,7 +8,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('kelola-data-member') ? 'active' : '' }}" aria-current="page" href="/kelola-data-member">
+          <a class="nav-link {{ Request::is('kelola-data-member*') ? 'active' : '' }}" aria-current="page" href="/kelola-data-member">
             <span data-feather="users"></span>
             Kelola Data Member
           </a>
