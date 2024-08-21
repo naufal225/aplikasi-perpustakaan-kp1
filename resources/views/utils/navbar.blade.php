@@ -20,7 +20,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('kelola-data-kategori*') ? 'active' : '' }}" aria-current="page" href="#">
+          <a class="nav-link {{ Request::is('kelola-data-kategori*') ? 'active' : '' }}" aria-current="page" href="/kelola-data-kategori">
             <span data-feather="tag"></span>
             Kelola Data Kategori
           </a>

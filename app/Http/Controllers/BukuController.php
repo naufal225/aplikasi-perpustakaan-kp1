@@ -21,7 +21,7 @@ class BukuController extends Controller
                 or penerbit like ?
                 or penulis like ?
                 ", ["%$request->s%", "%$request->s%", "%$request->s%", "%$request->s%", "%$request->s%"]
-            )->paginate(5)
+            )->latest()->paginate(5)
             ]);
     }
 
