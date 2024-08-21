@@ -11,10 +11,14 @@ class MemberController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         return view('datamember', [
-            "member" => Members::all(),
+            "member" => Members::whereraw(
+                "nama_lengkap like ? or
+                kode_member like ?
+                ", ["%$request->s%", "%$request->s%"]
+            )->latest()->paginate(5)
         ]);
     }
 
@@ -25,7 +29,7 @@ class MemberController extends Controller
     {
         // membuat kode member
 
-        $memberTerakhir = Members::latest()->first();
+        $memberTerakhir = Members::latest()->first()->kode_member;
 
         if($memberTerakhir) {
             $kodeMember = preg_replace('/\D/', "", $memberTerakhir);
@@ -52,7 +56,7 @@ class MemberController extends Controller
     {
 
         $validate = $request->validate([
-            'kode_member' => "required",
+            'kode_member' =>'required',
             'nama_lengkap' => "required",
             'alamat' => 'required',
             'no_telp' => 'required',
@@ -65,6 +69,7 @@ class MemberController extends Controller
             'email.required' => 'Masukan email member',
             'email.email' => 'Masukan email yang valid',
         ]);
+        
 
         Members::create($validate);
 
@@ -103,9 +108,5 @@ class MemberController extends Controller
         //
     }
 
-    public function search(Request $request) {
-        return view('datamember', [
-            "member" => Members::where('nama_lengkap', $request->s)->orWhere('kode_member', $request->s)->orWhere('no_telp', $request->s)->orWhere('email', $request->s)->get()
-        ]);
-    }
+    
 }

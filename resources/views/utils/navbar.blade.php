@@ -14,7 +14,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" aria-current="page" href="#">
+          <a class="nav-link {{ Request::is('/kelola-data-buku*') ? 'active' : '' }}" aria-current="page" href="/kelola-data-buku">
             <span data-feather="book"></span>
             Kelola Data Buku
           </a>
