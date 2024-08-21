@@ -5,7 +5,7 @@
     <h1 class="h2">Kelola Data Buku</h1>
 </div>
 
-<a href="/kelola-data-member/create" class="btn btn-primary shadow">Tambah Data Member</a>
+<a href="/kelola-data-buku/create" class="btn btn-primary shadow">Tambah Data Buku</a>
 
 
 <form action="/kelola-data-member" method="get">
@@ -34,35 +34,49 @@
   </div>
 
 <div class="row col-md-11 mt-5 border border-dark">
-    <div class="table-container">
-        <table class="table table-striped">
+    <div class="table-container" style="overflow-x: scroll">
+        <table class="table table-striped" style="width: 1400px">
             <thead>
               <tr class="text-center">
                 <th scope="col">#</th>
-                <th scope="col">Kode Member</th>
-                <th scope="col">Nama</th>
-                <th scope="col">Alamat</th>
-                <th scope="col">No Telp</th>
+                <th scope="col">Kode Buku</th>
+                <th scope="col">Judul Buku</th>
+                <th scope="col">Gambar</th>
+                <th scope="col">Kategori</th>
+                <th scope="col">Penulis</th>
+                <th scope="col">Penerbit</th>
+                <th scope="col">Harga</th>
+                <th scope="col">Stok</th>
                 <th scope="col">Aksi</th>
               </tr>
             </thead>
             <tbody>
-              @foreach ($member as $item)
+              @foreach ($buku as $item)
                   <tr class="text-center">
-                    <td>{{ $loop->iteration + ($member->currentPage() - 1) * $member->perPage() }}</td>
-                    <td>{{ $item->kode_member }}</td>
-                    <td>{{ $item->nama_lengkap }}</td>
-                    <td>{{ $item->alamat }}</td>
-                    <td>{{ $item->no_telp }}</td>
+                    <td>{{ $loop->iteration + ($buku->currentPage() - 1) * $buku->perPage() }}</td>
+                    <td>{{ $item->kode_buku }}</td>
+                    <td>{{ $item->judul_buku }}</td>
+                    <td><img src="/storage/{{ $item->gambar }}" alt=""></td>
+                    <td>{{ $item->kategori->kategori }}</td>
+                    <td>{{ $item->penulis }}</td>
+                    <td>{{ $item->penerbit }}</td>
+                    <td>{{ $item->harga }}</td>
+                    <td>{{ $item->stok }}</td>
                     <td>
-                        <a href="" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
-                        <a href="" class="btn btn-danger"><i class="bi bi-x-circle"></i></a>
+                        <a href="" class="btn btn-info mx-1"><i class="bi bi-eye"></i></a>
+                        <a href="" class="btn btn-warning mx-1 "><i class="bi bi-pencil-square"></i></a>
+                        <a href="" class="btn btn-danger mx-1"><i class="bi bi-x-circle"></i></a>
                     </td>
                   </tr>
               @endforeach
             </tbody>
           </table>
 
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-10">
+          {{ $buku->links() }}
         </div>
       </div>
 @endsection

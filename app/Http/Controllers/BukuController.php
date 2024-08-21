@@ -20,8 +20,8 @@ class BukuController extends Controller
                 or isbn like ? 
                 or penerbit like ?
                 or penulis like ?
-                ", ["%$request->s%"]
-            )
+                ", ["%$request->s%", "%$request->s%", "%$request->s%", "%$request->s%", "%$request->s%"]
+            )->paginate(5)
             ]);
     }
 
@@ -30,7 +30,24 @@ class BukuController extends Controller
      */
     public function create()
     {
-        //
+        // Membuat kode buku
+
+        $bukuTerakhir = Buku::latest()->first()->kode_buku;
+
+        if($bukuTerakhir) {
+            $kodeBuku = preg_replace("/\D/", "", $bukuTerakhir);
+            $kodeBuku = intval($kodeBuku) + 1;
+            $kodeBuku = str_pad($kodeBuku, 3, "0", STR_PAD_LEFT);
+            $kodeBuku = "M" . $kodeBuku;
+
+            return view('tambahbuku', [
+                'kodeBuku' => $kodeBuku
+            ]);
+        }
+
+        return view('tambahbuku', [
+            'kodeBuku' => "M001"
+        ]);
     }
 
     /**

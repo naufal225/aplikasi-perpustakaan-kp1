@@ -11,7 +11,7 @@
                 @csrf
                 <div class="mb-3">
                     <label for="kode" class="form-label">Kode Member</label>
-                    <input type="text" class="form-control @error('kode_member') is-invalid @enderror" value="{{ $kodeMember }}" name="kode_member" id="kode" placeholder="Masukan kode member">
+                    <input type="text" class="form-control @error('kode_member') is-invalid @enderror" value="{{ $kodeMember }}" name="kode_member" id="kode" placeholder="Masukan kode member" readonly>
                     @error('kode_member')
                     <div class="invalid-message">
                       {{ $message }}

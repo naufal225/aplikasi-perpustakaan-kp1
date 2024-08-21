@@ -14,19 +14,19 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('/kelola-data-buku*') ? 'active' : '' }}" aria-current="page" href="/kelola-data-buku">
+          <a class="nav-link {{ Request::is('kelola-data-buku*') ? 'active' : '' }}" aria-current="page" href="/kelola-data-buku">
             <span data-feather="book"></span>
             Kelola Data Buku
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" aria-current="page" href="#">
+          <a class="nav-link {{ Request::is('kelola-data-kategori*') ? 'active' : '' }}" aria-current="page" href="#">
             <span data-feather="tag"></span>
             Kelola Data Kategori
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" aria-current="page" href="#">
+          <a class="nav-link {{ Request::is('kelola-data-pustakawan*') ? 'active' : '' }}" aria-current="page" href="#">
             <span data-feather="user-check"></span>
             Kelola Data Pustakawan
           </a>
