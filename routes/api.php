@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiDataChart;
+use App\Http\Controllers\BukuController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/getData', [ApiDataChart::class, "getNumber"]);
+
+Route::get('/bukuslug', [BukuController::class, "checkSlug"]);

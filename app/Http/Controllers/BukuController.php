@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 
 class BukuController extends Controller
@@ -32,9 +33,10 @@ class BukuController extends Controller
     {
         // Membuat kode buku
 
-        $bukuTerakhir = Buku::latest()->first()->kode_buku;
+        $bukuTerakhir = Buku::latest()->first();
 
         if($bukuTerakhir) {
+            $bukuTerakhir = $bukuTerakhir->kode_buku;
             $kodeBuku = preg_replace("/\D/", "", $bukuTerakhir);
             $kodeBuku = intval($kodeBuku) + 1;
             $kodeBuku = str_pad($kodeBuku, 3, "0", STR_PAD_LEFT);
@@ -46,7 +48,7 @@ class BukuController extends Controller
         }
 
         return view('tambahbuku', [
-            'kodeBuku' => "M001"
+            'kodeBuku' => "B001"
         ]);
     }
 
@@ -88,5 +90,14 @@ class BukuController extends Controller
     public function destroy(Buku $buku)
     {
         //
+    }
+
+    public function checkSlug(Request $request) 
+    {
+        $slug = SlugService::createSlug(Buku::class, 'slug', $request->judul);
+        
+        return response()->json([
+            "slug" => $slug
+        ]);
     }
 }

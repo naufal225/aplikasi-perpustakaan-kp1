@@ -21,8 +21,8 @@
                         @enderror
                       </div>
                     <div class="mb-3">
-                        <label for="judul" class="form-label">Judul Buku</label>
-                        <input type="text" class="form-control @error('judul_buku') is-invalid @enderror" name="judul_buku" id="judul" placeholder="Masukan judul buku" required>
+                        <label for="inputJudul" class="form-label">Judul Buku</label>
+                        <input type="text" class="form-control @error('judul_buku') is-invalid @enderror" name="judul_buku" id="inputJudul" placeholder="Masukan judul buku" required>
                         @error('judul_buku')
                         <div class="invalid-message">
                           {{ $message }}
@@ -30,9 +30,9 @@
                         @enderror
                       </div>
                     <div class="mb-3">
-                        <label for="alamat" class="form-label">Alamat</label>
-                        <textarea class="form-control @error('alamat') is-invalid @enderror" name="alamat" id="alamat" placeholder="Masukan alamat member" required></textarea>
-                        @error('alamat')
+                        <label for="slug" class="form-label">Slug</label>
+                        <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="slug" placeholder="Masukan slug" required readonly>
+                        @error('slug')
                         <div class="invalid-message">
                           {{ $message }}
                         </div>
@@ -40,7 +40,7 @@
                       </div>
                     <div class="mb-3">
                         <label for="isbn" class="form-label">ISBN</label>
-                        <input type="number" class="form-control @error('isbn') is-invalid @enderror" name="isbn" id="isbn" placeholder="Masukan ISBN" required>
+                        <input type="text" class="form-control @error('isbn') is-invalid @enderror" name="isbn" id="isbn" placeholder="Masukan ISBN" required>
                         @error('isbn')
                         <div class="invalid-message">
                           {{ $message }}
@@ -88,7 +88,7 @@
                   </div>
                   <div class="mb-3">
                     <label for="sinopsis" class="form-label">Sinopsis</label> <br>
-                    <textarea name="sinopsis" id="sinospsis" style="height: 120px; max-height: 120px; width: 100%" placeholder="Masukan sinopsis buku"></textarea>
+                    <textarea name="sinopsis" id="sinospsis" style="height: 80px; max-height: 80px; width: 100%" placeholder="Masukan sinopsis buku"></textarea>
                   </div>
                   <div class="mb-3">
                     <label for="gambar" class="form-label">Gambar Cover Buku</label>

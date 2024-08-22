@@ -6,6 +6,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PustakawanController;
+use App\Models\Buku;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,5 +37,6 @@ Route::resource('/kelola-data-buku', BukuController::class)->middleware("auth");
 Route::resource('/kelola-data-kategori', KategoriController::class)->middleware("auth");
 
 Route::resource('/kelola-data-pustakawan', PustakawanController::class)->middleware("auth");
+
 // Route::get('/kelola-data-member/search', [MemberController::class, "search"])->middleware("auth");
 
