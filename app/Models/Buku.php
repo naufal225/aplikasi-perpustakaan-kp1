@@ -17,10 +17,10 @@ class Buku extends Model
         return $this->belongsTo(Kategori::class, "id_kategori");
     }
 
-    public function transaksiPinjam() {
+    public function transaksi_pinjam() {
         return $this->hasMany(TransaksiPinjam::class);
     }
-    public function transaksiKembali() {
+    public function transaksi_kembali() {
         return $this->hasMany(TransaksiKembali::class);
     }
 

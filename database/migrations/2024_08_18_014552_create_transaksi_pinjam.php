@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('transaksi_pinjam', function (Blueprint $table) {
             $table->id();
             $table->string("kode_peminjaman")->unique();
-            $table->foreignId("id_buku");
-            $table->foreignId("id_member");
+            $table->foreignId("id_buku")->constrained("buku")->onDelete('cascade');
+            $table->foreignId("id_member")->constrained("members")->onDelete('cascade');
             $table->date("tgl_peminjaman");
             $table->date("estimasi_tgl_kembali");
             $table->enum("status", ["belum telat", "telat"])->default("belum telat");

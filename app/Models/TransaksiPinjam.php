@@ -18,6 +18,6 @@ class TransaksiPinjam extends Model
     }
 
     public function transaksiKembali() {
-        return $this->hasMan(TransaksiKembali::class);
+        return $this->hasMany(TransaksiKembali::class);
     }
 }

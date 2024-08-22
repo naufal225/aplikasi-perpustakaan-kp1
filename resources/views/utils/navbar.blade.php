@@ -32,13 +32,13 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" aria-current="page" href="#">
+          <a class="nav-link {{ Request::is('transaksi/pinjam-buku*') ? 'active' : '' }}" aria-current="page" href="/transaksi/pinjam-buku">
             <span data-feather="arrow-down-circle"></span>
             Transaksi Peminjaman Buku
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" aria-current="page" href="#">
+          <a class="nav-link {{ Request::is('transaksi/kembali-buku*') ? 'active' : '' }}" aria-current="page" href="/transaksi/kembali-buku">
             <span data-feather="arrow-up-circle"></span>
             Transaksi Pengembalian Buku
           </a>

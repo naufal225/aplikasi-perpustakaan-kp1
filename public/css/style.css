@@ -4,6 +4,15 @@ body {
     font-family: "Poppins", sans-serif;
 }
 
+.nav-link:hover {
+  background-color: #3B71CA;
+  color: white;
+}
+
+.nav-link.active:hover {
+  color: white;
+}
+
 /* .label-item {
     display: flex;
     align-items: center;
