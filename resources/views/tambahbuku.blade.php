@@ -6,7 +6,7 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <form action="/kelola-data-buku" method="post">
+        <form action="/kelola-data-buku" method="post" enctype="multipart/form-data">
             @method("post")
             @csrf
             <div class="row">
@@ -65,22 +65,35 @@
                         </div>
                         @enderror
                       </div>
-                      <div class="mb-3">
-                        <label for="harga" class="form-label">Harga</label>
-                        <input type="number" class="form-control @error('harga') is-invalid @enderror" name="harga" id="harga" placeholder="Masukan harga buku" required>
-                        @error('harga')
-                        <div class="invalid-message">
-                          {{ $message }}
-                        </div>
-                        @enderror
-                      </div>
-                      <div class="mb-3">
-                        <label for="sinopsis" class="form-label">Sinopsis</label>
-                        <textarea name="sinopsis" id="sinospsis" cols="30" rows="10" placeholder="Masukan sinopsis buku"></textarea>
-                      </div>
+                      
                 </div>
                 <div class="col-md-7">
-
+                  <div class="mb-3">
+                    <label for="harga" class="form-label">Harga</label>
+                    <input type="number" class="form-control @error('harga') is-invalid @enderror" name="harga" id="harga" placeholder="Masukan harga buku" required>
+                    @error('harga')
+                    <div class="invalid-message">
+                      {{ $message }}
+                    </div>
+                    @enderror
+                  </div>
+                  <div class="mb-3">
+                    <label for="stok" class="form-label">Stok</label>
+                    <input type="number" class="form-control @error('stok') is-invalid @enderror" name="stok" id="stok" placeholder="Masukan stok buku" required>
+                    @error('harga')
+                    <div class="invalid-message">
+                      {{ $message }}
+                    </div>
+                    @enderror
+                  </div>
+                  <div class="mb-3">
+                    <label for="sinopsis" class="form-label">Sinopsis</label> <br>
+                    <textarea name="sinopsis" id="sinospsis" style="height: 120px; max-height: 120px; width: 100%" placeholder="Masukan sinopsis buku"></textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label for="gambar" class="form-label">Gambar Cover Buku</label>
+                    <input class="form-control" type="file" id="gambar">
+                  </div>
                 </div>
             </div>
               

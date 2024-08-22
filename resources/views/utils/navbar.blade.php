@@ -26,7 +26,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('kelola-data-pustakawan*') ? 'active' : '' }}" aria-current="page" href="#">
+          <a class="nav-link {{ Request::is('kelola-data-pustakawan*') ? 'active' : '' }}" aria-current="page" href="/kelola-data-pustakawan">
             <span data-feather="user-check"></span>
             Kelola Data Pustakawan
           </a>

@@ -8,7 +8,7 @@
 <a href="/kelola-data-buku/create" class="btn btn-primary shadow">Tambah Data Buku</a>
 
 
-<form action="/kelola-data-member" method="get">
+<form action="/kelola-data-buku" method="get">
     @csrf
       <div class="row">
         <div class="mb-3 mt-4">
