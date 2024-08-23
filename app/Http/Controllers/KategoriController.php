@@ -27,7 +27,20 @@ class KategoriController extends Controller
      */
     public function create()
     {
-        //
+        // buat kode kategori
+
+        $kategoriTerakhir = Kategori::latest()->first()->kode_kategori ?? "K000";
+
+        if($kategoriTerakhir) {
+            $kategoriTerakhir = preg_filter('/\D/', '', $kategoriTerakhir);
+            $kategoriTerakhir = intval($kategoriTerakhir) + 1;
+            $kategoriTerakhir = str_pad($kategoriTerakhir, 3, "0", STR_PAD_LEFT);
+            $kodeKategori = "K" . $kategoriTerakhir;
+
+            return view('tambahkategori', [
+                'kodeKategori' => $kodeKategori
+            ]);
+        }
     }
 
     /**
@@ -35,7 +48,15 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = $request->validate([
+            'kode_kategori' => 'required',
+            'kategori' => 'required',
+            'slug' => 'required'
+        ]);
+
+        Kategori::create($validate);
+
+        return redirect('/kelola-data-kategori')->with('success', "Kategori baru berhasil ditambahkan");
     }
 
     /**

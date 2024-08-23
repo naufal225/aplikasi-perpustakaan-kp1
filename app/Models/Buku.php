@@ -11,6 +11,8 @@ class Buku extends Model
     use HasFactory;
     use Sluggable;
 
+    protected $guarded = ['id'];
+
     protected $table = 'buku';
 
     public function kategori() {

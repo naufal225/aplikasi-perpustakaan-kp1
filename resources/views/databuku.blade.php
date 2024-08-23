@@ -56,7 +56,7 @@
                     <td>{{ $loop->iteration + ($buku->currentPage() - 1) * $buku->perPage() }}</td>
                     <td>{{ $item->kode_buku }}</td>
                     <td>{{ $item->judul_buku }}</td>
-                    <td><img src="/storage/{{ $item->gambar }}" alt=""></td>
+                    <td><img src="/storage/{{ $item->gambar }}" alt="" style="width: 50px"></td>
                     <td>{{ $item->kategori->kategori }}</td>
                     <td>{{ $item->penulis }}</td>
                     <td>{{ $item->penerbit }}</td>

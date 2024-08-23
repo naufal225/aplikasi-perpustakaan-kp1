@@ -49,14 +49,20 @@ document.addEventListener("DOMContentLoaded", function() {
               legend: {
                 position: "bottom"
               },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    },
-                  plugins: {
-                    
-                  }
-                }
+              scales: {
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Tanggal' // Label untuk sumbu X
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Jumlah' // Label untuk sumbu Y
+                    }
+                }]
+            }
             }
         });
     });

@@ -45,7 +45,6 @@
                 <th scope="col">Tanggal Pinjam</th>
                 <th scope="col">Status</th>
                 <th scope="col">Keterangan</th>
-                <th scope="col">Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -59,10 +58,6 @@
                     <td>{{ $item->tgl_peminjaman }}</td>
                     <td>{{ $item->status }}</td>
                     <td>{{ $item->keterangan }}</td>
-                    <td>
-                        <a href="" class="btn btn-warning mx-1 "><i class="bi bi-pencil-square"></i></a>
-                        <a href="" class="btn btn-danger mx-1"><i class="bi bi-x-circle"></i></a>
-                    </td>
                   </tr>
               @endforeach
             </tbody>

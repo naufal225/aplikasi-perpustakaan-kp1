@@ -29,10 +29,10 @@ class MemberController extends Controller
     {
         // membuat kode member
 
-        $memberTerakhir = Members::latest()->first()->kode_member;
+        $memberTerakhir = Members::latest()->first();
 
         if($memberTerakhir) {
-            $kodeMember = preg_replace('/\D/', "", $memberTerakhir);
+            $kodeMember = preg_replace('/\D/', "", $memberTerakhir->kode_member);
             $kodeMember = intval($kodeMember) + 1;
             $kodeMember = str_pad($kodeMember, 3, "0", STR_PAD_LEFT);
             $kode = "M" . $kodeMember;

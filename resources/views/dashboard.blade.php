@@ -36,14 +36,17 @@
     <!-- Card Buku Hilang/Rusak -->
     <div style="height: 60px; width: 180px;" class="shadow col-md-2 my-2 me-3 border border-dark bg-warning rounded d-flex justify-content-center align-items-center text-white">
         <div class="text-center">
-            <h2 class="mb-0">{{ 1 }}</h2>
+            <h2 class="mb-0">{{ $hilangAtauRusak }}</h2>
             <h6 class="mt-0">Buku Hilang/Rusak</h6>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-md-9">
-        <div class="mt-5 border-dark border-0 rounded shadow ms-2 p-lg-5 container-chart"><canvas id="chart"></canvas></div>
+        <div class="mt-5 border-dark border-0 rounded shadow ms-2 p-lg-5 container-chart">
+            <h6 class="ms-5">Tabel Data Transaksi</h6>
+            <canvas id="chart"></canvas>
+        </div>
     </div>
 </div>
 <hr>

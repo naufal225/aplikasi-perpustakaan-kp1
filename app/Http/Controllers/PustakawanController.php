@@ -29,7 +29,20 @@ class PustakawanController extends Controller
      */
     public function create()
     {
-        //
+        // membuat kode pustakawan
+
+        $pustakawanTerakhir = User::where('admin', 0)->latest()->first()->kode_petugas ?? "P000";
+
+        if($pustakawanTerakhir) {
+            $kodePustakawan = preg_filter('/\D/', '', $pustakawanTerakhir);
+            $kodePustakawan = intval($kodePustakawan) + 1;
+            $kodePustakawan = str_pad($kodePustakawan, 3, '0', STR_PAD_LEFT);
+            $kodePustakawan = "P" . $kodePustakawan;
+
+            return view('tambahpustakawan', [
+                'kodePustakawan' => $kodePustakawan
+            ]);
+        }
     }
 
     /**

@@ -13,7 +13,7 @@
                 <div class="col-md-5">
                     <div class="mb-3">
                         <label for="kode" class="form-label">Kode Buku</label>
-                        <input type="text" class="form-control @error('kode_buku') is-invalid @enderror" value="{{ $kodeBuku }}" name="kode_buku" id="kode" placeholder="Masukan kode buku">
+                        <input readonly type="text" class="form-control @error('kode_buku') is-invalid @enderror" value="{{ $kodeBuku }}" name="kode_buku" id="kode" placeholder="Masukan kode buku">
                         @error('kode_buku')
                         <div class="invalid-message">
                           {{ $message }}
@@ -30,8 +30,8 @@
                         @enderror
                       </div>
                     <div class="mb-3">
-                        <label for="slug" class="form-label">Slug</label>
-                        <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="slug" placeholder="Masukan slug" required readonly>
+                        <label readonly for="slug" class="form-label">Slug</label>
+                        <input readonly type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="slug" placeholder="Masukan slug" required>
                         @error('slug')
                         <div class="invalid-message">
                           {{ $message }}
@@ -42,6 +42,19 @@
                         <label for="isbn" class="form-label">ISBN</label>
                         <input type="text" class="form-control @error('isbn') is-invalid @enderror" name="isbn" id="isbn" placeholder="Masukan ISBN" required>
                         @error('isbn')
+                        <div class="invalid-message">
+                          {{ $message }}
+                        </div>
+                        @enderror
+                      </div>
+                      <div class="mb-3">
+                        <label for="kategori" class="form-label">Kategori</label>
+                        <select name="id_kategori" id="kategori" class="form-control @error('id_kategori') is-invalid @enderror">
+                          @foreach($kategori as $item)
+                          <option value="{{ $item->id }}">{{ $item->kategori }}</option>
+                          @endforeach
+                        </select>
+                        @error('id_kaategori')
                         <div class="invalid-message">
                           {{ $message }}
                         </div>
@@ -92,7 +105,7 @@
                   </div>
                   <div class="mb-3">
                     <label for="gambar" class="form-label">Gambar Cover Buku</label>
-                    <input class="form-control" type="file" id="gambar">
+                    <input class="form-control" type="file" name="gambar" id="gambar">
                   </div>
                 </div>
             </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use App\Models\Kategori;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 
@@ -14,15 +15,13 @@ class BukuController extends Controller
     public function index(Request $request)
     {
         return view('databuku', [
-            "buku" => Buku::whereRaw(
-                "
-                kode_buku like ? 
-                or judul_buku like ?
-                or isbn like ? 
-                or penerbit like ?
-                or penulis like ?
-                ", ["%$request->s%", "%$request->s%", "%$request->s%", "%$request->s%", "%$request->s%"]
-            )->latest()->paginate(5)
+            "buku" => Buku::join('kategori', 'kategori.id', '=', 'buku.id_kategori')
+                ->where(function($query) use($request) {
+                    $query->where('judul_buku', 'like', "%$request->s%")
+                    ->orWhere('penulis', 'like', "%$request->s%")
+                    ->orWhere('penerbit', 'like', "%$request->s%")
+                    ->orWhere('kategori.kategori', 'like', "%$request->s%");
+                })->orderBy('buku.id')->paginate(5)
             ]);
     }
 
@@ -40,15 +39,17 @@ class BukuController extends Controller
             $kodeBuku = preg_replace("/\D/", "", $bukuTerakhir);
             $kodeBuku = intval($kodeBuku) + 1;
             $kodeBuku = str_pad($kodeBuku, 3, "0", STR_PAD_LEFT);
-            $kodeBuku = "M" . $kodeBuku;
+            $kodeBuku = "B" . $kodeBuku;
 
             return view('tambahbuku', [
-                'kodeBuku' => $kodeBuku
+                'kodeBuku' => $kodeBuku,
+                'kategori' => Kategori::all()
             ]);
         }
 
         return view('tambahbuku', [
-            'kodeBuku' => "B001"
+            'kodeBuku' => "B001",
+            'kategori' => Kategori::all()
         ]);
     }
 
@@ -57,7 +58,24 @@ class BukuController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = $request->validate([
+            "kode_buku" => "required",
+            "judul_buku" => "required",
+            "slug" => "required|unique:buku",
+            "id_kategori" => "required",
+            "isbn" => "required",
+            "penulis" => "required",
+            "penerbit" => "required",
+            "harga" => "required",
+            "stok" => "required",
+            "sinopsis" => "required"
+        ]);
+
+        $validate['gambar'] = $request->file('gambar')->store('gambar-buku', 'public');
+
+        Buku::create($validate);
+
+        return redirect('/kelola-data-buku')->with('success', 'Data Buku Berhasil Ditambahkan');
     }
 
     /**

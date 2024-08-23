@@ -10,12 +10,21 @@ class TransaksiKembaliController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        return view('transaksi.kembalibuku', [
-            "transaksi" => TransaksiKembali::latest()->paginate(5)
-        ]);
-    }
+    public function index(Request $request)
+{
+    return view('transaksi.kembalibuku', [
+        "transaksi" => TransaksiKembali::select('transaksi_kembali.*', 'transaksi_pinjam.kode_peminjaman', 'buku.judul_buku')
+            ->join('transaksi_pinjam', 'transaksi_pinjam.kode_peminjaman', '=', 'transaksi_pinjam.id')
+            ->join('buku', 'transaksi_pinjam.id_buku', '=', 'buku.id')
+            ->where(function($query) use ($request) {
+                $query->where('transaksi_kembali.kode_pengembalian', 'like', "%{$request->s}%")
+                    ->orWhere('transaksi_pinjam.kode_peminjaman', 'like', "%{$request->s}%")
+                    ->orWhere('buku.judul_buku', 'like', "%{$request->s}%");
+            })
+            ->latest()
+            ->paginate(5)
+    ]);
+}
 
     /**
      * Show the form for creating a new resource.

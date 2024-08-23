@@ -11,7 +11,7 @@ class TransaksiKembali extends Model
 
     protected $table = "transaksi_kembali";
     
-    public function transaksiPinjam() {
+    public function transaksi_pinjam() {
         return $this->belongsTo(TransaksiPinjam::class, "id_peminjaman");
     }
 }

@@ -11,12 +11,15 @@ use Illuminate\Support\Facades\DB;
 class DashboardController extends Controller
 {
     public function index() {
+        $bulan = date('m');
+        $tahun = date('Y');
+
         return view("dashboard", [
             "jumlahBuku" => Buku::count(),
-            "jumlahKembali" => TransaksiKembali::whereRaw("datediff(tgl_pengembalian, curdate())")->count(),
-            "jumlahPinjam" => TransaksiPinjam::whereRaw("datediff(tgl_peminjaman, curdate())")->count(),
-            "keterlambatan" => TransaksiPinjam::whereRaw("datediff(tgl_peminjaman, curdate()) and status = 'telat'")->count(),
-            "hilangAtauRusak" => TransaksiKembali::whereRaw("datediff(tgl_pengembalian, curdate()) and kondisi = 'hilang atau rusak'")->count(),
+            "jumlahKembali" => TransaksiKembali::whereMonth('tgl_pengembalian', $bulan)->whereYear('tgl_pengembalian', $tahun)->count(),
+            "jumlahPinjam" => TransaksiPinjam::whereMonth('tgl_peminjaman', $bulan)->whereYear('tgl_peminjaman', $tahun)->count(),
+            "keterlambatan" => TransaksiPinjam::whereMonth('tgl_peminjaman', $bulan)->whereYear('tgl_peminjaman', $tahun)->count(),
+            "hilangAtauRusak" => TransaksiKembali::whereMonth('tgl_pengembalian', $bulan)->whereYear('tgl_pengembalian', $tahun)->where('kondisi', 'hilang atau rusak')->count(),
         ]);
     }
 }
