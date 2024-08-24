@@ -60,7 +60,7 @@
 
   <div class="card confirm-delete-card" style="width: 18rem;position:fixed;top:50%;left:50%;transform: translate(-50%, -50%)">
     <div class="card-body text-center py-3 px-4">
-      <h5 class="card-title confirm-delete-card-text p-1 mt-2">Apakah Anda Yakin Ingin Menghapus</h5>
+      <h5 class="card-title confirm-delete-card-text p-1 mt-2">Apakah Anda Yakin Ingin Menghapus</h5><h5 class="itemForDelete"></h5>
       <button onclick="cancelDelete()" class="cancel-button btn btn-warning mb-1 mt-2 me-1">Tidak</button>
       <button onclick="confirmDelete()" class="yes-button btn btn-danger mb-1 mt-2 ms-1">Ya</button>
     </div>

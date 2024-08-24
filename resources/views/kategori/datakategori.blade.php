@@ -50,9 +50,13 @@
                     <td>{{ $loop->iteration + ($kategori->currentPage() - 1) * $kategori->perPage() }}</td>
                     <td>{{ $item->kode_kategori }}</td>
                     <td>{{ $item->kategori }}</td>
-                    <td>
+                    <td class="d-flex justify-content-center gap-4">
                         <a href="/kelola-data-kategori/{{ $item->slug }}/edit" class="btn btn-warning mx-1 "><i class="bi bi-pencil-square"></i></a>
-                        <a href="" class="btn btn-danger mx-1"><i class="bi bi-x-circle"></i></a>
+                        <form action="/kelola-data-kategori/{{ $item->slug }}" onsubmit="return deleteConfirmation(event)" method="post">
+                          @method('delete')
+                          @csrf
+                          <button type="submit" data-confirm="{{ $item->kategori }}" class="btn btn-danger"><i class="bi bi-x-circle"></i></button>
+                        </form>
                     </td>
                   </tr>
               @endforeach

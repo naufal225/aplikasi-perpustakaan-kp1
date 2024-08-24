@@ -1,5 +1,6 @@
 const deleteConfirm = document.querySelector('.confirm-delete-card');
 const deleteConfirmText = document.querySelector('.confirm-delete-card-text');
+const itemForDelete = document.querySelector('.itemForDelete');
 document.addEventListener("DOMContentLoaded", function() {
     const input = document.querySelector('input[type="number"]');
     const inputJudulBuku = document.getElementById('inputJudul');
@@ -58,7 +59,7 @@ inputJudulBuku.addEventListener('change', function() {
 function deleteConfirmation(e) {
     e.preventDefault();
     formToSubmit = e.target;
-    deleteConfirmText.textContent += ` "${e.target.querySelector('button[type="submit"]').dataset.confirm}"`
+    itemForDelete.textContent = ` "${e.target.querySelector('button[type="submit"]').dataset.confirm}"`
     deleteConfirm.style.display = "block";
 }
 

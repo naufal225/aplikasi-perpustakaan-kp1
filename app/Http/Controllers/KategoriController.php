@@ -98,6 +98,9 @@ class KategoriController extends Controller
      */
     public function destroy(Kategori $kategori)
     {
-        //
+        $nama = $kategori->first()->kategori;
+        $kategori->first()->delete();
+
+        return redirect('/kelola-data-kategori')->with('success', "Data kategori \"$nama\" berhasil dihapus");
     }
 }
