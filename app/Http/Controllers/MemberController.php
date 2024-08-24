@@ -13,7 +13,7 @@ class MemberController extends Controller
      */
     public function index(Request $request)
     {
-        return view('datamember', [
+        return view('member.datamember', [
             "member" => Members::whereraw(
                 "nama_lengkap like ? or
                 kode_member like ?
@@ -29,23 +29,18 @@ class MemberController extends Controller
     {
         // membuat kode member
 
-        $memberTerakhir = Members::latest()->first();
+        $memberTerakhir = Members::latest()->first()->kode_member ?? "M000";
 
         if($memberTerakhir) {
-            $kodeMember = preg_replace('/\D/', "", $memberTerakhir->kode_member);
+            $kodeMember = preg_replace('/\D/', "", $memberTerakhir);
             $kodeMember = intval($kodeMember) + 1;
             $kodeMember = str_pad($kodeMember, 3, "0", STR_PAD_LEFT);
             $kode = "M" . $kodeMember;
 
-            return view('tambahmember', [
+            return view('member.tambahmember', [
                 "kodeMember" => $kode
             ]);
         }
-
-        return view('tambahmember', [
-            "kodeMember" => "M001"
-        ]);
-
         
     }
 

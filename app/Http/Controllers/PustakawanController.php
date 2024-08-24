@@ -12,7 +12,7 @@ class PustakawanController extends Controller
      */
     public function index(Request $request)
     {
-        return view('datapustakawan', [
+        return view('pustakawan.datapustakawan', [
             "pustakawan" => User::where('admin', 0)
                 ->where(function ($query) use ($request) {
                     $query->where('nama_lengkap', 'like', "%{$request->s}%")
@@ -39,7 +39,7 @@ class PustakawanController extends Controller
             $kodePustakawan = str_pad($kodePustakawan, 3, '0', STR_PAD_LEFT);
             $kodePustakawan = "P" . $kodePustakawan;
 
-            return view('tambahpustakawan', [
+            return view('pustakawan.tambahpustakawan', [
                 'kodePustakawan' => $kodePustakawan
             ]);
         }

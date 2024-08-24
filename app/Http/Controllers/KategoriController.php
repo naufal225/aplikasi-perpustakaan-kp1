@@ -13,7 +13,7 @@ class KategoriController extends Controller
     public function index(Request $request)
     {
 
-        return view("datakategori", [
+        return view("kategori.datakategori", [
             "kategori" => Kategori::whereRaw(
                 "kode_kategori like ?
                 or kategori like ?", 
@@ -37,7 +37,7 @@ class KategoriController extends Controller
             $kategoriTerakhir = str_pad($kategoriTerakhir, 3, "0", STR_PAD_LEFT);
             $kodeKategori = "K" . $kategoriTerakhir;
 
-            return view('tambahkategori', [
+            return view('kategori.tambahkategori', [
                 'kodeKategori' => $kodeKategori
             ]);
         }

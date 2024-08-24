@@ -11,7 +11,7 @@
             @csrf
             <div class="mb-3">
                 <label for="kode" class="form-label">Kode Kategori</label>
-                <input type="text" class="form-control @error('kode_kategori') is-invalid @enderror" value="{{ $kodeKategori }}" name="kode_kategori" id="kode" placeholder="Masukan kode kategori">
+                <input readonly type="text" class="form-control @error('kode_kategori') is-invalid @enderror" value="{{ $kodeKategori }}" name="kode_kategori" id="kode" placeholder="Masukan kode kategori">
                 @error('kode_kategori')
                 <div class="invalid-message">
                   {{ $message }}
@@ -29,7 +29,7 @@
               </div>
             <div class="mb-3">
                 <label for="slug" class="form-label">slug</label>
-                <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="slug" placeholder="Masukan slug" required>
+                <input readonly type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="slug" placeholder="Masukan slug" required>
                 @error('slug')
                 <div class="invalid-message">
                   {{ $message }}

@@ -14,7 +14,7 @@ class BukuController extends Controller
      */
     public function index(Request $request)
     {
-        return view('databuku', [
+        return view('buku.databuku', [
             "buku" => Buku::join('kategori', 'kategori.id', '=', 'buku.id_kategori')
                 ->where(function($query) use($request) {
                     $query->where('judul_buku', 'like', "%$request->s%")
@@ -32,25 +32,19 @@ class BukuController extends Controller
     {
         // Membuat kode buku
 
-        $bukuTerakhir = Buku::latest()->first();
+        $bukuTerakhir = Buku::latest()->first()->kode_buku ?? "B000";
 
         if($bukuTerakhir) {
-            $bukuTerakhir = $bukuTerakhir->kode_buku;
             $kodeBuku = preg_replace("/\D/", "", $bukuTerakhir);
             $kodeBuku = intval($kodeBuku) + 1;
             $kodeBuku = str_pad($kodeBuku, 3, "0", STR_PAD_LEFT);
             $kodeBuku = "B" . $kodeBuku;
 
-            return view('tambahbuku', [
+            return view('buku.tambahbuku', [
                 'kodeBuku' => $kodeBuku,
                 'kategori' => Kategori::all()
             ]);
         }
-
-        return view('tambahbuku', [
-            'kodeBuku' => "B001",
-            'kategori' => Kategori::all()
-        ]);
     }
 
     /**
