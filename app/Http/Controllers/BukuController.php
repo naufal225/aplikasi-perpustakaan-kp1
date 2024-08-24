@@ -16,6 +16,7 @@ class BukuController extends Controller
     {
         return view('buku.databuku', [
             "buku" => Buku::join('kategori', 'kategori.id', '=', 'buku.id_kategori')
+                ->select('buku.*', 'kategori.kategori')
                 ->where(function($query) use($request) {
                     $query->where('judul_buku', 'like', "%$request->s%")
                     ->orWhere('penulis', 'like', "%$request->s%")

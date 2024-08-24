@@ -54,7 +54,7 @@
                     <td>{{ $item->alamat }}</td>
                     <td>{{ $item->no_telp }}</td>
                     <td>
-                        <a href="" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
+                        <a href="/kelola-data-member/{{ $item->kode_member }}/edit" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
                         <a href="" class="btn btn-danger"><i class="bi bi-x-circle"></i></a>
                     </td>
                   </tr>

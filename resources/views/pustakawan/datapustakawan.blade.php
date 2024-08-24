@@ -56,7 +56,7 @@
                     <td>{{ $item->no_telp }}</td>
                     <td>{{ $item->email }}</td>
                     <td>
-                        <a href="" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
+                        <a href="/kelola-data-pustakawan/{{ $item->kode_petugas }}/edit" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
                         <a href="" class="btn btn-danger"><i class="bi bi-x-circle"></i></a>
                     </td>
                   </tr>

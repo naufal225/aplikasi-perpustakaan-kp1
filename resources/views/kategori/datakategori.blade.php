@@ -51,7 +51,7 @@
                     <td>{{ $item->kode_kategori }}</td>
                     <td>{{ $item->kategori }}</td>
                     <td>
-                        <a href="" class="btn btn-warning mx-1 "><i class="bi bi-pencil-square"></i></a>
+                        <a href="/kelola-data-kategori/{{ $item->slug }}/edit" class="btn btn-warning mx-1 "><i class="bi bi-pencil-square"></i></a>
                         <a href="" class="btn btn-danger mx-1"><i class="bi bi-x-circle"></i></a>
                     </td>
                   </tr>

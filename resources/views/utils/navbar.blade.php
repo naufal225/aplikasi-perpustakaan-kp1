@@ -46,7 +46,7 @@
       </ul>
       <div class="mt-auto mb-5 row">
         <div class="col-11 ms-auto">
-            <a href="/logout" class="btn btn-danger m-2 p-2 w-75">Logout</a>
+            <a href="/logout" class="btn btn-danger m-2 p-2 w-75"><i class="bi bi-box-arrow-right pe-2"></i>Logout</a>
         </div>
       </div>
     </div>

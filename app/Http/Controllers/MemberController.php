@@ -84,7 +84,9 @@ class MemberController extends Controller
      */
     public function edit(Members $members)
     {
-        //
+        return view('member.editmember', [
+            'member' => $members
+        ]);
     }
 
     /**

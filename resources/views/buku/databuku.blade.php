@@ -63,8 +63,8 @@
                     <td>{{ $item->harga }}</td>
                     <td>{{ $item->stok }}</td>
                     <td>
-                        <a href="" class="btn btn-info mx-1"><i class="bi bi-eye"></i></a>
-                        <a href="" class="btn btn-warning mx-1 "><i class="bi bi-pencil-square"></i></a>
+                        <a href="/kelola-data-buku/{{ $item->slug }}" class="btn btn-info mx-1"><i class="bi bi-eye"></i></a>
+                        <a href="/kelola-data-buku/{{ $item->slug }}/edit" class="btn btn-warning mx-1 "><i class="bi bi-pencil-square"></i></a>
                         <a href="" class="btn btn-danger mx-1"><i class="bi bi-x-circle"></i></a>
                     </td>
                   </tr>
