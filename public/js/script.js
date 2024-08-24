@@ -1,9 +1,11 @@
+const deleteConfirm = document.querySelector('.confirm-delete-card');
+const deleteConfirmText = document.querySelector('.confirm-delete-card-text');
 document.addEventListener("DOMContentLoaded", function() {
     const input = document.querySelector('input[type="number"]');
     const inputJudulBuku = document.getElementById('inputJudul');
     const inputSlug = document.querySelector('input[name="slug"]');
     const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-
+    let formToSubmit = null;
 
 input.addEventListener('keypress', function(e){
     if(e.key === 'e' || e.key === "E") {
@@ -51,8 +53,21 @@ inputJudulBuku.addEventListener('change', function() {
     .catch(error => console.error('Error:', error)); // Handle any errors
 });
 
-
-
-
-
 })
+
+function deleteConfirmation(e) {
+    e.preventDefault();
+    formToSubmit = e.target;
+    deleteConfirmText.textContent += ` "${e.target.querySelector('button[type="submit"]').dataset.confirm}"`
+    deleteConfirm.style.display = "block";
+}
+
+function confirmDelete() {
+    window.formToSubmit.submit();
+    deleteConfirm.style.display = "none";
+}
+
+function cancelDelete() {
+    deleteConfirm.style.display = "none";
+}
+

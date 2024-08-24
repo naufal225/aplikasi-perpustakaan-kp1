@@ -2,12 +2,12 @@
 
 @section('container')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h2>Tambah Data Kategori</h2>
+    <h2>Edit Data Kategori</h2>
 </div>  
 <div class="row">
     <div class="col-md-8">
-        <form action="/kelola-data-kategori" method="post">
-            @method("post")
+        <form action="/kelola-data-kategori/{{ $kategori->kode_kategori }}" method="post">
+            @method("put")
             @csrf
             <div class="mb-3">
                 <label for="kode" class="form-label">Kode Kategori</label>
@@ -20,7 +20,7 @@
               </div>
             <div class="mb-3">
                 <label for="kategori" class="form-label">Kategori</label>
-                <input type="text" class="form-control @error('kategori') is-invalid @enderror" name="kategori" id="kode" placeholder="Masukan nama kategori" required value="{{ $kategori->kategori }}">
+                <input type="text" class="form-control @error('kategori') is-invalid @enderror" name="kategori" id="inputJudul" placeholder="Masukan nama kategori" required value="{{ $kategori->kategori }}">
                 @error('kategori')
                 <div class="invalid-message">
                   {{ $message }}
@@ -37,7 +37,7 @@
                 @enderror
               </div>
               
-              <button class="btn btn-primary shadow" type="submit">Tambah</button>
+              <button class="btn btn-primary shadow" type="submit">Edit</button>
         </form>
     </div>
 </div>

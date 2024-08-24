@@ -53,9 +53,13 @@
                     <td>{{ $item->nama_lengkap }}</td>
                     <td>{{ $item->alamat }}</td>
                     <td>{{ $item->no_telp }}</td>
-                    <td>
+                    <td class="d-flex justify-content-center gap-4">
                         <a href="/kelola-data-member/{{ $item->kode_member }}/edit" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
-                        <a href="" class="btn btn-danger"><i class="bi bi-x-circle"></i></a>
+                        <form action="/kelola-data-member/{{ $item->kode_member }}" onsubmit="return deleteConfirmation(event)" method="post">
+                          @method('delete')
+                          @csrf
+                          <button type="submit" data-confirm="{{ $item->nama_lengkap }}" class="btn btn-danger"><i class="bi bi-x-circle"></i></button>
+                        </form>
                     </td>
                   </tr>
               @endforeach

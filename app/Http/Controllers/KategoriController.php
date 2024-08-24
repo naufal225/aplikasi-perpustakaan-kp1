@@ -82,7 +82,15 @@ class KategoriController extends Controller
      */
     public function update(Request $request, Kategori $kategori)
     {
-        //
+        $validate = $request->validate([
+            "kategori" => "required"
+        ], [
+            "kategori.required" => "Masukan nama kategori"
+        ]);
+
+        $kategori->first()->update($validate);
+
+        return redirect('/kelola-data-kategori')->with("success", "Data kategori berhasil diperbarui");
     }
 
     /**

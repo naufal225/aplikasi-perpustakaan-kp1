@@ -119,7 +119,10 @@ class MemberController extends Controller
      */
     public function destroy(Members $members)
     {
-        //
+        $nama = $members->first()->nama_lengkap;
+        $members->first()->delete();
+
+        return redirect('/kelola-data-member')->with("success", "Data Member \"$nama\" Berhasil Dihapus");
     }
 
     
