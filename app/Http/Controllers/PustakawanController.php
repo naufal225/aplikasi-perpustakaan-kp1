@@ -50,7 +50,18 @@ class PustakawanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = $request->validate([
+            'kode_petugas' => 'required|unique:users',
+            'nama_lengkap' => 'required',
+            'alamat' => 'required',
+            'no_telp' => 'required',
+            'email' => 'required|email:dns',
+            'password' => 'required|confirmed'
+        ]);
+
+        User::create($validate);
+
+        return redirect('/kelola-data-pustakawan')->with('success', 'Pustakawan baru berhasil ditambahkan');
     }
 
     /**
