@@ -16,4 +16,8 @@ class User extends Authenticatable
     protected $table = 'users';
 
     protected $guarded = ['id'];
+
+    public function getRouteKeyName() {
+        return "kode_petugas";
+    }
 }

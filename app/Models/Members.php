@@ -12,4 +12,8 @@ class Members extends Model
     protected $table = "members";
 
     protected $guarded = ['id'];
+
+    public function getRouteKeyName() {
+        return "kode_member";
+    }
 }

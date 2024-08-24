@@ -72,7 +72,9 @@ class KategoriController extends Controller
      */
     public function edit(Kategori $kategori)
     {
-        //
+        return view('kategori.editkategori', [
+            "kategori" => $kategori->first()
+        ]);
     }
 
     /**

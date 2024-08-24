@@ -49,7 +49,6 @@ class MemberController extends Controller
      */
     public function store(Request $request)
     {
-
         $validate = $request->validate([
             'kode_member' =>'required',
             'nama_lengkap' => "required",
@@ -85,7 +84,7 @@ class MemberController extends Controller
     public function edit(Members $members)
     {
         return view('member.editmember', [
-            'member' => $members
+            'member' => $members->first()
         ]);
     }
 
@@ -94,7 +93,25 @@ class MemberController extends Controller
      */
     public function update(Request $request, Members $members)
     {
-        //
+        $validate = $request->validate([
+            'kode_member' => 'required',
+            'nama_lengkap' => "required",
+            'alamat' => 'required',
+            'no_telp' => 'required',
+            'email' => 'required|email:dns'
+        ], [
+            'kode_member.required' => 'Masukan kode member',
+            'nama_lengkap.required' => 'Masukan nama member',
+            'alamat.required' => 'Masukan alamat member',
+            'no_telp.required' => 'Masukan no. Telp member',
+            'email.required' => 'Masukan email member',
+            'email.email' => 'Masukan email yang valid',
+        ]);
+        
+
+        $members->first()->update($validate);
+
+        return redirect('/kelola-data-member')->with("success", 'Data Member Berhasil Diperbarui');
     }
 
     /**

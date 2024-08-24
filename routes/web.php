@@ -34,7 +34,7 @@ Route::get("/logout", [LoginController::class, "logout"])->middleware("auth");
 
 Route::get('/home', [DashboardController::class, "index"])->middleware("auth");
 
-Route::resource('/kelola-data-member', MemberController::class)->middleware("auth");
+Route::resource('/kelola-data-member', MemberController::class)->middleware("auth")->parameters(['members' => 'kode_member']);
 
 Route::resource('/kelola-data-buku', BukuController::class)->middleware("auth");
 

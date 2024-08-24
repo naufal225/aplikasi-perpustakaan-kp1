@@ -58,6 +58,14 @@
   <script src="{{ asset('js/dashboard.js') }}"></script>
   @endif
 
+  <div class="card confirm-delete-card" style="width: 18rem;position:fixed;top:50%;left:50%;transform: translate(-50%, -50%)">
+    <div class="card-body text-center py-3 px-4">
+      <h5 class="card-title p-1 mt-2">Apakah Anda Yakin Ingin Menghapus</h5>
+      <a href="#" class="cancel-button btn btn-warning mb-1 mt-2 me-1">Tidak</a>
+      <a href="#" class="yes-button btn btn-danger mb-1 mt-2 ms-1">Ya</a>
+    </div>
+  </div>
+
   <script src="{{ asset('js/script.js') }}"></script>
   <script>
     feather.replace();

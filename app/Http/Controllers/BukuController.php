@@ -86,7 +86,9 @@ class BukuController extends Controller
      */
     public function edit(Buku $buku)
     {
-        //
+        return view("buku.editbuku", [
+            "buku" => $buku->first()
+        ]);
     }
 
     /**
