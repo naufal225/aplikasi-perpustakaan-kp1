@@ -6,7 +6,7 @@
     </div>  
     <div class="row">
         <div class="col-md-8">
-            <form action="/kelola-data-member/{{ $member->id }}" method="post">
+            <form action="/kelola-data-member/{{ $member->kode_member }}" method="post">
                 @method("put")
                 @csrf
                 <div class="mb-3">

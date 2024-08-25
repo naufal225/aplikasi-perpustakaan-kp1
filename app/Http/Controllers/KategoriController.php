@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kategori;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 
 class KategoriController extends Controller
@@ -70,37 +71,46 @@ class KategoriController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Kategori $kategori)
+    public function edit($slug)
     {
         return view('kategori.editkategori', [
-            "kategori" => $kategori->first()
+            "kategori" => Kategori::where("slug", $slug)
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Kategori $kategori)
+    public function update(Request $request, $slug)
     {
+        $kategori = Kategori::where('slug', $slug)->first()->kategori;
         $validate = $request->validate([
             "kategori" => "required"
         ], [
             "kategori.required" => "Masukan nama kategori"
         ]);
 
-        $kategori->first()->update($validate);
+        Kategori::where("slug", $slug)->update($validate);
 
-        return redirect('/kelola-data-kategori')->with("success", "Data kategori berhasil diperbarui");
+        return redirect('/kelola-data-kategori')->with("success", "Data kategori \"$kategori\" berhasil diperbarui");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Kategori $kategori)
+    public function destroy($slug)
     {
+        $kategori = Kategori::where("slug", $slug);
         $nama = $kategori->first()->kategori;
         $kategori->first()->delete();
 
         return redirect('/kelola-data-kategori')->with('success', "Data kategori \"$nama\" berhasil dihapus");
+    }
+
+    public function checkSlug(Request $request) {
+        $slug = SlugService::createSlug(Kategori::class, "slug", $request->kategori);
+        return response()->json([
+            "slug" => $slug
+        ]);
     }
 }

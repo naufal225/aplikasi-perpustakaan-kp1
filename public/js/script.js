@@ -1,58 +1,89 @@
+
 const deleteConfirm = document.querySelector('.confirm-delete-card');
 const deleteConfirmText = document.querySelector('.confirm-delete-card-text');
 const itemForDelete = document.querySelector('.itemForDelete');
+const input = document.querySelector('input[type="number"]');
+const inputJudulBuku = document.getElementById('inputJudul');
+const inputKategori = document.getElementById('kategori');
+const inputSlug = document.querySelector('input[name="slug"]');
+const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+const gambar = document.getElementById('gambar');
+let preview = document.querySelector('img.img-preview');
 document.addEventListener("DOMContentLoaded", function() {
-    const input = document.querySelector('input[type="number"]');
-    const inputJudulBuku = document.getElementById('inputJudul');
-    const inputSlug = document.querySelector('input[name="slug"]');
-    const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
     let formToSubmit = null;
 
-input.addEventListener('keypress', function(e){
-    if(e.key === 'e' || e.key === "E") {
-        e.preventDefault();
-    }
-})
-
-document.getElementById('isbn').addEventListener('keydown', function (e) {
-    // Izinkan hanya angka, tanda strip, backspace, dan delete
-    if (
-        !(
-            (e.key >= '0' && e.key <= '9') || 
-            e.key === '-' ||
-            e.key === 'Backspace' ||
-            e.key === 'Delete'
-        )
-    ) {
-        e.preventDefault();
-    }
-});
-
-document.getElementById('harga').addEventListener('keydown', function(e) {
-    if (
-        !(
-            (e.key >= '0' && e.key <= '9') ||
-            e.key == '.' || e.key == ',' ||
-            e.key == 'Backspace' ||
-            e.key == 'Delete'
-        )
-    ) {
-        e.preventDefault();
-    }
-})
-
-inputJudulBuku.addEventListener('change', function() {
-    fetch('/api/bukuslug?judul=' + inputJudulBuku.value, {
-        headers: {
-            "X-CSRF-TOKEN" : csrfToken
+if(input) {
+    input.addEventListener('keypress', function(e){
+        if(e.key === 'e' || e.key === "E") {
+            e.preventDefault();
         }
     })
-    .then(response => response.json()) // Convert response to JSON
-    .then(data => {
-        inputSlug.value = data.slug; // Access the slug property
-    })
-    .catch(error => console.error('Error:', error)); // Handle any errors
-});
+}
+
+if(document.getElementById('isbn')) {
+    document.getElementById('isbn').addEventListener('keydown', function (e) {
+        // Izinkan hanya angka, tanda strip, backspace, dan delete
+        if (
+            !(
+                (e.key >= '0' && e.key <= '9') || 
+                e.key === '-' ||
+                e.key === 'Backspace' ||
+                e.key === 'Delete'
+            )
+        ) {
+            e.preventDefault();
+        }
+    });
+}
+
+if(document.getElementById('harga')) {
+    document.getElementById('harga').addEventListener('keydown', function(e) {
+        if (
+            !(
+                (e.key >= '0' && e.key <= '9') ||
+                e.key == '.' || e.key == ',' ||
+                e.key == 'Backspace' ||
+                e.key == 'Delete'
+            )
+        ) {
+            e.preventDefault();
+        }
+    });
+}
+
+
+if(inputJudulBuku) {
+    inputJudulBuku.addEventListener('change', function() {
+        fetch('/api/bukuslug?judul=' + inputJudulBuku.value, {
+            headers: {
+                "X-CSRF-TOKEN" : csrfToken
+            }
+        })
+        .then(response => response.json()) // Convert response to JSON
+        .then(data => {
+            console.log(data)
+            inputSlug.value = data.slug; // Access the slug property
+        })
+        .catch(error => console.error('Error:', error)); // Handle any errors
+    });
+}
+
+
+if(inputKategori) {
+    inputKategori.addEventListener('change', function() {
+        fetch('/api/kategorislug?kategori=' + inputKategori.value, {
+            headers: {
+                "X-CSRF-TOKEN" : csrfToken
+            }
+        }) 
+        .then(response => response.json())
+        .then(data => {
+            inputSlug.value = data.slug;
+        })
+        .catch(error => console.error('Error:', error)); 
+    });
+
+}
 
 })
 
@@ -72,3 +103,11 @@ function cancelDelete() {
     deleteConfirm.style.display = "none";
 }
 
+function previewGambar() {
+    preview.style.display = "block";
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(gambar.files[0]);
+    fileReader.onload = function(e) {
+        preview.src = e.target.result;
+    }
+}

@@ -12,7 +12,7 @@
     @csrf
       <div class="row">
         <div class="mb-3 mt-4">
-          <div class="col-md-6 d-flex gap-3">
+          <div class="col-md-8 d-flex gap-3">
           <input type="text" class="form-control p-2 fs-6" id="search" name="s" placeholder="Cari berdasarkan kode pengembalian, kode peminjaman atau judul buku">
           <button class="btn btn-primary px-3" type="submit">Cari</button>
         </div>
@@ -20,6 +20,24 @@
       </div>
   </form>
 
+  <form action="">
+      <div class="row">
+      <div class="col-md-3">
+        <label for="" class="fw-bold">Tanggal Awal</label> <br>
+        <input type="date" name="" id="">
+      </div>
+      <div class="col-md-3">
+        <label for="" class="fw-bold">Tanggal Akhir</label> <br>
+        <input type="date" name="" id="">
+        
+      </div>
+      <div class="col-md-4">
+  
+      </div>
+
+    </div>
+  </form>
+    
   <div class="row">
     <div class="col-md-5">
       @if (session()->has('success'))

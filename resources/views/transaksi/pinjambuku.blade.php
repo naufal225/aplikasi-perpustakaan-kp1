@@ -12,7 +12,7 @@
     @csrf
       <div class="row">
         <div class="mb-3 mt-4">
-          <div class="col-md-6 d-flex gap-3">
+          <div class="col-md-8 d-flex gap-3">
           <input type="text" class="form-control p-2 fs-6" id="search" name="s" placeholder="Cari berdasarkan kode peminjaman, nama peminjam atau judul buku">
           <button class="btn btn-primary px-3" type="submit">Cari</button>
         </div>

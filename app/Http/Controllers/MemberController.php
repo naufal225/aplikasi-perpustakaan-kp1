@@ -81,17 +81,17 @@ class MemberController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Members $members)
+    public function edit($kode_member)
     {
         return view('member.editmember', [
-            'member' => $members->first()
+            'member' => Members::where('kode_member', $kode_member)->first()
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Members $members)
+    public function update(Request $request, $kode_member)
     {
         $validate = $request->validate([
             'kode_member' => 'required',
@@ -109,18 +109,18 @@ class MemberController extends Controller
         ]);
         
 
-        $members->first()->update($validate);
+        Members::where('kode_member', $kode_member)->update($validate);
 
-        return redirect('/kelola-data-member')->with("success", 'Data Member Berhasil Diperbarui');
+        return redirect('/kelola-data-member')->with("success", "Data Member \"$kode_member\" Berhasil Diperbarui");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Members $members)
+    public function destroy($kode_member)
     {
-        $nama = $members->first()->nama_lengkap;
-        $members->first()->delete();
+        $member = Members::where("kode_member", $kode_member)->first();
+        $nama = $member->nama_lengkap;
 
         return redirect('/kelola-data-member')->with("success", "Data Member \"$nama\" Berhasil Dihapus");
     }

@@ -65,7 +65,11 @@
                     <td>
                         <a href="/kelola-data-buku/{{ $item->slug }}" class="btn btn-info mx-1"><i class="bi bi-eye"></i></a>
                         <a href="/kelola-data-buku/{{ $item->slug }}/edit" class="btn btn-warning mx-1 "><i class="bi bi-pencil-square"></i></a>
-                        <a href="" class="btn btn-danger mx-1"><i class="bi bi-x-circle"></i></a>
+                        <form action="/kelola-data-buku/{{ $item->kode_buku }}" onsubmit="return deleteConfirmation(event)" method="post" style="display: inline">
+                          @method('delete')
+                          @csrf
+                          <button type="submit" data-confirm="{{ $item->judul_buku }}" class="btn btn-danger"><i class="bi bi-x-circle"></i></button>
+                        </form>
                     </td>
                   </tr>
               @endforeach

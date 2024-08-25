@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
 
 class PustakawanController extends Controller
 {
@@ -59,6 +61,8 @@ class PustakawanController extends Controller
             'password' => 'required|confirmed'
         ]);
 
+        $validate['password'] = bcrypt($request->password);
+
         User::create($validate);
 
         return redirect('/kelola-data-pustakawan')->with('success', 'Pustakawan baru berhasil ditambahkan');
@@ -75,26 +79,41 @@ class PustakawanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit($kode_pustakawan)
     {
-        return view("edit.editpustakawan", [
-            "pustakawan" => $user->first()
+        $pustakawan = User::where('kode_petugas', $kode_pustakawan)->first();
+        return view("pustakawan.editpustakawan", [
+            "pustakawan" => $pustakawan
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $kode_pustakawan)
     {
-        //
+        $validate = $request->validate([
+            'nama_lengkap' => 'required',
+            'alamat' => 'required',
+            'no_telp' => 'required',
+            'email' => 'required|email:dns',
+        ]);
+
+        $validate["password"] = bcrypt($request->password);
+
+        User::where("kode_petugas", $kode_pustakawan)->update($validate);
+
+        return redirect('/kelola-data-pustakawan')->with('success', "Data pustakawan \"$kode_pustakawan\" berhasil diupdate");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $kode_pustakawan)
     {
-        //
+        User::where("kode_petugas", $kode_pustakawan)->delete();
+
+        return redirect('/kelola-data-pustakawan')->with('success', "Data pustakawan \"$kode_pustakawan\" berhasil dihapus");
+
     }
 }

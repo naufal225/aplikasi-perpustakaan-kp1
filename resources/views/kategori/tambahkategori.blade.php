@@ -20,7 +20,7 @@
               </div>
             <div class="mb-3">
                 <label for="kategori" class="form-label">Kategori</label>
-                <input type="text" class="form-control @error('kategori') is-invalid @enderror" name="kategori" id="kode" placeholder="Masukan nama kategori" required>
+                <input type="text" class="form-control @error('kategori') is-invalid @enderror" name="kategori" id="kategori" placeholder="Masukan nama kategori" required>
                 @error('kategori')
                 <div class="invalid-message">
                   {{ $message }}

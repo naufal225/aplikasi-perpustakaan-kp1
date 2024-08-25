@@ -50,3 +50,7 @@ input[type=number] {
 .confirm-delete-card {
   display: none;
 }
+
+.img-preview {
+  display: none;
+}

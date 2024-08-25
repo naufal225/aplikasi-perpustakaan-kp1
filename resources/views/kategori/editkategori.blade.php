@@ -6,7 +6,7 @@
 </div>  
 <div class="row">
     <div class="col-md-8">
-        <form action="/kelola-data-kategori/{{ $kategori->kode_kategori }}" method="post">
+        <form action="/kelola-data-kategori/{{ $kategori->slug }}" method="post">
             @method("put")
             @csrf
             <div class="mb-3">
@@ -20,7 +20,7 @@
               </div>
             <div class="mb-3">
                 <label for="kategori" class="form-label">Kategori</label>
-                <input type="text" class="form-control @error('kategori') is-invalid @enderror" name="kategori" id="inputJudul" placeholder="Masukan nama kategori" required value="{{ $kategori->kategori }}">
+                <input type="text" class="form-control @error('kategori') is-invalid @enderror" name="kategori" id="kategori" placeholder="Masukan nama kategori" required value="{{ $kategori->kategori }}">
                 @error('kategori')
                 <div class="invalid-message">
                   {{ $message }}

@@ -22,7 +22,7 @@
                       </div>
                     <div class="mb-3">
                         <label for="inputJudul" class="form-label">Judul Buku</label>
-                        <input type="text" class="form-control @error('judul_buku') is-invalid @enderror" name="judul_buku" id="inputJudul" placeholder="Masukan judul buku" required>
+                        <input type="text" class="form-control @error('judul_buku') is-invalid @enderror" name="judul_buku" id="inputJudul" placeholder="Masukan judul buku" required value="{{ old("judul_buku") }}">
                         @error('judul_buku')
                         <div class="invalid-message">
                           {{ $message }}
@@ -31,7 +31,7 @@
                       </div>
                     <div class="mb-3">
                         <label readonly for="slug" class="form-label">Slug</label>
-                        <input readonly type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="slug" placeholder="Masukan slug" required>
+                        <input readonly type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="slug" placeholder="Masukan slug" required value="{{ old("slug") }}">
                         @error('slug')
                         <div class="invalid-message">
                           {{ $message }}
@@ -40,7 +40,7 @@
                       </div>
                     <div class="mb-3">
                         <label for="isbn" class="form-label">ISBN</label>
-                        <input type="text" class="form-control @error('isbn') is-invalid @enderror" name="isbn" id="isbn" placeholder="Masukan ISBN" required>
+                        <input type="text" class="form-control @error('isbn') is-invalid @enderror" name="isbn" id="isbn" placeholder="Masukan ISBN" required value="{{ old("isbn") }}">
                         @error('isbn')
                         <div class="invalid-message">
                           {{ $message }}
@@ -51,7 +51,11 @@
                         <label for="kategori" class="form-label">Kategori</label>
                         <select name="id_kategori" id="kategori" class="form-control @error('id_kategori') is-invalid @enderror">
                           @foreach($kategori as $item)
+                          @if($item->id == old("id_kategori"))
+                          <option value="{{ $item->id }}" selected>{{ $item->kategori }}</option>
+                          @else
                           <option value="{{ $item->id }}">{{ $item->kategori }}</option>
+                          @endif
                           @endforeach
                         </select>
                         @error('id_kaategori')
@@ -62,7 +66,7 @@
                       </div>
                     <div class="mb-3">
                         <label for="penulis" class="form-label">Penulis</label>
-                        <input type="penulis" class="form-control @error('penulis') is-invalid @enderror" name="penulis" id="penulis" placeholder="Masukan nama penulis" required>
+                        <input type="penulis" class="form-control @error('penulis') is-invalid @enderror" name="penulis" id="penulis" placeholder="Masukan nama penulis" required value="{{ old("penulis") }}">
                         @error('penulis')
                         <div class="invalid-message">
                           {{ $message }}
@@ -71,7 +75,7 @@
                       </div>
                     <div class="mb-3">
                         <label for="penerbit" class="form-label">Penerbit</label>
-                        <input type="penerbit" class="form-control @error('penerbit') is-invalid @enderror" name="penerbit" id="penerbit" placeholder="Masukan nama penerbit" required>
+                        <input type="penerbit" class="form-control @error('penerbit') is-invalid @enderror" name="penerbit" id="penerbit" placeholder="Masukan nama penerbit" required value="{{ old("penerbit") }}">
                         @error('penerbit')
                         <div class="invalid-message">
                           {{ $message }}
@@ -83,7 +87,7 @@
                 <div class="col-md-7">
                   <div class="mb-3">
                     <label for="harga" class="form-label">Harga</label>
-                    <input type="number" class="form-control @error('harga') is-invalid @enderror" name="harga" id="harga" placeholder="Masukan harga buku" required>
+                    <input type="number" class="form-control @error('harga') is-invalid @enderror" name="harga" id="harga" placeholder="Masukan harga buku" required value="{{ old("harga") }}">
                     @error('harga')
                     <div class="invalid-message">
                       {{ $message }}
@@ -92,7 +96,7 @@
                   </div>
                   <div class="mb-3">
                     <label for="stok" class="form-label">Stok</label>
-                    <input type="number" class="form-control @error('stok') is-invalid @enderror" name="stok" id="stok" placeholder="Masukan stok buku" required>
+                    <input type="number" class="form-control @error('stok') is-invalid @enderror" name="stok" id="stok" placeholder="Masukan stok buku" required value="{{ old("stok") }}">
                     @error('harga')
                     <div class="invalid-message">
                       {{ $message }}
@@ -101,16 +105,17 @@
                   </div>
                   <div class="mb-3">
                     <label for="sinopsis" class="form-label">Sinopsis</label> <br>
-                    <textarea name="sinopsis" id="sinospsis" style="height: 80px; max-height: 80px; width: 100%" placeholder="Masukan sinopsis buku"></textarea>
+                    <textarea name="sinopsis" id="sinospsis" style="height: 80px; max-height: 80px; width: 100%" placeholder="Masukan sinopsis buku">{{ old("sinopsis") }}</textarea>
                   </div>
                   <div class="mb-3">
-                    <label for="gambar" class="form-label">Gambar Cover Buku</label>
-                    <input class="form-control" type="file" name="gambar" id="gambar">
+                    <img class="img-preview col-5 col-md-2 my-2 img-fluid">
+                  </div>
+                  <div class="mb-3">
+                    <label for="gambar" class="form-label label-gambar">Gambar Cover Buku</label>
+                    <input value="{{ old("gambar") }}" class="form-control" type="file" name="gambar" id="gambar" onchange="previewGambar()">
                   </div>
                 </div>
             </div>
-              
-
               
               <button class="btn btn-primary shadow" type="submit">Tambah</button>
         </form>
