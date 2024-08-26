@@ -11,27 +11,33 @@ class TransaksiKembaliController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    return view('transaksi.kembalibuku', [
-        "transaksi" => TransaksiKembali::select('transaksi_kembali.*', 'transaksi_pinjam.kode_peminjaman', 'buku.judul_buku')
-            ->join('transaksi_pinjam', 'transaksi_pinjam.kode_peminjaman', '=', 'transaksi_pinjam.id')
-            ->join('buku', 'transaksi_pinjam.id_buku', '=', 'buku.id')
-            ->where(function($query) use ($request) {
-                $query->where('transaksi_kembali.kode_pengembalian', 'like', "%{$request->s}%")
-                    ->orWhere('transaksi_pinjam.kode_peminjaman', 'like', "%{$request->s}%")
-                    ->orWhere('buku.judul_buku', 'like', "%{$request->s}%");
-            })
-            ->latest()
-            ->paginate(5)
-    ]);
-}
+    {
+        $query = TransaksiKembali::select('transaksi_kembali.*', 'transaksi_pinjam.kode_peminjaman', 'buku.judul_buku')
+        ->join('transaksi_pinjam', 'transaksi_pinjam.kode_peminjaman', '=', 'transaksi_pinjam.id')
+        ->join('buku', 'transaksi_pinjam.id_buku', '=', 'buku.id')
+        ->where(function($query) use ($request) {
+            $query->where('transaksi_kembali.kode_pengembalian', 'like', "%{$request->s}%")
+                ->orWhere('transaksi_pinjam.kode_peminjaman', 'like', "%{$request->s}%")
+                ->orWhere('buku.judul_buku', 'like', "%{$request->s}%");
+        });
+
+        if($request->has("tanggal_awal") && $request->has("tanggal_akhir")) {
+            $transaksi = $query->whereBetween("transaksi_kembali.tgl_pengembalian", [$request->tanggal_awal, $request->tanggal_akhir]);
+        }
+
+        $transaksi = $query->latest()->paginate(5);
+
+        return view('transaksi.kembalibuku', [
+            "transaksi" => $transaksi
+        ]);
+    }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return view('transaksi.tambahtransaksipengembalian');
     }
 
     /**

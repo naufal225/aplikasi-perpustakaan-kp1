@@ -3,17 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Models\TransaksiPinjam;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 
 class TransaksiPinjamController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = TransaksiPinjam::select("transaksi_pinjam.*", "buku.judul_buku", "members.nama_lengkap")
+        ->join('buku', 'transaksi_pinjam.id_buku', '=', 'buku.id')
+        ->join('members', "transaksi_pinjam.id_member", '=', 'members.id')
+        ->where(function($query) use($request) {
+            $query->where("transaksi_pinjam.kode_peminjaman", "like", "%$request->s%")
+                  ->where("members.nama_lengkap", "like", "%$request->s%")
+                  ->where("buku.judul_buku", "like", "%$request->s%");
+        });
+
+        if($request->has("tanggal_awal") && $request->has("tanggal_akhir")) {
+            $transaksi = $query->whereBetween("tgl_peminjaman", [$request->tanggal_awal, $request->tanggal_akhir]);
+        }
+
+        $transaksi = $query->latest()->paginate(5);
+
         return view('transaksi.pinjambuku', [
-            "transaksi" => TransaksiPinjam::latest()->paginate(5)
+            "transaksi" => $transaksi
         ]);
     }
 
@@ -22,7 +39,21 @@ class TransaksiPinjamController extends Controller
      */
     public function create()
     {
-        //
+        $transaksiTerakhir = TransaksiPinjam::whereDate("tgl_peminjaman", Carbon::today())->latest()->first() ?? "TRP240826000";
+        
+        if($transaksiTerakhir) {
+            if($transaksiTerakhir != "TRP240826000") {
+                $jumlahTransaksiTerakhir = TransaksiPinjam::whereDate("tgl_peminjaman", Carbon::today())->count() + 1;
+                $jumlahTransaksiTerakhir = str_pad($jumlahTransaksiTerakhir, 3, "0", STR_PAD_LEFT);
+                $kodeTransaksi = "TRP" . Carbon::today()->format("ymd") . $jumlahTransaksiTerakhir;
+            } else {
+                $kodeTransaksi = "TRP" . Carbon::today()->format("ymd") . "001";
+            }
+        }
+
+        return view('transaksi.tambahtransaksipinjam', [
+            "kode_peminjaman" => $kodeTransaksi
+        ]);
     }
 
     /**

@@ -24,17 +24,16 @@
       <div class="row">
       <div class="col-md-3">
         <label for="" class="fw-bold">Tanggal Awal</label> <br>
-        <input type="date" name="" id="">
+        <input type="date" name="tanggal_awal" id="">
       </div>
       <div class="col-md-3">
         <label for="" class="fw-bold">Tanggal Akhir</label> <br>
-        <input type="date" name="" id="">
+        <input type="date" name="tanggal_akhir" id="">
         
       </div>
-      <div class="col-md-4">
-  
+      <div class="col-md-4 mt-2">
+        <button type="submit" class="btn btn-primary shadow">Filter</button>
       </div>
-
     </div>
   </form>
     
@@ -88,4 +87,6 @@
           {{ $transaksi->links() }}
         </div>
       </div>
+
+      <a href="" class="btn btn-primary shadow">Cetak Laporan Transaksi Pengembalian Buku</a>
 @endsection
