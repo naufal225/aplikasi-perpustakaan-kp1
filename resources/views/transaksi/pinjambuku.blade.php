@@ -45,7 +45,6 @@
           {{ session('success') }}
           <button type="button" style="float: right" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-          
       @endif
 
     </div>

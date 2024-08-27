@@ -8,7 +8,13 @@ const inputKategori = document.getElementById('kategori');
 const inputSlug = document.querySelector('input[name="slug"]');
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 const gambar = document.getElementById('gambar');
+const inputKodeMember = document.getElementById("kodeMember");
+const btnTambah = document.getElementById('btnTambahTransaksi')
+
 let preview = document.querySelector('img.img-preview');
+
+
+
 document.addEventListener("DOMContentLoaded", function() {
     let formToSubmit = null;
 
@@ -85,6 +91,14 @@ if(inputKategori) {
 
 }
 
+if(inputKodeMember && btnTambah) {
+    btnTambah.addEventListener('click', function() {
+        if(!inputKodeMember.hasAttribute("readonly")) {
+            inputKodeMember.setAttribute("readonly", true);
+        }
+    })
+}
+
 })
 
 function deleteConfirmation(e) {
@@ -111,3 +125,9 @@ function previewGambar() {
         preview.src = e.target.result;
     }
 }
+
+btnTambah.addEventListener('click', function() {
+    if(!inputKodeMember.hasAttribute("readonly")) {
+        inputKodeMember.setAttribute("readonly", true);
+    }
+})

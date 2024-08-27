@@ -46,5 +46,8 @@ Route::resource('/transaksi/pinjam-buku', TransaksiPinjamController::class)->mid
 
 Route::resource('/transaksi/kembali-buku', TransaksiKembaliController::class)->middleware("auth");
 
+Route::get('/transaksi/tambah-transaksi-pinjam', [TransaksiPinjamController::class, "tambahTransaksi"])->middleware("auth");
+
+Route::post('/hapus-item/{kode_buku}', [TransaksiPinjamController::class, 'hapusItem'])->name('hapus.item');
 // Route::get('/kelola-data-member/search', [MemberController::class, "search"])->middleware("auth");
 

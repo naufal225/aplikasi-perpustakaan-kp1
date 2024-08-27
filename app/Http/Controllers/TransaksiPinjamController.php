@@ -6,7 +6,7 @@ use App\Models\TransaksiPinjam;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
-
+use App\Models\Buku;
 class TransaksiPinjamController extends Controller
 {
     /**
@@ -107,4 +107,39 @@ class TransaksiPinjamController extends Controller
             }
         }
     }
+
+    public function tambahTransaksi(Request $request) {
+        $validate = $request->validate([
+            "kode_member" => "required",
+            "kode_buku" => "required",
+        ]);
+        
+        if(count(session("kode_buku", [])) >= 2) {
+            return redirect("/transaksi/tambah-transaksi-pinjam")->with("gagalTambah", "Buku sudah ada 2 yang di cart");
+        }
+        
+        // Ambil data buku dari database
+        $buku = Buku::where('kode_buku', $request->kode_buku)->first();
+    
+        // Simpan kode member dalam session
+        session()->put("kode_member", $request->kode_member);
+    
+        // Simpan data buku lengkap dalam session
+        session()->push("kode_buku", $buku);
+        
+        return redirect("/transaksi/tambah-transaksi-pinjam");
+    }
+
+    public function hapusItem($kode_buku)
+    {
+        $items = session()->get('kode_buku', []);
+        $filtered = array_filter($items, function ($item) use ($kode_buku) {
+            return $item->kode_buku != $kode_buku;
+        });
+        
+        session()->put('kode_buku', $filtered);
+        
+        return redirect()->back()->with('success', 'Item berhasil dihapus dari keranjang.');
+    }
+    
 }
