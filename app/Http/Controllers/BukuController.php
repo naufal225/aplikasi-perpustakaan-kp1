@@ -15,16 +15,18 @@ class BukuController extends Controller
      */
     public function index(Request $request)
     {
+        $buku = Buku::join('kategori', 'kategori.id', '=', 'buku.id_kategori')
+        ->select('buku.*', 'kategori.kategori')
+        ->where(function($query) use($request) {
+            $query->where('judul_buku', 'like', "%$request->s%")
+            ->orWhere('penulis', 'like', "%$request->s%")
+            ->orWhere('penerbit', 'like', "%$request->s%")
+            ->orWhere('kategori.kategori', 'like', "%$request->s%");
+        })->orderBy('buku.id')->paginate(5);
+
         return view('buku.databuku', [
-            "buku" => Buku::join('kategori', 'kategori.id', '=', 'buku.id_kategori')
-                ->select('buku.*', 'kategori.kategori')
-                ->where(function($query) use($request) {
-                    $query->where('judul_buku', 'like', "%$request->s%")
-                    ->orWhere('penulis', 'like', "%$request->s%")
-                    ->orWhere('penerbit', 'like', "%$request->s%")
-                    ->orWhere('kategori.kategori', 'like', "%$request->s%");
-                })->orderBy('buku.id')->paginate(5)
-            ]);
+            "buku" => $buku
+        ]);
     }
 
     /**

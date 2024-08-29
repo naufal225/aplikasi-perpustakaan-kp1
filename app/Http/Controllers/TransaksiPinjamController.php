@@ -40,6 +40,11 @@ class TransaksiPinjamController extends Controller
      */
     public function create()
     {
+        if (!session()->has('kode_buku') || count(session('kode_buku')) === 0) {
+            // Hapus session 'kode_member'
+            session()->forget('kode_member');
+        }
+
         $transaksiTerakhir = TransaksiPinjam::whereDate("tgl_peminjaman", Carbon::today())->latest()->first() ?? "TRP240826000";
         
         if($transaksiTerakhir) {
@@ -115,7 +120,7 @@ class TransaksiPinjamController extends Controller
             "kode_buku" => "required",
         ]);
         
-        if(count(session("kode_buku", [])) >= 2) {
+        if(count(session("kode_buku", [])) > 2) {
             return redirect()->back()->with("gagal", "Buku sudah ada 2 yang di cart");
         }
         

@@ -6,19 +6,19 @@
 </div>
 <div class="row mx-2 gap-2 ms-5">
     <!-- Card Jumlah Buku -->
-    <div style="height: 60px; width: 180px;" class="shadow col-md-2 my-2 me-3 border border-dark bg-primary rounded d-flex justify-content-center align-items-center text-white">
+    <a href=""  style="height: 60px; width: 180px;" class="shadow col-md-2 my-2 me-3 border border-dark bg-primary rounded d-flex justify-content-center align-items-center text-white">
         <div class="text-center">
             <h2 class="mb-0">{{ $jumlahBuku }}</h2>
             <h6 class="mt-0">Jumlah Buku</h6>
         </div>
-    </div>
+    </a>
     <!-- Card Jumlah Peminjaman -->
-    <div style="height: 60px; width: 180px;" class="shadow col-md-2 my-2 me-3 border border-dark bg-info rounded d-flex justify-content-center align-items-center text-white">
+    <a href="" style="height: 60px; width: 180px;" class="shadow col-md-2 my-2 me-3 border border-dark bg-info rounded d-flex justify-content-center align-items-center text-white">
         <div class="text-center">
             <h2 class="mb-0">{{ $jumlahPinjam }}</h2>
             <h6 class="mt-0">Peminjaman</h6>
         </div>
-    </div>
+    </a>
     <!-- Card Jumlah Pengembalian -->
     <div style="height: 60px; width: 180px;" class="shadow col-md-2 my-2 me-3 border border-dark bg-success rounded d-flex justify-content-center align-items-center text-white">
         <div class="text-center">

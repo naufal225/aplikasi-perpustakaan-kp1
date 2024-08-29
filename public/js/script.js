@@ -18,6 +18,25 @@ let preview = document.querySelector('img.img-preview');
 document.addEventListener("DOMContentLoaded", function() {
     let formToSubmit = null;
 
+// Cek status readonly di localStorage saat halaman di-load
+// if (localStorage.getItem("isReadonly") === "true") {
+//     inputKodeMember.setAttribute("readonly", true);
+//     inputKodeMember.value = localStorage.getItem("kodeMember") || "";
+// }
+
+// btnTambah.addEventListener('click', function(event) {
+//     if (!inputKodeMember.hasAttribute("readonly")) {
+//         // Mencegah form dari submit
+//         event.preventDefault();
+        
+//         localStorage.setItem("kodeMember", this.value);
+//         // Set inputKodeMember jadi readonly
+//         inputKodeMember.setAttribute("readonly", true);
+//         // Simpan status readonly di localStorage
+//         localStorage.setItem("isReadonly", "true");
+//     }
+// })
+
 if(input) {
     input.addEventListener('keypress', function(e){
         if(e.key === 'e' || e.key === "E") {
@@ -126,8 +145,3 @@ function previewGambar() {
     }
 }
 
-btnTambah.addEventListener('click', function() {
-    if(!inputKodeMember.hasAttribute("readonly")) {
-        inputKodeMember.setAttribute("readonly", true);
-    }
-})

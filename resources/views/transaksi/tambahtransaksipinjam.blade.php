@@ -27,7 +27,7 @@
             </div>
             <div class="mb-3">
                 <label for="kodeMember" class="form-label">Kode Member</label> <br>
-                <input type="text" class="form-control" id="kodeMember" name="kode_member">
+                <input type="text" class="form-control" @if(session()->has('kode_buku') && count(session('kode_buku')) > 0) disabled @endif id="kodeMember" name="kode_member" value={{ old("kode_member", session("kode_member")) }}>
             </div>
             <div class="mb-3">
                 <label for="kodeBuku" class="form-label">Kode Buku</label> <br>
@@ -38,7 +38,7 @@
     </div>
 </form>
 
-<div class="row col-md-11 mt-5 border border-dark">
+<div class="row col-md-11 mt-2 border border-dark">
     <div class="table-container">
         <table class="table table-striped">
             <thead>
