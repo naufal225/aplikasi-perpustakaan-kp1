@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use App\Models\Buku;
+use App\Models\Members;
 class TransaksiPinjamController extends Controller
 {
     /**
@@ -115,11 +116,26 @@ class TransaksiPinjamController extends Controller
         ]);
         
         if(count(session("kode_buku", [])) >= 2) {
-            return redirect("/transaksi/tambah-transaksi-pinjam")->with("gagalTambah", "Buku sudah ada 2 yang di cart");
+            return redirect()->back()->with("gagal", "Buku sudah ada 2 yang di cart");
         }
         
         // Ambil data buku dari database
         $buku = Buku::where('kode_buku', $request->kode_buku)->first();
+        // Mengecek jika buku tidak ada
+        if(!$buku) {
+            return redirect()->back()->with("gagal", "Gagal, Buku tidak ditemukan");
+        }
+        // Mengecek jika member tidak ada
+        $member = Members::where("kode_member", $request->kode_member)->first();
+        if(!$member) {
+            return redirect()->back()->with("gagal", "Gagal, Member tidak ditemukan");
+        }
+
+        foreach(session("kode_buku") as $buku) {
+            if($request->kode_buku == $buku->kode_buku) {
+                return redirect()->back()->with("gagal", "Gagal, Buku sudah ada di cart");
+            }
+        }
     
         // Simpan kode member dalam session
         session()->put("kode_member", $request->kode_member);
