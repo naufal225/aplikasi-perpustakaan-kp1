@@ -99,8 +99,19 @@ class TransaksiPinjamController extends Controller
                     "tgl_peminjaman" => date("Y-m-d"),
                     "estimasi_tgl_kembali" => date("Y-m-d", strtotime(date("Y-m-d") . " + 7 days"))
                 ]);
+
+                // Mengurangi stok di buku terkait
+                $stokSekarang = $bukuObj->stok;
+                $stokSekarang--;
+                $bukuObj->update([
+                    "stok" => $stokSekarang
+                ]);
             }
         }
+
+        // Menghapus data session untuk cart
+
+        session()->forget(['kode_member', 'kode_buku', 'kode_peminjaman']);
     
         // Redirect back ke page sebelumnya sambil mengirim pesan sukses
         return redirect("/transaksi/pinjam-buku")->with("success", "Berhasil menambahkan transaksi");
@@ -184,7 +195,7 @@ class TransaksiPinjamController extends Controller
 
         // kalau ada
         if($transaksi) {
-            return redirect()->back()->with("gagal", "User $request->kode_member memiliki transaksi yang belum selesai");
+            return redirect()->back()->with("gagal", "Member $request->kode_member memiliki transaksi yang belum selesai");
         }
 
         // kalau nggak lanjut...
@@ -240,6 +251,4 @@ class TransaksiPinjamController extends Controller
         
         return redirect()->back()->with('success', 'Item berhasil dihapus dari keranjang.');
     }
-    
-    
 }
