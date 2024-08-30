@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>Dashboard Template · Bootstrap v5.0</title>
+  <title>Aplikasi Perpustakaan KP 1</title>
+
+  <link rel="icon" type="image/x-icon" href="img/apalah.png">
 
   <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
 
