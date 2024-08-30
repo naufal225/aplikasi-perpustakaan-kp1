@@ -16,7 +16,7 @@ class TransaksiPinjam extends Model
         return $this->belongsTo(Buku::class, "id_buku");
     }
     public function member() {
-        return $this->belongsTo(User::class, "id_member");
+        return $this->belongsTo(Members::class, "id_member");
     }
 
     public function transaksiKembali() {

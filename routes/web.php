@@ -44,6 +44,8 @@ Route::resource('/kelola-data-pustakawan', PustakawanController::class)->middlew
 
 Route::resource('/transaksi/pinjam-buku', TransaksiPinjamController::class)->middleware("auth");
 
+Route::get('/transaksi/tambah-transaksi-pinjam/simpan', [TransaksiPinjamController::class, "store"])->middleware("auth");
+
 Route::resource('/transaksi/kembali-buku', TransaksiKembaliController::class)->middleware("auth");
 
 Route::get('/transaksi/tambah-transaksi-pinjam', [TransaksiPinjamController::class, "tambahTransaksi"])->middleware("auth");

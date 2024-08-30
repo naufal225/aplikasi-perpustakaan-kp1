@@ -86,5 +86,5 @@
 
         
     </div>
-    <a href="/transaksi/pinjam-buku/simpan" class="btn btn-primary shadow px-3 py-2 mt-3">Simpan Transaksi Peminjaman</a>
+    <a href="/transaksi/tambah-transaksi-pinjam/simpan" class="btn btn-primary shadow px-3 py-2 mt-3">Simpan Transaksi Peminjaman</a>
 @endsection

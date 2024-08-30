@@ -18,10 +18,10 @@ class TransaksiPinjamController extends Controller
         $query = TransaksiPinjam::select("transaksi_pinjam.*", "buku.judul_buku", "members.nama_lengkap")
         ->join('buku', 'transaksi_pinjam.id_buku', '=', 'buku.id')
         ->join('members', "transaksi_pinjam.id_member", '=', 'members.id')
-        ->where(function($query) use($request) {
-            $query->where("transaksi_pinjam.kode_peminjaman", "like", "%$request->s%")
-                  ->where("members.nama_lengkap", "like", "%$request->s%")
-                  ->where("buku.judul_buku", "like", "%$request->s%");
+        ->where(function($q) use($request) {
+            $q->where("transaksi_pinjam.kode_peminjaman", "like", "%$request->s%")
+                  ->orWhere("members.nama_lengkap", "like", "%$request->s%")
+                  ->orWhere("buku.judul_buku", "like", "%$request->s%");
         });
 
         if($request->has("tanggal_awal") && $request->has("tanggal_akhir")) {
@@ -67,8 +67,45 @@ class TransaksiPinjamController extends Controller
      */
     public function store(Request $request)
     {
-        
+        // Ambil nilai kode member dari session
+        $kode_member = session("kode_member");
+    
+        // Ambil id member berdasar kode member
+        $id_member = Members::where("kode_member", $kode_member)->first()->id;
+    
+        // Ambil nilai kode transaksi dari session
+        $kode_transaksi = session("kode_peminjaman");
+    
+        // Insert ke tabel transaksi pinjam dengan perulangan pada session kode buku
+        if(session()->has("kode_buku")) {
+            foreach(session("kode_buku") as $buku) {
+                // Ambil id buku
+                $bukuObj = Buku::where("kode_buku", $buku->kode_buku)->first();
+            
+                // Cek apakah buku ditemukan
+                if(!$bukuObj) {
+                    return redirect()->back()->with("gagal", "Buku dengan kode $buku->kode_buku tidak ditemukan");
+                }
+            
+                $id_buku = $bukuObj->id;
+            
+                // Lanjutkan dengan insert ke TransaksiPinjam
+                TransaksiPinjam::create([
+                    "kode_peminjaman" => $kode_transaksi,
+                    "id_member" => $id_member,
+                    "id_buku" => $id_buku,
+                    "status" => "belum telat",
+                    "keterangan" => "belum selesai",
+                    "tgl_peminjaman" => date("Y-m-d"),
+                    "estimasi_tgl_kembali" => date("Y-m-d", strtotime(date("Y-m-d") . " + 7 days"))
+                ]);
+            }
+        }
+    
+        // Redirect back ke page sebelumnya sambil mengirim pesan sukses
+        return redirect("/transaksi/pinjam-buku")->with("success", "Berhasil menambahkan transaksi");
     }
+    
 
     /**
      * Display the specified resource.
@@ -134,6 +171,24 @@ class TransaksiPinjamController extends Controller
         }
     
         $validate = $request->validate($rule, $pesan);
+
+        // Mengecek apakah member terkait memiliki transaksi yang belum selesai
+
+        // Mengambil id member
+
+        $id_member = Members::where("kode_member", $request->kode_member)->first();
+        $id_member = $id_member->id;
+
+        // di cek dulu gess...
+        $transaksi = TransaksiPinjam::where("id_member", $id_member)->where("keterangan", "belum selesai")->latest()->first();
+
+        // kalau ada
+        if($transaksi) {
+            return redirect()->back()->with("gagal", "User $request->kode_member memiliki transaksi yang belum selesai");
+        }
+
+        // kalau nggak lanjut...
+
         
         if(count(session("kode_buku", [])) > 2) {
             return redirect()->back()->with("gagal", "Buku sudah ada 2 yang di cart");
@@ -164,6 +219,12 @@ class TransaksiPinjamController extends Controller
     
         // Simpan data buku lengkap dalam session
         session()->push("kode_buku", $buku);
+
+        // Simpan data kode transaksi peminjaman
+        session()->put("kode_peminjaman", $request->kode_peminjaman);
+
+        // Simpan data kode member
+        session()->put("kode_member", $request->kode_member);
         
         return redirect()->back();
     }
