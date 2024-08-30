@@ -7,7 +7,7 @@
 
 <div class="row">
     <div class="col-md-5">
-      @if (session()->has('gagal'))
+      @if(session()->has('gagal'))
       <div class="alert alert-success" role="alert">
           {{ session('gagal') }}
           <button type="button" style="float: right" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -27,11 +27,21 @@
             </div>
             <div class="mb-3">
                 <label for="kodeMember" class="form-label">Kode Member</label> <br>
-                <input type="text" class="form-control" @if(session()->has('kode_buku') && count(session('kode_buku')) > 0) disabled @endif id="kodeMember" name="kode_member" value={{ old("kode_member", session("kode_member")) }}>
+                <input type="text" class="form-control @error("kode_member") is-invalid @enderror " @if(session()->has('kode_buku') && count(session('kode_buku')) > 0) readonly @endif id="kodeMember" name="kode_member" value={{ old("kode_member", session("kode_member")) }}>
+                @error('kode_member')
+                    <div class="invalid-message">
+                      {{ $message }}
+                    </div>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="kodeBuku" class="form-label">Kode Buku</label> <br>
-                <input type="text" class="form-control" id="kodeBuku" name="kode_buku">
+                <input type="text" class="form-control @error("kode_buku") is-invalid @enderror" id="kodeBuku" name="kode_buku">
+                @error('kode_buku')
+                        <div class="invalid-message">
+                          {{ $message }}
+                        </div>
+                        @enderror
                 <button type="submit" id="btnTambahTransaksi" class="btn btn-primary mt-3">Tambah</button>
             </div>
         </div>
@@ -73,5 +83,8 @@
           </table>
 
         </div>
-      </div>
+
+        
+    </div>
+    <a href="/transaksi/pinjam-buku/simpan" class="btn btn-primary shadow px-3 py-2 mt-3">Simpan Transaksi Peminjaman</a>
 @endsection

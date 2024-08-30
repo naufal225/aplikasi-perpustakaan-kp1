@@ -67,7 +67,7 @@ class TransaksiPinjamController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -115,10 +115,25 @@ class TransaksiPinjamController extends Controller
     }
 
     public function tambahTransaksi(Request $request) {
-        $validate = $request->validate([
-            "kode_member" => "required",
-            "kode_buku" => "required",
-        ]);
+        $rule = [
+            "kode_buku" => "required"
+        ];
+    
+        $pesan = [
+            "kode_buku.required" => "Masukan kode buku"
+        ];
+    
+        if(!session()->has("kode_member")) {
+            $rule += [
+                "kode_member" => "required"
+            ];
+    
+            $pesan += [
+                "kode_member.required" => "Masukan kode member"
+            ];
+        }
+    
+        $validate = $request->validate($rule, $pesan);
         
         if(count(session("kode_buku", [])) > 2) {
             return redirect()->back()->with("gagal", "Buku sudah ada 2 yang di cart");
@@ -129,38 +144,41 @@ class TransaksiPinjamController extends Controller
         // Mengecek jika buku tidak ada
         if(!$buku) {
             return redirect()->back()->with("gagal", "Gagal, Buku tidak ditemukan");
-        }
-        // Mengecek jika member tidak ada
-        $member = Members::where("kode_member", $request->kode_member)->first();
-        if(!$member) {
-            return redirect()->back()->with("gagal", "Gagal, Member tidak ditemukan");
-        }
-
-        foreach(session("kode_buku") as $buku) {
-            if($request->kode_buku == $buku->kode_buku) {
-                return redirect()->back()->with("gagal", "Gagal, Buku sudah ada di cart");
+        }   
+    
+        // Mengecek jika member tidak ada hanya jika kode_member dikirimkan
+        if($request->has("kode_member")) {
+            $member = Members::where("kode_member", $request->kode_member)->first();
+            if(!$member) {
+                return redirect()->back()->with("gagal", "Gagal, Member tidak ditemukan");
             }
+            // Simpan kode member dalam session jika valid
+            session()->put("kode_member", $request->kode_member);
         }
     
-        // Simpan kode member dalam session
-        session()->put("kode_member", $request->kode_member);
+        // Cek jika buku sudah ada di session
+        $kodeBukuInSession = array_column(session("kode_buku", []), 'kode_buku');
+        if (in_array($request->kode_buku, $kodeBukuInSession)) {
+            return redirect()->back()->with("gagal", "Gagal, Buku sudah ada di cart");
+        }
     
         // Simpan data buku lengkap dalam session
         session()->push("kode_buku", $buku);
         
-        return redirect("/transaksi/tambah-transaksi-pinjam");
+        return redirect()->back();
     }
-
+    
     public function hapusItem($kode_buku)
     {
         $items = session()->get('kode_buku', []);
         $filtered = array_filter($items, function ($item) use ($kode_buku) {
-            return $item->kode_buku != $kode_buku;
+            return $item['kode_buku'] != $kode_buku;
         });
         
-        session()->put('kode_buku', $filtered);
+        session()->put('kode_buku', array_values($filtered));  // Ensure the array is re-indexed
         
         return redirect()->back()->with('success', 'Item berhasil dihapus dari keranjang.');
     }
+    
     
 }
