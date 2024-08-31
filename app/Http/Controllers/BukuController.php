@@ -22,7 +22,7 @@ class BukuController extends Controller
             ->orWhere('penulis', 'like', "%$request->s%")
             ->orWhere('penerbit', 'like', "%$request->s%")
             ->orWhere('kategori.kategori', 'like', "%$request->s%");
-        })->orderBy('buku.id')->paginate(5);
+        })->latest()->paginate(5);
 
         return view('buku.databuku', [
             "buku" => $buku

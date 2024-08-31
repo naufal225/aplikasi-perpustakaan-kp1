@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Buku;
 use App\Models\Members;
 use App\Models\TransaksiKembali;
 use App\Models\TransaksiPinjam;
@@ -86,6 +87,20 @@ class TransaksiKembaliController extends Controller
         $transaksiPinjam = TransaksiPinjam::where("kode_peminjaman", $request->kode_peminjaman)->get();
         $kode_member = Members::where("id", $transaksiPinjam[0]->id_member)->first()->kode_member;
 
-        return redirect()->back()->with("kode_member", $kode_member);
+        $data = [];
+
+        foreach($transaksiPinjam as $transaksi) {
+            $buku = Buku::where("id", $transaksi->id_buku)->first();
+            $data[] = [
+                "kode_buku" => $buku->kode_buku,
+                "judul_buku" => $buku->judul_buku,
+                "status" => $transaksi->status,
+            ];
+        }
+
+        return redirect()->back()->with([
+            "kode_member" => $kode_member,
+            "data_peminjaman" => $data
+        ]);
     }
 }

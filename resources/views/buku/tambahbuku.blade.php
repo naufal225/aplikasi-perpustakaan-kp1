@@ -48,8 +48,8 @@
                         @enderror
                       </div>
                       <div class="mb-3">
-                        <label for="kategori" class="form-label">Kategori</label>
-                        <select name="id_kategori" id="kategori" class="form-control @error('id_kategori') is-invalid @enderror">
+                        <label for="kategoriInput" class="form-label">Kategori</label>
+                        <select name="id_kategori" id="kategoriInput" class="form-control @error('id_kategori') is-invalid @enderror">
                           @foreach($kategori as $item)
                           @if($item->id == old("id_kategori"))
                           <option value="{{ $item->id }}" selected>{{ $item->kategori }}</option>
