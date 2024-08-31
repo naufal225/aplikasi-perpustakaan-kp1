@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('transaksi_kembali', function (Blueprint $table) {
             $table->id();
-            $table->string("kode_pengembalian")->unique();
+            $table->string("kode_pengembalian");
             $table->foreignId("id_peminjaman")->constrained('transaksi_pinjam')->onDelete('cascade');
             $table->date("tgl_pengembalian");
             $table->enum("kondisi", ['hilang atau rusak', 'baik']);

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Members;
 use App\Models\TransaksiKembali;
+use App\Models\TransaksiPinjam;
 use Illuminate\Http\Request;
 
 class TransaksiKembaliController extends Controller
@@ -78,5 +80,10 @@ class TransaksiKembaliController extends Controller
     public function destroy(TransaksiKembali $transaksiKembali)
     {
         //
+    }
+
+    public function cariTransaksiPinjam(Request $request) {
+        $transaksiPinjam = TransaksiPinjam::where("kode_peminjaman", $request->kode_peminjaman)->all();
+        
     }
 }
