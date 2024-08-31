@@ -83,7 +83,9 @@ class TransaksiKembaliController extends Controller
     }
 
     public function cariTransaksiPinjam(Request $request) {
-        $transaksiPinjam = TransaksiPinjam::where("kode_peminjaman", $request->kode_peminjaman)->all();
-        
+        $transaksiPinjam = TransaksiPinjam::where("kode_peminjaman", $request->kode_peminjaman)->get();
+        $kode_member = Members::where("id", $transaksiPinjam[0]->id_member)->first()->kode_member;
+
+        return redirect()->back()->with("kode_member", $kode_member);
     }
 }

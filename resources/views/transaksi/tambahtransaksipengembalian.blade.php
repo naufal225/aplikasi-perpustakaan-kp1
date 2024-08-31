@@ -22,7 +22,7 @@
     <div class="col-md-5">
         <div class="mb-3">
             <label for="kodeMember" class="form-label">Kode Member</label> <br>
-            <input readonly type="text" class="form-control" id="kodeMember" name="kode_member">
+            <input readonly type="text" class="form-control" id="kodeMember" name="kode_member" value="{{ session()->has("kode_member") ? session("kode_member") : "" }}">
             @error('kode_member')
                 <div class="invalid-message">
                   {{ $message }}
