@@ -31,4 +31,62 @@
         </div>
     </div>
 </div>
+
+<div class="row col-md-11 mt-2 border border-dark">
+    <div class="table-container" style="overflow-x: scroll;">
+        <table class="table table-striped">
+            <thead>
+              <tr class="text-center">
+                <th scope="col">#</th>
+                <th scope="col">Kode Buku</th>
+                <th scope="col">Judul Buku</th>
+                <th scope="col">Status</th>
+                <th scope="col">Kondisi</th>
+                <th scope="col">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+                @if (session()->has('data_peminjaman'))
+                @foreach (session('data_peminjaman') as $item)
+                        <tr class="text-center">
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $item["kode_buku"] }}</td>
+                            <td>{{ $item["judul_buku"] }}</td>
+                            <td class="status">{{ $item["status"] }}</td>
+                            <td>
+                                <select class="custom-select form-control kondisi" name="kondisi" id="kondisi">
+                                    <option value="baik" class="opsi-baik">Baik</option>
+                                    <option value="rusak atau hilang" class="opsi-jelek">Rusak atau hilang</option>
+                                </select>
+                            </td>
+                            <td>
+                                <!-- Aksi untuk menghapus item dari session atau tindakan lainnya -->
+                                <form action="/transaksi/kembali-buku" method="POST" class="btn-kembali">
+                                    @csrf
+                                    <input type="hidden" name="kode_member" value="{{ session("kode_member") }}">
+                                    <input type="hidden" name="kode_buku" value="{{ $item['kode_buku'] }}">
+                                    <button type="submit" class="btn btn-primary shadow px-3">Kembalikan</button>
+                                </form>
+                                <form action="" method="POST" class="btn-denda">
+                                    @csrf
+                                    <input type="hidden" name="kode_member" value="{{ session("kode_member") }}">
+                                    <input type="hidden" name="kode_buku" value="{{ $item['kode_buku'] }}">
+                                    <button type="submit" class="btn btn-danger shadow">Bayar Denda</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="6">Tidak ada buku di dalam keranjang.</td>
+                    </tr>
+                @endif
+            </tbody>
+            
+          </table>
+
+        </div>
+
+        
+    </div>
 @endsection

@@ -48,7 +48,20 @@ class TransaksiKembaliController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Mendapatkan kode transaksi peminjaman dengan kode buku tertentu
+
+        // Membuat transaksi pengembalian dengan data sebelumnya
+
+          // Men-generate kode pengembalian
+        
+          // Mendapatkan tanggal saat transaksi
+
+          // Menetapkan kondisi buku baik
+
+          // Menyimpan data transaksi
+
+        // Merubah status dan keterangan transaksi peminjaman sebelumnya
+
     }
 
     /**
@@ -97,6 +110,8 @@ class TransaksiKembaliController extends Controller
                 "status" => $transaksi->status,
             ];
         }
+
+        // dd($data[0]);
 
         return redirect()->back()->with([
             "kode_member" => $kode_member,

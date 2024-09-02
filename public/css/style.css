@@ -54,3 +54,7 @@ input[type=number] {
 .img-preview {
   display: none;
 }
+
+.btn-denda {
+  display: none;
+}

@@ -10,6 +10,10 @@ const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute
 const gambar = document.getElementById('gambar');
 const inputKodeMember = document.getElementById("kodeMember");
 const btnTambah = document.getElementById('btnTambahTransaksi')
+const btnDenda = document.querySelector(".btn-denda");
+const btnKembali = document.querySelector(".btn-kembali");
+const opsiBaik = document.querySelector(".opsi-baik");
+const opsiJelek = document.querySelector(".opsi-jelek");
 
 let preview = document.querySelector('img.img-preview');
 
@@ -107,7 +111,6 @@ if(inputKategori) {
         })
         .catch(error => console.error('Error:', error)); 
     });
-
 }
 
 if(inputKodeMember && btnTambah) {
@@ -116,6 +119,34 @@ if(inputKodeMember && btnTambah) {
             inputKodeMember.setAttribute("readonly", true);
         }
     })
+}
+
+if(btnKembali && btnDenda && opsiBaik && opsiJelek) {
+    document.querySelectorAll('.kondisi').forEach(function(select) {
+        select.addEventListener('change', function() {
+            const row = select.closest('tr');
+            const btnKembali = row.querySelector('.btn-kembali');
+            const btnDenda = row.querySelector('.btn-denda');
+            const status = row.querySelector('.status').textContent.trim().toLowerCase();
+
+
+            if (select.value === 'baik') {
+                if(status === "telat") {
+                    btnDenda.style.display = 'block';
+                    btnKembali.style.display = 'none';
+                } else {
+                    btnDenda.style.display = 'none';
+                    btnKembali.style.display = 'block';
+                }
+            } else {
+                btnKembali.style.display = 'none';
+                btnDenda.style.display = 'block';
+            }
+        });
+
+        // Trigger change event to set initial state
+        select.dispatchEvent(new Event('change'));
+    });
 }
 
 })
