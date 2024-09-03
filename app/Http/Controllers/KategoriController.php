@@ -74,7 +74,7 @@ class KategoriController extends Controller
     public function edit($slug)
     {
         return view('kategori.editkategori', [
-            "kategori" => Kategori::where("slug", $slug)
+            "kategori" => Kategori::where("slug", $slug)->first()
         ]);
     }
 

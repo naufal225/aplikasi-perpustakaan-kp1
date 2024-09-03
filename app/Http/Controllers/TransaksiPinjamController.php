@@ -45,10 +45,12 @@ class TransaksiPinjamController extends Controller
             session()->forget('kode_member');
         }
 
-        $transaksiTerakhir = TransaksiPinjam::whereDate("tgl_peminjaman", Carbon::today())->latest()->first() ?? "TRP240826000";
+        $tgl_default = Carbon::today()->format("ymd");
+
+        $transaksiTerakhir = TransaksiPinjam::whereDate("tgl_peminjaman", Carbon::today())->latest()->first() ?? "TRP" . $tgl_default . "000";
         
         if($transaksiTerakhir) {
-            if($transaksiTerakhir != "TRP240826000") {
+            if($transaksiTerakhir != "TRP" . $tgl_default . "000") {
                 $jumlahTransaksiTerakhir = TransaksiPinjam::whereDate("tgl_peminjaman", Carbon::today())->count() + 1;
                 $jumlahTransaksiTerakhir = str_pad($jumlahTransaksiTerakhir, 3, "0", STR_PAD_LEFT);
                 $kodeTransaksi = "TRP" . Carbon::today()->format("ymd") . $jumlahTransaksiTerakhir;

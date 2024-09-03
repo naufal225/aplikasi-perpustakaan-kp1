@@ -66,15 +66,14 @@
             </thead>
             <tbody>
               @foreach ($transaksi as $item)
-              @dd($item->buku);
                   <tr class="text-center">
                     <td>{{ $loop->iteration + ($transaksi->currentPage() - 1) * $transaksi->perPage() }}</td>
                     <td>{{ $item->kode_pengembalian }}</td>
-                    <td>{{ $item->tansaksi_pinjam->kode_peminjaman }}</td>
-                    <td>{{ $item->buku->judul_buku }}</td>
+                    <td>{{ $item->transaksi_pinjam->kode_peminjaman }}</td>
+                    <td>{{ $item->transaksi_pinjam->buku->judul_buku }}</td>
                     <td>{{ $item->tgl_pengembalian }}</td>
                     <td>{{ $item->kondisi }}</td>
-                    <td>{{ $item->keterangan }}</td>
+                    <td>{{ $item->status }}</td>
                   </tr>
               @endforeach
             </tbody>

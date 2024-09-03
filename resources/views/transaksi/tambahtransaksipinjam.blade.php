@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-md-5">
       @if(session()->has('gagal'))
-      <div class="alert alert-success" role="alert">
+      <div class="alert alert-danger" role="alert">
           {{ session('gagal') }}
           <button type="button" style="float: right" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>

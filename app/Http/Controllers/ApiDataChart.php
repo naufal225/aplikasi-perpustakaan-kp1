@@ -11,39 +11,51 @@ use Illuminate\Support\Facades\DB;
 class ApiDataChart extends Controller
 {
     public function getNumber() {
+        $bulan = date("m");
+        $tahun = date("Y");
+
         $transaksiKembali = DB::table("transaksi_kembali")
             ->select(DB::raw("DATE(tgl_pengembalian) as tanggal, count(*) as jumlah"))
-            ->groupBy("tanggal")
+            ->whereMonth('tgl_pengembalian', $bulan)
+            ->whereYear('tgl_pengembalian', $tahun)
+            ->groupBy(DB::raw("DATE(tgl_pengembalian)"))
             ->get()
             ->keyBy("tanggal");
 
-        $transkasiPinjam = DB::table("transaksi_pinjam")
+        $transaksiPinjam = DB::table("transaksi_pinjam")
             ->select(DB::raw("DATE(tgl_peminjaman) as tanggal, count(*) as jumlah"))
-            ->groupBy("tanggal")
+            ->whereMonth('tgl_peminjaman', $bulan)
+            ->whereYear('tgl_peminjaman', $tahun)
+            ->groupBy(DB::raw("DATE(tgl_peminjaman)"))
             ->get()
             ->keyBy("tanggal");
 
         $keterlambatan = DB::table("transaksi_pinjam")
             ->select(DB::raw("DATE(tgl_peminjaman) as tanggal, count(*) as jumlah"))
+            ->whereMonth('tgl_peminjaman', $bulan)
+            ->whereYear('tgl_peminjaman', $tahun)
             ->where("status", "telat")
-            ->groupBy("tanggal")
+            ->groupBy(DB::raw("DATE(tgl_peminjaman)"))
             ->get()
             ->keyBy("tanggal");
+            
+            // dd($transaksiPinjam["2024-09-03"]->jumlah);
 
         $result = [];
 
         $allDates = $transaksiKembali->keys()
-            ->merge($transkasiPinjam->keys())
+            ->merge($transaksiPinjam->keys())
             ->merge($keterlambatan->keys())
             ->unique()->sort();
 
         foreach($allDates as $tanggal) {
             $result[$tanggal] = [
-                "jumlahPeminjaman" => $transkasiPinjam[$tanggal]->jumlah ?? 0,
+                "jumlahPeminjaman" => $transaksiPinjam[$tanggal]->jumlah ?? 0,
                 "jumlahPengembalian" => $transaksiKembali[$tanggal]->jumlah ?? 0,
                 "jumlahKeterlambatan" => $keterlambatan[$tanggal]->jumlah ?? 0
             ];
         }
+
 
         return response()->json($result);
         

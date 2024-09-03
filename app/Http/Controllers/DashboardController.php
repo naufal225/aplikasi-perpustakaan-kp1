@@ -16,10 +16,10 @@ class DashboardController extends Controller
 
         return view("dashboard", [
             "jumlahBuku" => Buku::count(),
-            "jumlahKembali" => TransaksiKembali::whereMonth('tgl_pengembalian', $bulan)->whereYear('tgl_pengembalian', $tahun)->count(),
-            "jumlahPinjam" => TransaksiPinjam::whereMonth('tgl_peminjaman', $bulan)->whereYear('tgl_peminjaman', $tahun)->count(),
-            "keterlambatan" => TransaksiPinjam::whereMonth('tgl_peminjaman', $bulan)->whereYear('tgl_peminjaman', $tahun)->where("status", "telat")->count(),
-            "hilangAtauRusak" => TransaksiKembali::whereMonth('tgl_pengembalian', $bulan)->whereYear('tgl_pengembalian', $tahun)->where('kondisi', 'hilang atau rusak')->count(),
+            "jumlahKembali" => TransaksiKembali::whereMonth('tgl_pengembalian', $bulan)->whereYear('tgl_pengembalian', $tahun)->groupBy("kode_pengembalian")->count(),
+            "jumlahPinjam" => TransaksiPinjam::whereMonth('tgl_peminjaman', $bulan)->whereYear('tgl_peminjaman', $tahun)->groupBy("kode_peminjaman")->count(),
+            "keterlambatan" => TransaksiPinjam::whereMonth('tgl_peminjaman', $bulan)->whereYear('tgl_peminjaman', $tahun)->where("status", "telat")->groupBy("kode_peminjaman")->count(),
+            "hilangAtauRusak" => TransaksiKembali::whereMonth('tgl_pengembalian', $bulan)->whereYear('tgl_pengembalian', $tahun)->where('kondisi', 'hilang atau rusak')->groupBy("kode_pengembalian")->count(),
         ]);
     }
 }

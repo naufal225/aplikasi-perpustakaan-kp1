@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
     fetch('/api/getData')
     .then(response => response.json())
     .then(data => {
+        console.log(data);
         const labels = Object.keys(data); // Tanggal sebagai label
         const kembaliData = Object.values(data).map(item => item.jumlahPengembalian);
         const pinjamData = Object.values(data).map(item => item.jumlahPeminjaman);
@@ -60,7 +61,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     scaleLabel: {
                         display: true,
                         labelString: 'Jumlah' // Label untuk sumbu Y
-                    }
+                    },
+                    ticks: {
+                        beginAtZero: true,
+                        callback: function(value) {if (value % 1 === 0) {return value;}}
+                      }
                 }]
             }
             }
