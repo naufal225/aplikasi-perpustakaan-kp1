@@ -46,21 +46,25 @@ class TransaksiPinjamController extends Controller
         }
 
         $tgl_default = Carbon::today()->format("ymd");
-
-        $transaksiTerakhir = TransaksiPinjam::whereDate("tgl_peminjaman", Carbon::today())->latest()->first() ?? "TRP" . $tgl_default . "000";
-        
-        if($transaksiTerakhir) {
-            if($transaksiTerakhir != "TRP" . $tgl_default . "000") {
-                $jumlahTransaksiTerakhir = TransaksiPinjam::whereDate("tgl_peminjaman", Carbon::today())->count() + 1;
-                $jumlahTransaksiTerakhir = str_pad($jumlahTransaksiTerakhir, 3, "0", STR_PAD_LEFT);
-                $kodeTransaksi = "TRP" . Carbon::today()->format("ymd") . $jumlahTransaksiTerakhir;
-            } else {
-                $kodeTransaksi = "TRP" . Carbon::today()->format("ymd") . "001";
-            }
+            
+        // Find the last transaction code for today
+        $transaksiTerakhir = TransaksiPinjam::whereDate('tgl_peminjaman', Carbon::today())
+            ->latest('kode_peminjaman')
+            ->first();
+            
+        if ($transaksiTerakhir) {
+            // Extract the last 3 digits from the last transaction code
+            $lastNumber = (int)substr($transaksiTerakhir->kode_peminjaman, -3);
+            // Increment the last number by 1
+            $newNumber = str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
+            $kodeTransaksi = "TRP" . $tgl_default . $newNumber;
+        } else {
+            // If no transactions exist today, start with "001"
+            $kodeTransaksi = "TRP" . $tgl_default . "001";
         }
-
+        
         return view('transaksi.tambahtransaksipinjam', [
-            "kode_peminjaman" => $kodeTransaksi
+            'kode_peminjaman' => $kodeTransaksi
         ]);
     }
 
