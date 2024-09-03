@@ -3,6 +3,8 @@
 use App\Http\Controllers\ApiDataChart;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\TransaksiKembaliController;
+use App\Models\TransaksiKembali;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,3 +28,5 @@ Route::get('/getData', [ApiDataChart::class, "getNumber"]);
 Route::get('/bukuslug', [BukuController::class, "checkSlug"]);
 
 Route::get('/kategorislug', [KategoriController::class, "checkSlug"]);
+
+Route::resource('/transaksi/kembali-buku', TransaksiKembaliController::class);

@@ -60,7 +60,7 @@
             <tbody>
                 @if (session()->has('data_peminjaman'))
                 @foreach (session('data_peminjaman') as $item)
-                        <tr class="text-center">
+                        <tr class="text-center" id="row-{{ $item['kode_buku'] }}">
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item["kode_buku"] }}</td>
                             <td>{{ $item["judul_buku"] }}</td>
@@ -73,20 +73,22 @@
                             </td>
                             <td>
                                 <!-- Aksi untuk menghapus item dari session atau tindakan lainnya -->
-                                <form action="/transaksi/kembali-buku" method="POST" class="btn-kembali">
+                                <button type="button" class="btn btn-primary shadow px-3 btn-kembali" data-buku="{{ $item['kode_buku'] }}">Kembalikan</button>
+                                {{-- <form action="/transaksi/kembali-buku" method="POST" class="btn-kembali">
                                     @csrf
                                     <input type="hidden" name="kode_peminjaman" value="{{ session("kode_peminjaman") }}">
                                     <input type="hidden" name="kode_member" value="{{ session("kode_member") }}">
                                     <input type="hidden" name="kode_buku" value="{{ $item['kode_buku'] }}">
                                     <button type="submit" class="btn btn-primary shadow px-3">Kembalikan</button>
-                                </form>
-                                <form action="" method="POST" class="btn-denda">
+                                </form> --}}
+                                <button type="button" class="btn btn-danger shadow btn-denda" data-buku="{{ $item['kode_buku'] }}">Bayar Denda</button>
+                                {{-- <form action="" method="POST" class="btn-denda">
                                     @csrf
                                     <input type="hidden" name="kode_peminjaman" value="{{ session("kode_peminjaman") }}">
                                     <input type="hidden" name="kode_member" value="{{ session("kode_member") }}">
                                     <input type="hidden" name="kode_buku" value="{{ $item['kode_buku'] }}">
                                     <button type="submit" class="btn btn-danger shadow">Bayar Denda</button>
-                                </form>
+                                </form> --}}
                             </td>
                         </tr>
                     @endforeach

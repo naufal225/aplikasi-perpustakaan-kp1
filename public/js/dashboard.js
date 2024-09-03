@@ -22,17 +22,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 labels: labels,
                 datasets: [
                     {
-                        label: 'Jumlah Transaksi Kembali',
-                        data: kembaliData,
-                        backgroundColor: '#5CB85C',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    },
-                    {
                         label: 'Jumlah Transaksi Pinjam',
                         data: pinjamData,
                         backgroundColor: '#5BC0DE',
                         borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Jumlah Transaksi Kembali',
+                        data: kembaliData,
+                        backgroundColor: '#5CB85C',
+                        borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 1
                     },
                     {

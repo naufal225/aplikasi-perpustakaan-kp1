@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="csrf-token" content="{{ csrf_token() }}">
+
+  @if(session()->has("kode_peminjaman") && session()->has("kode_member")) 
+    <meta name="kode_peminjaman" content="{{ session('kode_peminjaman') }}">
+    <meta name="kode_member" content="{{ session('kode_member') }}">
+  @endif
+
   <title>Aplikasi Perpustakaan KP 1</title>
 
   <link rel="icon" type="image/x-icon" href="img/apalah.png">

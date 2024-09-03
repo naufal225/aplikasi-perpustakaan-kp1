@@ -19,6 +19,7 @@ class ApiDataChart extends Controller
             ->whereMonth('tgl_pengembalian', $bulan)
             ->whereYear('tgl_pengembalian', $tahun)
             ->groupBy(DB::raw("DATE(tgl_pengembalian)"))
+            ->groupBy("kode_pengembalian")
             ->get()
             ->keyBy("tanggal");
 
@@ -27,6 +28,7 @@ class ApiDataChart extends Controller
             ->whereMonth('tgl_peminjaman', $bulan)
             ->whereYear('tgl_peminjaman', $tahun)
             ->groupBy(DB::raw("DATE(tgl_peminjaman)"))
+            ->groupBy("kode_peminjaman")
             ->get()
             ->keyBy("tanggal");
 
@@ -36,6 +38,7 @@ class ApiDataChart extends Controller
             ->whereYear('tgl_peminjaman', $tahun)
             ->where("status", "telat")
             ->groupBy(DB::raw("DATE(tgl_peminjaman)"))
+            ->groupBy("kode_peminjaman")
             ->get()
             ->keyBy("tanggal");
             

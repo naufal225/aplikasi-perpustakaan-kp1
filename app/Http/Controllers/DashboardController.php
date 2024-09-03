@@ -13,6 +13,7 @@ class DashboardController extends Controller
     public function index() {
         $bulan = date('m');
         $tahun = date('Y');
+        
 
         return view("dashboard", [
             "jumlahBuku" => Buku::count(),

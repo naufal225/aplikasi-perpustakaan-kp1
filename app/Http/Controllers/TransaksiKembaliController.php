@@ -48,56 +48,49 @@ class TransaksiKembaliController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        // Mendapatkan transaksi peminjaman dengan kode buku tertentu
-        // Mendapatkan id buku terkait dan id peminjaman terekait
+{
+    // Mendapatkan id buku terkait dan id peminjaman terkait
+    $id_buku = Buku::where("kode_buku", $request->kode_buku)->first()->id;
+    $id_peminjaman = TransaksiPinjam::where("kode_peminjaman", $request->kode_peminjaman)
+                     ->where("id_buku", $id_buku)->first()->id;
 
-        $id_buku = Buku::where("kode_buku", $request->kode_buku)->first()->id;
+    // Menyimpan transaksi pengembalian
+    $tgl_default = Carbon::today()->format("ymd");
+    $transaksiTerakhir = TransaksiKembali::whereDate("tgl_pengembalian", Carbon::today())->latest()->first() ?? "TRK24" . $tgl_default . "000";
+    
+    if ($transaksiTerakhir != "TRK" . $tgl_default . "000") {
+        $jumlahTransaksiTerakhir = TransaksiKembali::whereDate("tgl_pengembalian", Carbon::today())->count() + 1;
+        $jumlahTransaksiTerakhir = str_pad($jumlahTransaksiTerakhir, 3, "0", STR_PAD_LEFT);
+        $kodeTransaksi = "TRK" . Carbon::today()->format("ymd") . $jumlahTransaksiTerakhir;
+    } else {
+        $kodeTransaksi = "TRK" . Carbon::today()->format("ymd") . "001";
+    }
 
-        $id_peminjaman = TransaksiPinjam::where("kode_peminjaman", $request->kode_peminjaman)->where("id_buku", $id_buku)->first()->id;
+    TransaksiKembali::create([
+        "kode_pengembalian" => $kodeTransaksi,
+        "tgl_pengembalian" => Carbon::today()->format("ymd"),
+        "id_peminjaman" => $id_peminjaman,
+        "kondisi" => "baik",
+        "status" => "belum telat",
+    ]);
 
-        // Membuat transaksi pengembalian dengan data sebelumnya
-        $tgl_default = Carbon::today()->format("ymd");
-
-        $transaksiTerakhir = TransaksiKembali::whereDate("tgl_pengembalian", Carbon::today())->latest()->first() ?? "TRK24" . $tgl_default . "000";
-        
-        if($transaksiTerakhir) {
-            // Men-generate kode pengembalian
-            if($transaksiTerakhir != "TRK" . $tgl_default . "000") {
-                $jumlahTransaksiTerakhir = TransaksiKembali::whereDate("tgl_pengembalian", Carbon::today())->count() + 1;
-                $jumlahTransaksiTerakhir = str_pad($jumlahTransaksiTerakhir, 3, "0", STR_PAD_LEFT);
-                $kodeTransaksi = "TRP" . Carbon::today()->format("ymd") . $jumlahTransaksiTerakhir;
-            } else {
-                $kodeTransaksi = "TRP" . Carbon::today()->format("ymd") . "001";
-            }
-        }
-
-        // Menyimpan data transaksi
-        TransaksiKembali::create([
-            "kode_pengembalian" => $kodeTransaksi,
-            "tgl_pengembalian" => Carbon::today()->format("ymd"),
-            "id_peminjaman" => $id_peminjaman,
-            "kondisi" => "baik",
-            "status" => "belum telat"
-        ]);
-        
-        // Merubah status dan keterangan transaksi peminjaman sebelumnya
-        TransaksiPinjam::where("kode_peminjaman", $request->kode_peminjaman)->where("id_buku", $id_buku)->update([
+    TransaksiPinjam::where("kode_peminjaman", $request->kode_peminjaman)
+        ->where("id_buku", $id_buku)
+        ->update([
             "status" => "belum telat",
             "keterangan" => "selesai"
         ]);
 
-        // Menambahkan stok buku kembali pada buku yang dipinjam
-        $buku = Buku::where("kode_buku", $request->kode_buku)->first();
-        $stokBukuSekarang = $buku->stok;
-        $buku->update([
-            "stok" => $stokBukuSekarang++
-        ]);
+    Buku::where("kode_buku", $request->kode_buku)
+        ->increment('stok');
 
-        // redirect ke page kelola transaksi pengembalian
+    // if ($request->ajax()) {
+    // }
+    
+    return response()->json(['success' => true]);
+    // return redirect("/transaksi/kembali-buku/create")->with("success", "Transaksi pengembalian baru berhasil dibuat");
+}
 
-        return redirect("/transaksi/kembali-buku/create")->with("success", "Transaksi pengembalian baru berhasil dibuat");
-    }
 
     /**
      * Display the specified resource.
@@ -133,6 +126,11 @@ class TransaksiKembaliController extends Controller
 
     public function cariTransaksiPinjam(Request $request) {
         $transaksiPinjam = TransaksiPinjam::where("kode_peminjaman", $request->kode_peminjaman)->where("keterangan", "belum selesai")->get();
+        
+        if(!count($transaksiPinjam)) {
+            return redirect()->back()->with("success", "Transaksi peminjaman sudah selesai");
+        }
+        
         $kode_member = Members::where("id", $transaksiPinjam[0]->id_member)->first()->kode_member;
 
         $data = [];

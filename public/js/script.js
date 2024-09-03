@@ -10,8 +10,8 @@ const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute
 const gambar = document.getElementById('gambar');
 const inputKodeMember = document.getElementById("kodeMember");
 const btnTambah = document.getElementById('btnTambahTransaksi')
-const btnDenda = document.querySelector(".btn-denda");
-const btnKembali = document.querySelector(".btn-kembali");
+const btnDenda = document.querySelectorAll(".btn-denda");
+const btnKembali = document.querySelectorAll(".btn-kembali");
 const opsiBaik = document.querySelector(".opsi-baik");
 const opsiJelek = document.querySelector(".opsi-jelek");
 
@@ -122,34 +122,45 @@ if(inputKodeMember && btnTambah) {
 }
 
 if(btnKembali && btnDenda && opsiBaik && opsiJelek) {
-    document.querySelectorAll('.kondisi').forEach(function(select) {
-        select.addEventListener('change', function() {
-            const row = select.closest('tr');
-            const btnKembali = row.querySelector('.btn-kembali');
-            const btnDenda = row.querySelector('.btn-denda');
-            const status = row.querySelector('.status').textContent.trim().toLowerCase();
+    btnKembali.forEach(btn => {
+        btn.addEventListener("click", function() {
+            const kodeBuku = this.dataset.buku;
+            const kodePeminjaman = document.querySelector(`meta[name="kode_peminjaman"]`).getAttribute("content");
+            const kodeMember = document.querySelector(`meta[name="kode_member"]`).getAttribute("content");
 
-
-            if (select.value === 'baik') {
-                if(status === "telat") {
-                    btnDenda.style.display = 'block';
-                    btnKembali.style.display = 'none';
+            fetch('/api/transaksi/kembali-buku', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    kode_peminjaman: kodePeminjaman,
+                    kode_member: kodeMember,
+                    kode_buku: kodeBuku,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Hapus baris dari tabel
+                    document.getElementById('row-' + kodeBuku).remove();
                 } else {
-                    btnDenda.style.display = 'none';
-                    btnKembali.style.display = 'block';
+                    alert('Gagal mengembalikan buku.');
                 }
-            } else {
-                btnKembali.style.display = 'none';
-                btnDenda.style.display = 'block';
-            }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         });
-
-        // Trigger change event to set initial state
-        select.dispatchEvent(new Event('change'));
+        
     });
 }
 
-})
+
+
+
+});
 
 function deleteConfirmation(e) {
     e.preventDefault();

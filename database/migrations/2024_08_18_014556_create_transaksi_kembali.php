@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("kode_pengembalian");
             $table->foreignId("id_peminjaman")->constrained('transaksi_pinjam')->onDelete('cascade');
+            $table->foreignId("id_buku")->constrained('buku')->onDelete('cascade');
             $table->date("tgl_pengembalian");
             $table->enum("kondisi", ['hilang atau rusak', 'baik']);
             $table->enum("status", ['telat', 'belum telat']);
