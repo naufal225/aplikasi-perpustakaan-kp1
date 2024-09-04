@@ -86,5 +86,45 @@
 
         
     </div>
-    <a href="/transaksi/tambah-transaksi-pinjam/simpan" class="btn btn-primary shadow px-3 py-2 mt-3">Simpan Transaksi Peminjaman</a>
+
+    <div class="col-md-5">
+        <form id="transaksiForm" action="/transaksi/pinjam-buku" method="POST">
+            @csrf
+            <div class="row">
+                <!-- Input fields and submit button -->
+                <button type="submit" class="btn btn-primary mt-3">Simpan Transaksi Peminjaman</button>
+            </div>
+        </form>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        console.log("Hello world")
+        $('#transaksiForm').on('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+    
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    // Create a temporary link and simulate a click to download PDF
+                    var link = document.createElement('a');
+                    link.href = response.pdf_url;
+                    link.download = 'struk_peminjaman.pdf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+    
+                    // Redirect after download
+                    window.location.href = response.redirect_url;
+                },
+                error: function(xhr) {
+                    alert('Terjadi kesalahan: ' + xhr.responseText);
+                }
+            });
+        });
+    </script>
 @endsection

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use App\Models\Buku;
 use App\Models\Members;
+use Barryvdh\DomPDF\Facade\Pdf;
 class TransaksiPinjamController extends Controller
 {
     /**
@@ -46,12 +47,12 @@ class TransaksiPinjamController extends Controller
         }
 
         $tgl_default = Carbon::today()->format("ymd");
-            
+
         // Find the last transaction code for today
         $transaksiTerakhir = TransaksiPinjam::whereDate('tgl_peminjaman', Carbon::today())
             ->latest('kode_peminjaman')
             ->first();
-            
+
         if ($transaksiTerakhir) {
             // Extract the last 3 digits from the last transaction code
             $lastNumber = (int)substr($transaksiTerakhir->kode_peminjaman, -3);
@@ -62,7 +63,7 @@ class TransaksiPinjamController extends Controller
             // If no transactions exist today, start with "001"
             $kodeTransaksi = "TRP" . $tgl_default . "001";
         }
-        
+
         return view('transaksi.tambahtransaksipinjam', [
             'kode_peminjaman' => $kodeTransaksi
         ]);
@@ -75,13 +76,13 @@ class TransaksiPinjamController extends Controller
     {
         // Ambil nilai kode member dari session
         $kode_member = session("kode_member");
-    
+        
         // Ambil id member berdasar kode member
         $id_member = Members::where("kode_member", $kode_member)->first()->id;
-    
+        
         // Ambil nilai kode transaksi dari session
         $kode_transaksi = session("kode_peminjaman");
-    
+        
         // Insert ke tabel transaksi pinjam dengan perulangan pada session kode buku
         if(session()->has("kode_buku")) {
             foreach(session("kode_buku") as $buku) {
@@ -105,7 +106,7 @@ class TransaksiPinjamController extends Controller
                     "tgl_peminjaman" => date("Y-m-d"),
                     "estimasi_tgl_kembali" => date("Y-m-d", strtotime(date("Y-m-d") . " + 7 days"))
                 ]);
-
+    
                 // Mengurangi stok di buku terkait
                 $stokSekarang = $bukuObj->stok;
                 $stokSekarang--;
@@ -114,15 +115,39 @@ class TransaksiPinjamController extends Controller
                 ]);
             }
         }
-
-        // Menghapus data session untuk cart
-
+    
+        // Ambil data transaksi untuk PDF
+        $transaksi = TransaksiPinjam::where('kode_peminjaman', $kode_transaksi)->with('member', 'buku')->get();
+        
+        if ($transaksi->isEmpty()) {
+            return redirect()->back()->with('gagal', 'Transaksi tidak ditemukan.');
+        }
+    
+        $data = [
+            'nama_perpustakaan' => 'Perpustakaan 123',
+            'alamat_perpustakaan' => 'Jl. Meranti Raya No.3, Desa Setia Mekar, Kec. Tambun Selatan, Kab. Bekasi, Jawa Barat, 17510',
+            'tanggal_jam' => now(),
+            'kode_transaksi' => $kode_transaksi,
+            'nama_member' => $transaksi->first()->member->nama_lengkap,
+            'daftar_buku' => $transaksi->map(function ($item) {
+                return $item->buku->judul_buku;
+            }),
+        ];
+    
+        // Generate PDF
+        $pdf = Pdf::loadView('transaksi.struk', $data);
+        $pdfPath = 'struk_peminjaman_'.$kode_transaksi.'.pdf';
+        $pdf->save(storage_path('app/public/'.$pdfPath));
+    
+        // Hapus data session untuk cart
         session()->forget(['kode_member', 'kode_buku', 'kode_peminjaman']);
     
-        // Redirect back ke page sebelumnya sambil mengirim pesan sukses
-        return redirect("/transaksi/pinjam-buku")->with("success", "Berhasil menambahkan transaksi");
+        // Redirect dengan JSON response
+        return response()->json([
+            'pdf_url' => asset('storage/'.$pdfPath),
+            'redirect_url' => url('/transaksi/pinjam-buku'),
+        ]);
     }
-    
 
     /**
      * Display the specified resource.
@@ -257,4 +282,5 @@ class TransaksiPinjamController extends Controller
         
         return redirect()->back()->with('success', 'Item berhasil dihapus dari keranjang.');
     }
+
 }

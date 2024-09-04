@@ -53,5 +53,8 @@ Route::get('/transaksi/tambah-transaksi-pinjam', [TransaksiPinjamController::cla
 Route::get('/transaksi/tambah-transaksi-kembali/cari-transaksi-pinjam', [TransaksiKembaliController::class, "cariTransaksiPinjam"])->middleware("auth");
 
 Route::post('/hapus-item/{kode_buku}', [TransaksiPinjamController::class, 'hapusItem'])->name('hapus.item');
+
+// Route::get('/transaksi/tambah-transaksi-pinjam/simpan/{kode_transaksi}', [TransaksiPinjamController::class, 'downloadStruk'])->name('transaksi.downloadStruk');
+
 // Route::get('/kelola-data-member/search', [MemberController::class, "search"])->middleware("auth");
 
