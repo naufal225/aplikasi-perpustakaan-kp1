@@ -44,6 +44,19 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-md-5">
+      @if (session()->has('gagal'))
+      <div class="alert alert-success" role="alert">
+          {{ session('gagal') }}
+          <button type="button" style="float: right" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+          
+      @endif
+
+    </div>
+  </div>
+
 <div class="row col-md-11 mt-2 border border-dark">
     <div class="table-container" style="overflow-x: scroll;">
         <table class="table table-striped">

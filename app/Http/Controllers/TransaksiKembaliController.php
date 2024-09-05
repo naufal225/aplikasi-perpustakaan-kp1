@@ -125,6 +125,12 @@ class TransaksiKembaliController extends Controller
     }
 
     public function cariTransaksiPinjam(Request $request) {
+        $transaksiPinjam = TransaksiPinjam::where("kode_peminjaman", $request->kode_peminjaman)->first();
+    
+        if(!$transaksiPinjam) {
+            return redirect()->back()->with("gagal", "Transaksi peminjaman tidak ada");
+        }
+
         $transaksiPinjam = TransaksiPinjam::where("kode_peminjaman", $request->kode_peminjaman)->where("keterangan", "belum selesai")->get();
         
         if(!count($transaksiPinjam)) {
