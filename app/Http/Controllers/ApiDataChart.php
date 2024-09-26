@@ -7,6 +7,7 @@ use App\Models\Buku;
 use App\Models\TransaksiKembali;
 use App\Models\TransaksiPinjam;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ApiDataChart extends Controller
 {
@@ -14,6 +15,7 @@ class ApiDataChart extends Controller
         $bulan = date("m");
         $tahun = date("Y");
 
+        // Ambil transaksi pengembalian
         $transaksiKembali = DB::table("transaksi_kembali")
             ->select(DB::raw("DATE(tgl_pengembalian) as tanggal, count(*) as jumlah"))
             ->whereMonth('tgl_pengembalian', $bulan)
@@ -23,6 +25,7 @@ class ApiDataChart extends Controller
             ->get()
             ->keyBy("tanggal");
 
+        // Ambil transaksi peminjaman
         $transaksiPinjam = DB::table("transaksi_pinjam")
             ->select(DB::raw("DATE(tgl_peminjaman) as tanggal, count(*) as jumlah"))
             ->whereMonth('tgl_peminjaman', $bulan)
@@ -32,6 +35,7 @@ class ApiDataChart extends Controller
             ->get()
             ->keyBy("tanggal");
 
+        // Ambil transaksi yang terlambat
         $keterlambatan = DB::table("transaksi_pinjam")
             ->select(DB::raw("DATE(tgl_peminjaman) as tanggal, count(*) as jumlah"))
             ->whereMonth('tgl_peminjaman', $bulan)
@@ -41,17 +45,19 @@ class ApiDataChart extends Controller
             ->groupBy("kode_peminjaman")
             ->get()
             ->keyBy("tanggal");
-            
-            // dd($transaksiPinjam["2024-09-03"]->jumlah);
 
+        // Inisialisasi array hasil
         $result = [];
 
-        $allDates = $transaksiKembali->keys()
-            ->merge($transaksiPinjam->keys())
-            ->merge($keterlambatan->keys())
-            ->unique()->sort();
+        // Ambil semua tanggal dalam bulan tersebut
+        $startDate = Carbon::create($tahun, $bulan, 1);
+        $endDate = $startDate->copy()->endOfMonth();
 
-        foreach($allDates as $tanggal) {
+        // Loop dari awal sampai akhir bulan
+        for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
+            $tanggal = $date->format("Y-m-d");
+            
+            // Set nilai default 0 jika tanggal tidak ada di database
             $result[$tanggal] = [
                 "jumlahPeminjaman" => $transaksiPinjam[$tanggal]->jumlah ?? 0,
                 "jumlahPengembalian" => $transaksiKembali[$tanggal]->jumlah ?? 0,
@@ -59,8 +65,7 @@ class ApiDataChart extends Controller
             ];
         }
 
-
+        // Mengembalikan hasil dalam bentuk JSON
         return response()->json($result);
-        
     }
 }
