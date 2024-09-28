@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApiDataChart;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\KatalogController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\TransaksiKembaliController;
 use App\Models\TransaksiKembali;
@@ -30,3 +31,5 @@ Route::get('/bukuslug', [BukuController::class, "checkSlug"]);
 Route::get('/kategorislug', [KategoriController::class, "checkSlug"]);
 
 Route::resource('/transaksi/kembali-buku', TransaksiKembaliController::class);
+
+Route::get('/katalog/searchDataBuku', [KatalogController::class, 'search']);

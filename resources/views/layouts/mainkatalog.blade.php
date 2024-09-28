@@ -6,14 +6,7 @@
   <meta name="description" content="">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  @if(session()->has("kode_peminjaman") && session()->has("kode_member")) 
-    <meta name="kode_peminjaman" content="{{ session('kode_peminjaman') }}">
-    <meta name="kode_member" content="{{ session('kode_member') }}">
-  @endif
-
-  <title>Aplikasi Perpustakaan KP 1</title>
-
-  <link rel="icon" type="image/x-icon" href="img/apalah.png">
+  <title>Katalog Perpustakaan KP 1</title>
 
   <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
 
@@ -44,12 +37,11 @@
   </style>
 </head>
 <body>
-  @include('utils.header')
-  @include('utils.navbar')
+  @include('utils.headerkatalog')
 
-  <div class="container-fluid pb-5">
+  <div class="container pb-5">
     <div class="row">
-      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <main class="col-md-9 col-lg-10 px-md-4">
           @yield('container')
       </main>
     </div>
@@ -59,7 +51,7 @@
   <script src="{{ asset("js/bs/bootstrap.js") }}"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
- 
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   @if(Request::is('home'))
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
   <script src="{{ asset('js/dashboard.js') }}"></script>
@@ -78,5 +70,7 @@
     feather.replace();
 
   </script>
+
+  <script src="{{ asset("js/katalog.js") }}"></script>
 </body>
 </html>

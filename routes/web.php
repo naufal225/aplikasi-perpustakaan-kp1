@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KatalogController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MemberController;
@@ -58,3 +59,6 @@ Route::post('/hapus-item/{kode_buku}', [TransaksiPinjamController::class, 'hapus
 
 // Route::get('/kelola-data-member/search', [MemberController::class, "search"])->middleware("auth");
 
+Route::get('/katalog', [KatalogController::class, "index"]);
+
+Route::get('/katalog/detail', [KatalogController::class, "show"]);

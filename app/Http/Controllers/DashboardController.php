@@ -19,7 +19,7 @@ class DashboardController extends Controller
 
         return view("dashboard", [
             "bulanHuruf" => Carbon::now()->locale('id')->monthName,
-            "jumlahBuku" => Buku::count(),
+            "jumlahBuku" => Buku::sum("stok"),
             "jumlahKembali" => TransaksiKembali::whereMonth('tgl_pengembalian', $bulan)->whereYear('tgl_pengembalian', $tahun)->groupBy("kode_pengembalian")->count(),
             "jumlahPinjam" => TransaksiPinjam::whereMonth('tgl_peminjaman', $bulan)->whereYear('tgl_peminjaman', $tahun)->groupBy("kode_peminjaman")->count(),
             "keterlambatan" => TransaksiPinjam::whereMonth('tgl_peminjaman', $bulan)->whereYear('tgl_peminjaman', $tahun)->where("status", "telat")->groupBy("kode_peminjaman")->count(),
