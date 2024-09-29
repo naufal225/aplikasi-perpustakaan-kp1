@@ -58,3 +58,27 @@ input[type=number] {
 .btn-denda {
   display: none;
 }
+
+.akun {
+  cursor: pointer;
+}
+
+.profile-card {
+  display: none;
+  position: absolute;
+  top: 100%; /* Mengatur posisi card di bawah h5 */
+  left: 0;
+  width: 130px;
+  z-index: 10;
+}
+
+.akun:hover .profile-card {
+  display: inline-block;
+  margin-inline: auto;
+}
+
+img.img-thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}

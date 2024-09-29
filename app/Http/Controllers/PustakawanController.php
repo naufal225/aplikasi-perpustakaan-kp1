@@ -58,10 +58,12 @@ class PustakawanController extends Controller
             'alamat' => 'required',
             'no_telp' => 'required',
             'email' => 'required|email:dns',
-            'password' => 'required|confirmed'
+            'password' => 'required|confirmed',
+            "gambar" => "required|file"
         ]);
 
         $validate['password'] = bcrypt($request->password);
+        $validate['gambar'] = $request->file('gambar')->store('gambar-profil', 'public');
 
         User::create($validate);
 

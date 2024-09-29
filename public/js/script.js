@@ -1,189 +1,147 @@
-
-const deleteConfirm = document.querySelector('.confirm-delete-card');
-const deleteConfirmText = document.querySelector('.confirm-delete-card-text');
-const itemForDelete = document.querySelector('.itemForDelete');
-const input = document.querySelector('input[type="number"]');
-const inputJudulBuku = document.getElementById('inputJudul');
-const inputKategori = document.getElementById('kategori');
-const inputSlug = document.querySelector('input[name="slug"]');
-const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-const gambar = document.getElementById('gambar');
-const inputKodeMember = document.getElementById("kodeMember");
-const btnTambah = document.getElementById('btnTambahTransaksi')
-const btnDenda = document.querySelectorAll(".btn-denda");
-const btnKembali = document.querySelectorAll(".btn-kembali");
-const opsiBaik = document.querySelector(".opsi-baik");
-const opsiJelek = document.querySelector(".opsi-jelek");
-
-let preview = document.querySelector('img.img-preview');
-
-
-
-document.addEventListener("DOMContentLoaded", function() {
+$(document).ready(function() {
     let formToSubmit = null;
 
-// Cek status readonly di localStorage saat halaman di-load
-// if (localStorage.getItem("isReadonly") === "true") {
-//     inputKodeMember.setAttribute("readonly", true);
-//     inputKodeMember.value = localStorage.getItem("kodeMember") || "";
-// }
+    // Cek status readonly di localStorage saat halaman di-load
+    // if (localStorage.getItem("isReadonly") === "true") {
+    //     $('#kodeMember').attr("readonly", true);
+    //     $('#kodeMember').val(localStorage.getItem("kodeMember") || "");
+    // }
 
-// btnTambah.addEventListener('click', function(event) {
-//     if (!inputKodeMember.hasAttribute("readonly")) {
-//         // Mencegah form dari submit
-//         event.preventDefault();
-        
-//         localStorage.setItem("kodeMember", this.value);
-//         // Set inputKodeMember jadi readonly
-//         inputKodeMember.setAttribute("readonly", true);
-//         // Simpan status readonly di localStorage
-//         localStorage.setItem("isReadonly", "true");
-//     }
-// })
+    // $("#btnTambahTransaksi").on('click', function(event) {
+    //     if (!$("#kodeMember").attr("readonly")) {
+    //         event.preventDefault();
+    //         localStorage.setItem("kodeMember", $(this).val());
+    //         $("#kodeMember").attr("readonly", true);
+    //         localStorage.setItem("isReadonly", "true");
+    //     }
+    // });
 
-if(input) {
-    input.addEventListener('keypress', function(e){
+    $('input[type="number"]').on('keypress', function(e){
         if(e.key === 'e' || e.key === "E") {
             e.preventDefault();
         }
-    })
-}
+    });
 
-if(document.getElementById('isbn')) {
-    document.getElementById('isbn').addEventListener('keydown', function (e) {
-        // Izinkan hanya angka, tanda strip, backspace, dan delete
-        if (
-            !(
-                (e.key >= '0' && e.key <= '9') || 
-                e.key === '-' ||
-                e.key === 'Backspace' ||
-                e.key === 'Delete'
-            )
-        ) {
+    $('#isbn').on('keydown', function (e) {
+        if (!(
+            (e.key >= '0' && e.key <= '9') || 
+            e.key === '-' ||
+            e.key === 'Backspace' ||
+            e.key === 'Delete'
+        )) {
             e.preventDefault();
         }
     });
-}
 
-if(document.getElementById('harga')) {
-    document.getElementById('harga').addEventListener('keydown', function(e) {
-        if (
-            !(
-                (e.key >= '0' && e.key <= '9') ||
-                e.key == '.' || e.key == ',' ||
-                e.key == 'Backspace' ||
-                e.key == 'Delete'
-            )
-        ) {
+    $('#harga').on('keydown', function(e) {
+        if (!(
+            (e.key >= '0' && e.key <= '9') || 
+            e.key == '.' || e.key == ',' || 
+            e.key == 'Backspace' || 
+            e.key == 'Delete'
+        )) {
             e.preventDefault();
         }
     });
-}
 
-
-if(inputJudulBuku) {
-    inputJudulBuku.addEventListener('change', function() {
-        fetch('/api/bukuslug?judul=' + inputJudulBuku.value, {
-            headers: {
-                "X-CSRF-TOKEN" : csrfToken
+    $('#inputJudul').on('change', function() {
+        $.ajax({
+            url: '/api/bukuslug',
+            type: 'GET',
+            data: { judul: $(this).val() },
+            headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content') },
+            success: function(data) {
+                $('input[name="slug"]').val(data.slug);
+            },
+            error: function(error) {
+                console.error('Error:', error);
             }
-        })
-        .then(response => response.json()) // Convert response to JSON
-        .then(data => {
-            console.log(data)
-            inputSlug.value = data.slug; // Access the slug property
-        })
-        .catch(error => console.error('Error:', error)); // Handle any errors
+        });
     });
-}
 
-
-if(inputKategori) {
-    inputKategori.addEventListener('change', function() {
-        fetch('/api/kategorislug?kategori=' + inputKategori.value, {
-            headers: {
-                "X-CSRF-TOKEN" : csrfToken
+    $('#kategori').on('change', function() {
+        $.ajax({
+            url: '/api/kategorislug',
+            type: 'GET',
+            data: { kategori: $(this).val() },
+            headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content') },
+            success: function(data) {
+                $('input[name="slug"]').val(data.slug);
+            },
+            error: function(error) {
+                console.error('Error:', error);
             }
-        }) 
-        .then(response => response.json())
-        .then(data => {
-            inputSlug.value = data.slug;
-        })
-        .catch(error => console.error('Error:', error)); 
+        });
     });
-}
 
-if(inputKodeMember && btnTambah) {
-    btnTambah.addEventListener('click', function() {
-        if(!inputKodeMember.hasAttribute("readonly")) {
-            inputKodeMember.setAttribute("readonly", true);
+    $('#btnTambahTransaksi').on('click', function() {
+        if(!$('#kodeMember').attr("readonly")) {
+            $('#kodeMember').attr("readonly", true);
         }
-    })
-}
+    });
 
-if(btnKembali && btnDenda && opsiBaik && opsiJelek) {
-    btnKembali.forEach(btn => {
-        btn.addEventListener("click", function() {
-            const kodeBuku = this.dataset.buku;
-            const kodePeminjaman = document.querySelector(`meta[name="kode_peminjaman"]`).getAttribute("content");
-            const kodeMember = document.querySelector(`meta[name="kode_member"]`).getAttribute("content");
+    $(".btn-kembali").each(function() {
+        $(this).on('click', function() {
+            let kodeBuku = $(this).data('buku');
+            let kodePeminjaman = $('meta[name="kode_peminjaman"]').attr('content');
+            let kodeMember = $('meta[name="kode_member"]').attr('content');
 
-            fetch('/api/transaksi/kembali-buku', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Content-Type': 'application/json',
+            $.ajax({
+                url: '/api/transaksi/kembali-buku',
+                type: 'POST',
+                contentType: 'application/json',
+                headers: { 
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                body: JSON.stringify({
+                data: JSON.stringify({
                     kode_peminjaman: kodePeminjaman,
                     kode_member: kodeMember,
-                    kode_buku: kodeBuku,
+                    kode_buku: kodeBuku
                 }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Hapus baris dari tabel
-                    document.getElementById('row-' + kodeBuku).remove();
-                } else {
-                    alert('Gagal mengembalikan buku.');
+                success: function(data) {
+                    if(data.success) {
+                        $('#row-' + kodeBuku).remove();
+                    } else {
+                        alert('Gagal mengembalikan buku.');
+                    }
+                },
+                error: function(error) {
+                    console.error('Error:', error);
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
             });
         });
-        
     });
-}
-
-
-
-
 });
 
 function deleteConfirmation(e) {
     e.preventDefault();
     formToSubmit = e.target;
-    itemForDelete.textContent = ` "${e.target.querySelector('button[type="submit"]').dataset.confirm}"`
-    deleteConfirm.style.display = "block";
+    $('.itemForDelete').text(` "${$(e.target).find('button[type="submit"]').data('confirm')}"`);
+    $('.confirm-delete-card').show();
 }
 
 function confirmDelete() {
-    window.formToSubmit.submit();
-    deleteConfirm.style.display = "none";
+    formToSubmit.submit();
+    $('.confirm-delete-card').hide();
 }
 
 function cancelDelete() {
-    deleteConfirm.style.display = "none";
+    $('.confirm-delete-card').hide();
 }
 
 function previewGambar() {
-    preview.style.display = "block";
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(gambar.files[0]);
+    $('.img-preview').show();
+    let fileReader = new FileReader();
+    fileReader.readAsDataURL($('#gambar')[0].files[0]);
     fileReader.onload = function(e) {
-        preview.src = e.target.result;
+        $('.img-preview').attr('src', e.target.result);
     }
 }
 
+$('.akun').on('mouseleave', function() {
+    $('#profile-card').fadeOut(1000); // Smooth fade-out effect
+});
+
+$('.akun').on('mouseenter', function() {
+    $('#profile-card').fadeIn(1000); // Smooth fade-in effect
+});

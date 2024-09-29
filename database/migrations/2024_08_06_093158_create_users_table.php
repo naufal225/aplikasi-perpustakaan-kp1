@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->string("password");
             $table->string("no_telp");
             $table->boolean("admin")->default(false);
+            $table->text("gambar")->nullable();
             $table->text("remember_token")->nullable();
             $table->timestamps();
         });
