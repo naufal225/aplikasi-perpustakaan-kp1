@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get("/", function() {
     return view("login.index");
-})->middleware("guest");
+})->middleware("guest")->name("login");
 
 Route::post("/login", [LoginController::class, "authenticate"])->middleware("guest");
 
@@ -37,11 +37,11 @@ Route::get('/home', [DashboardController::class, "index"])->middleware("auth");
 
 Route::resource('/kelola-data-member', MemberController::class)->middleware("auth")->parameters(['members' => 'kode_member']);
 
-Route::resource('/kelola-data-buku', BukuController::class)->middleware("auth");
+Route::resource('/kelola-data-buku', BukuController::class)->middleware("admin");
 
-Route::resource('/kelola-data-kategori', KategoriController::class)->middleware("auth");
+Route::resource('/kelola-data-kategori', KategoriController::class)->middleware("admin");
 
-Route::resource('/kelola-data-pustakawan', PustakawanController::class)->middleware("auth");
+Route::resource('/kelola-data-pustakawan', PustakawanController::class)->middleware("admin");
 
 Route::resource('/transaksi/pinjam-buku', TransaksiPinjamController::class)->middleware("auth");
 
@@ -53,7 +53,7 @@ Route::get('/transaksi/tambah-transaksi-pinjam', [TransaksiPinjamController::cla
 
 Route::get('/transaksi/tambah-transaksi-kembali/cari-transaksi-pinjam', [TransaksiKembaliController::class, "cariTransaksiPinjam"])->middleware("auth");
 
-Route::post('/hapus-item/{kode_buku}', [TransaksiPinjamController::class, 'hapusItem'])->name('hapus.item');
+Route::post('/hapus-item/{kode_buku}', [TransaksiPinjamController::class, 'hapusItem'])->name('hapus.item')->middleware("admin");
 
 // Route::get('/transaksi/tambah-transaksi-pinjam/simpan/{kode_transaksi}', [TransaksiPinjamController::class, 'downloadStruk'])->name('transaksi.downloadStruk');
 

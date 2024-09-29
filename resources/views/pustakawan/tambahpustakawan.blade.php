@@ -45,10 +45,9 @@
                         </div>
                         @enderror
                       </div>
-                      <button class="btn mt-4 btn-primary shadow" type="submit">Tambah</button>
-
-                </div>
-                <div class="col-md-5">
+                      
+                    </div>
+                    <div class="col-md-5">
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email" placeholder="Masukan email pustakawan" required>
@@ -71,11 +70,15 @@
                         <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
                         <input type="password" class="form-control @error('password') is-invalid @enderror" name="password_confirmation" id="password_confirmation" placeholder="Masukan konfirmasi password" required>
                       </div>
-                      
+                      <div class="mb-3">
+                        <label for="gambar" class="form-label label-gambar">Foto Pustakawan</label>
+                        <input value="{{ old("gambar") }}" class="form-control" type="file" name="gambar" id="gambar" onchange="previewGambar()">
+                      </div>
                 </div>
-            </div>
-            
-            
-        </form>
+              </div>
+              
+              <button class="btn mt-4 btn-primary shadow" type="submit">Tambah</button>
+              
+            </form>
 </div>
 @endsection

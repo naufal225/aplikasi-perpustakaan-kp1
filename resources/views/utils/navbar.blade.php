@@ -13,6 +13,7 @@
             Kelola Data Member
           </a>
         </li>
+        @can('admin')
         <li class="nav-item">
           <a class="nav-link {{ Request::is('kelola-data-buku*') ? 'active' : '' }}" aria-current="page" href="/kelola-data-buku">
             <span data-feather="book"></span>
@@ -31,6 +32,7 @@
             Kelola Data Pustakawan
           </a>
         </li>
+        @endcan
         <li class="nav-item">
           <a class="nav-link {{ Request::is('transaksi/pinjam-buku*') ? 'active' : '' }}" aria-current="page" href="/transaksi/pinjam-buku">
             <span data-feather="arrow-down-circle"></span>

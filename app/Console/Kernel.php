@@ -12,8 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->call(function() {
-            app(\App\Http\Controllers\TransaksiPinjamController::class)->updateStatus();
+        $schedule->call(function(): void {
+            app(abstract: \App\Http\Controllers\TransaksiPinjamController::class)->updateStatus();
         })->daily();
     }
 
@@ -22,12 +22,12 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(paths: __DIR__.'/Commands');
 
-        require base_path('routes/console.php');
+        require base_path(path: 'routes/console.php');
     }
 
-    protected function scheduleTimezone()
+    protected function scheduleTimezone(): string
     {
         return 'Asia/Jakarta';
     }

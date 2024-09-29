@@ -50,12 +50,14 @@ class TransaksiKembaliController extends Controller
     public function store(Request $request)
     {
         // Check if any books were selected for return
-        if (!$request->has('kembali') || empty($request->input('kembali'))) {
+        if (!$request->has(key: 'kembali') || empty($request->input('kembali'))) {
             return redirect()->back()->with("gagal", "Anda tidak mencentang 1 buku pun");
         }
 
         foreach ($request->input('kembali') as $kode_buku) {
             // Mendapatkan id buku terkait dan id peminjaman terkait
+            // dd($request->input('kondisi')[$kode_buku]);
+
             $id_buku = Buku::where("kode_buku", $kode_buku)->first()->id;
             $transaksiPinjam = TransaksiPinjam::where("kode_peminjaman", $request->kode_peminjaman)
                 ->where("id_buku", $id_buku)->first();
@@ -78,8 +80,10 @@ class TransaksiKembaliController extends Controller
                 $kodeTransaksi = "TRK" . Carbon::today()->format("ymd") . "001";
             }
     
-            $kondisi = $request->input('kondisi['. $kode_buku . ']') ? $request->input('kondisi['. $kode_buku . ']') : "hilang atau rusak";
+            $kondisi = $request->input('kondisi')[$kode_buku] ? $request->input('kondisi')[$kode_buku] : "hilang atau rusak";
             $status = $request->input('status');
+
+            // dd($kondisi);
     
             // Simpan transaksi pengembalian
             TransaksiKembali::create([
@@ -105,28 +109,28 @@ class TransaksiKembaliController extends Controller
             }
     
             // Handle denda jika buku rusak atau hilang
-            if ($kondisi === 'rusak atau hilang') {
-                // Logika pembayaran denda
-                // Redirect ke halaman pembayaran denda atau logika lainnya
-                return response()->json(['success' => true, 'denda' => true]);
-            }
+            // if ($kondisi === 'rusak atau hilang') {
+            //     // Logika pembayaran denda
+            //     // Redirect ke halaman pembayaran denda atau logika lainnya
+            //     return view("transaksi.denda");
+            // }
         }
     
-        // Generate struk pengembalian
-        $struk = [
-            'kode_pengembalian' => $kodeTransaksi,
-            'nama_perpustakaan' => 'Nama Perpustakaan',
-            'alamat_perpustakaan' => 'Alamat Perpustakaan',
-            'nama_anggota' => Members::find($transaksiPinjam->id_member)->nama,
-            'kode_member' => Members::find($transaksiPinjam->id_member)->kode_member,
-            'buku_dikembalikan' => implode(', ', $request->input('kembali')),
-            'denda' => $kondisi === 'rusak atau hilang' ? 'Rp. xxxx' : 'Tidak ada denda',
-        ];
+        // // Generate struk pengembalian
+        // $struk = [
+        //     'kode_pengembalian' => $kodeTransaksi,
+        //     'nama_perpustakaan' => 'Nama Perpustakaan',
+        //     'alamat_perpustakaan' => 'Alamat Perpustakaan',
+        //     'nama_anggota' => Members::find($transaksiPinjam->id_member)->nama,
+        //     'kode_member' => Members::find($transaksiPinjam->id_member)->kode_member,
+        //     'buku_dikembalikan' => implode(', ', $request->input('kembali')),
+        //     'denda' => $kondisi === 'rusak atau hilang' ? 'Rp. xxxx' : 'Tidak ada denda',
+        // ];
     
         // Menyimpan struk atau menampilkan ke user
         // Logika struk
     
-        return response()->json(['success' => true, 'struk' => $struk]);
+        return redirect()->back()->with("success", "Transaksi Peminjaman Berhasil Ditambahkan");
 
         // return view("")->with([
         //     "success" => true,
@@ -134,7 +138,9 @@ class TransaksiKembaliController extends Controller
         // ]);
     }
     
+    public function cetakStruk(Request $request) {
 
+    }
 
 
     /**

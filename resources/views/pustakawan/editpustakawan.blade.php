@@ -58,7 +58,10 @@
                         </div>
                         @enderror
                       </div>
-                      
+                      <div class="mb-3">
+                        <label for="gambar" class="form-label label-gambar">Foto Pustakawan</label>
+                        <input value="{{ old("gambar") }}" class="form-control" type="file" name="gambar" id="gambar" onchange="previewGambar()">
+                      </div>
                 </div>
             </div>
             
