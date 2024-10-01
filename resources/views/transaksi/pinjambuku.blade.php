@@ -87,6 +87,6 @@
         </div>
       </div>
 
-      <a href="" class="btn btn-primary shadow">Cetak Laporan Transaksi Peminjaman Buku</a>
+      <a href="/cetak-pinjam" class="btn btn-primary shadow">Cetak Laporan Transaksi Peminjaman Buku</a>
 
 @endsection

@@ -2,53 +2,45 @@
 
 @section('container')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Detail Data Buku</h1>
+    <h1 class="h2">Detail Buku: {{ $buku->judul_buku }}</h1>
 </div>
-<a href="/kelola-data-buku" class="btn btn-primary shadow mb-3">Kembali</a> <br>
-<div class="row px-1 mt-3">
-    <div class="col-10 col-md-2">
-        <img src="/storage/{{ $buku->gambar }}" alt="" class="border border-1 border-dark img-fluid shadow">
-    </div>
-    <div class="col-12 col-md-8">
-        <div class="row mb-2">
-            <div class="col-md-6">
-                <h6>Penulis</h6>
-                <h6>{{ $buku->penulis }}</h6>
-            </div>
-        </div>
-        <div class="row mb-2">
-            <div class="col-md-6" style="background-color: antiquewhite">
-                <h6>Judul Buku</h6>
-                <h3 style="margin: 0;">{{ $buku->judul_buku }}</h3>
-            </div>
-            <div class="col-md-6">
-                <h6>Kategori</h6>
-                <h5>{{ $buku->kategori->kategori }}</h5>
-            </div>
-        </div>
-        <div class="row mt-5" style="min-height: 169px">
-            <div class="col-md-6">
-                <h6>Sinopsis</h6>
-                <p style="text-align: justify">
-                    {{ $buku->sinopsis }}
-                </p>
 
-            </div>
+<a href="/kelola-data-buku" class="btn btn-primary shadow mb-4">
+    <i class="bi bi-arrow-left"></i> Kembali
+</a> 
+
+<div class="row g-4">
+    <!-- Gambar Buku -->
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <img src="/storage/{{ $buku->gambar }}" class="card-img-top img-fluid border" alt="Gambar Buku">
         </div>
-        <div class="row my-4">
-            <div class="col-md-3">
-                <h6>Penerbit</h6>
-                <p>{{ $buku->penerbit }}</p>
+    </div>
+
+    <!-- Detail Buku -->
+    <div class="col-md-8">
+        <div class="card shadow-sm p-4">
+            <div class="mb-4">
+                <h4 class="text-primary">{{ $buku->judul_buku }}</h4>
+                <p><strong>Penulis: </strong>{{ $buku->penulis }}</p>
+                <p><strong>Kategori: </strong>{{ $buku->kategori->kategori }}</p>
             </div>
-            <div class="col-md-3">
-                <h6>ISBN</h6>
-                <p>{{ $buku->isbn }}</p>
+
+            <div class="mb-4">
+                <h5 class="text-secondary">Sinopsis</h5>
+                <p class="text-justify">{{ $buku->sinopsis }}</p>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                <h6>Harga</h6>
-                <p>{{ $buku->harga }}</p>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <p><strong>Penerbit: </strong>{{ $buku->penerbit }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>ISBN: </strong>{{ $buku->isbn }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Harga: </strong>{{ $buku->harga }}</p>
+                </div>
             </div>
         </div>
     </div>

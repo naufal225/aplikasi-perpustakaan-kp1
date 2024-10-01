@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
 
 class PustakawanController extends Controller
 {
@@ -60,6 +61,16 @@ class PustakawanController extends Controller
             'email' => 'required|email:dns',
             'password' => 'required|confirmed',
             "gambar" => "required|file"
+        ], [
+            "kode_petugas.required" => "Masukan kode petugas",
+            "kode_petugas.unique" => "Kode petugas harus unik",
+            "alamat.required" => "Masukan alamat",
+            "no_telp.required" => "Masukan no telepon",
+            "email.required" => "Masukan email",
+            "email.email" => "Email harus valid",
+            "password.required" => "Masukan password",
+            "password.confirmed" => "Password harus terkonfirmasi",
+            "gambar.required" => "Masukan gambar"
         ]);
 
         $validate['password'] = bcrypt($request->password);
@@ -84,6 +95,7 @@ class PustakawanController extends Controller
     public function edit($kode_pustakawan)
     {
         $pustakawan = User::where('kode_petugas', $kode_pustakawan)->first();
+        // dd($pustakawan);
         return view("pustakawan.editpustakawan", [
             "pustakawan" => $pustakawan
         ]);
@@ -94,6 +106,8 @@ class PustakawanController extends Controller
      */
     public function update(Request $request, $kode_pustakawan)
     {
+        $pustakawan = User::where("kode_petugas", $kode_pustakawan)->first();
+
         $validate = $request->validate([
             'nama_lengkap' => 'required',
             'alamat' => 'required',
@@ -102,6 +116,13 @@ class PustakawanController extends Controller
         ]);
 
         $validate["password"] = bcrypt($request->password);
+
+        if($request->file('gambar')) {
+            if($pustakawan->gambar != $request->gambar) {
+                Storage::delete($request->oldImage);
+            }
+            $validate['gambar'] = $request->file("gambar")->store('gambar-profil', 'public');
+        }
 
         User::where("kode_petugas", $kode_pustakawan)->update($validate);
 

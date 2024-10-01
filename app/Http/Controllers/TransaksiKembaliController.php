@@ -6,6 +6,7 @@ use App\Models\Buku;
 use App\Models\Members;
 use App\Models\TransaksiKembali;
 use App\Models\TransaksiPinjam;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -87,6 +88,7 @@ class TransaksiKembaliController extends Controller
     
             // Simpan transaksi pengembalian
             TransaksiKembali::create([
+                "id_buku" => $id_buku,
                 "kode_pengembalian" => $kodeTransaksi,
                 "tgl_pengembalian" => Carbon::today()->format("ymd"),
                 "id_peminjaman" => $id_peminjaman,
@@ -207,5 +209,24 @@ class TransaksiKembaliController extends Controller
             "kode_member" => $kode_member,
             "data_peminjaman" => $data
         ]);
+    }
+
+    public function reportpdf() {
+        // Ambil semua data transaksi
+        $data = TransaksiKembali::with(['member', 'buku'])->get();
+
+        // Buat array berisi data
+        $dataReport = [
+            'nama_perpustakaan' => 'Perpustakaan 123',
+            'alamat_perpustakaan' => 'Jl. Meranti Raya No.3, Desa Setia Mekar, Kec. Tambun Selatan, Kab. Bekasi, Jawa Barat, 17510',
+            'tanggal_jam' => now(),
+            'data' => $data,
+        ];
+
+        $pdf = PDF::loadView('transaksi.reportKembali', $dataReport);
+
+        // Return 
+
+        return $pdf->download('laporan-pengembalian.pdf');
     }
 }

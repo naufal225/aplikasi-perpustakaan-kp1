@@ -52,7 +52,7 @@ input[type=number] {
 }
 
 .img-preview {
-  display: none;
+  display: block;
 }
 
 .btn-denda {

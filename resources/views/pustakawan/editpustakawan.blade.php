@@ -4,7 +4,7 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h2>Edit Data Pustakawan</h2>
 </div>  
-        <form action="/kelola-data-pustakawan/{{ $pustakawan->kode_petugas }}" method="post">
+        <form action="/kelola-data-pustakawan/{{ $pustakawan->kode_petugas }}" method="post" enctype="multipart/form-data">
             @method("put")
             @csrf
             <div class="row">
@@ -45,11 +45,10 @@
                         </div>
                         @enderror
                       </div>
-                      <button class="btn mt-4 btn-primary shadow" type="submit">Edit</button>
-
-                </div>
-                <div class="col-md-5">
-                    <div class="mb-3">
+                      
+                    </div>
+                    <div class="col-md-5">
+                      <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control @error('email') is-invalid @enderror" value="{{ old("email", $pustakawan->email) }}" name="email" id="email" placeholder="Masukan email pustakawan" required>
                         @error('email')
@@ -59,10 +58,15 @@
                         @enderror
                       </div>
                       <div class="mb-3">
-                        <label for="gambar" class="form-label label-gambar">Foto Pustakawan</label>
-                        <input value="{{ old("gambar") }}" class="form-control" type="file" name="gambar" id="gambar" onchange="previewGambar()">
+                        <img src="{{ asset('storage/' . $pustakawan->gambar) }}" class="img-preview col-5 col-md-2 my-2 img-fluid" alt="gambar profil">
                       </div>
-                </div>
+                      <div class="mb-3">
+                        <label for="gambar" class="form-label label-gambar">Foto Pustakawan</label>
+                        <input type="hidden" name="oldImage" value="{{ $pustakawan->gambar }}">
+                        <input value="{{ old("gambar", $pustakawan->gambar) }}" class="form-control" type="file" name="gambar" id="gambar" onchange="previewGambar()">
+                      </div>
+                    </div>
+                    <button class="btn mt-4 btn-primary shadow" type="submit">Edit</button>
             </div>
             
             

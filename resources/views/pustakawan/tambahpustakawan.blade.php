@@ -4,7 +4,7 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h2>Tambah Data Pustakawan</h2>
 </div>  
-        <form action="/kelola-data-pustakawan" method="post">
+        <form action="/kelola-data-pustakawan" method="post" enctype="multipart/form-data">
             @method("post")
             @csrf
             <div class="row">
@@ -69,6 +69,9 @@
                       <div class="mb-3">
                         <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
                         <input type="password" class="form-control @error('password') is-invalid @enderror" name="password_confirmation" id="password_confirmation" placeholder="Masukan konfirmasi password" required>
+                      </div>
+                      <div class="mb-3">
+                        <img class="img-preview col-5 col-md-2 my-2 img-fluid">
                       </div>
                       <div class="mb-3">
                         <label for="gambar" class="form-label label-gambar">Foto Pustakawan</label>

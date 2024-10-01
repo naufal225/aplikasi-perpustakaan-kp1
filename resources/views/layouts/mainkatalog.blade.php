@@ -8,8 +8,6 @@
 
   <title>Katalog Perpustakaan KP 1</title>
 
-  <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
-
   <!-- Include Bootstrap CSS from jsDelivr CDN -->
   <link href="{{ asset('css/bs/bootstrap.css') }}" rel="stylesheet">
 
@@ -18,14 +16,12 @@
 
   <!-- Custom styles for this template -->
   <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-  <link rel="stylesheet" href="{{ asset("css/style.css") }}">
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
   <style>
     .bd-placeholder-img {
       font-size: 1.125rem;
       text-anchor: middle;
-      -webkit-user-select: none;
-      -moz-user-select: none;
       user-select: none;
     }
 
@@ -34,43 +30,86 @@
         font-size: 3.5rem;
       }
     }
+
+    /* Ensure the image scales well in small devices */
+    .img-fluid {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Style adjustments for delete confirmation card */
+    .confirm-delete-card {
+      display: none; /* Hidden by default */
+      width: 18rem;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1050;
+    }
   </style>
 </head>
 <body>
+  {{-- Include the header for catalog --}}
   @include('utils.headerkatalog')
 
-  <div class="container pb-5">
+  {{-- Main content area --}}
+  <div class="container pb-5 mt-4">
     <div class="row">
-      <main class="col-md-9 col-lg-10 px-md-4">
+      <main class="col-md-12 col-lg-12 px-md-4">
           @yield('container')
       </main>
     </div>
   </div>
+
+  {{-- Include necessary JS libraries --}}
   <script src="https://unpkg.com/feather-icons"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-  <script src="{{ asset("js/bs/bootstrap.js") }}"></script>
+  <script src="{{ asset('js/bs/bootstrap.js') }}"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+
+  {{-- Conditionally include Chart.js if on 'home' page --}}
   @if(Request::is('home'))
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" crossorigin="anonymous"></script>
   <script src="{{ asset('js/dashboard.js') }}"></script>
   @endif
 
-  <div class="card confirm-delete-card" style="width: 18rem;position:fixed;top:50%;left:50%;transform: translate(-50%, -50%)">
+  {{-- Delete confirmation modal --}}
+  <div class="card confirm-delete-card">
     <div class="card-body text-center py-3 px-4">
-      <h5 class="card-title confirm-delete-card-text p-1 mt-2">Apakah Anda Yakin Ingin Menghapus</h5><h5 class="itemForDelete"></h5>
+      <h5 class="card-title confirm-delete-card-text p-1 mt-2">Apakah Anda Yakin Ingin Menghapus</h5>
+      <h5 class="itemForDelete"></h5>
       <button onclick="cancelDelete()" class="cancel-button btn btn-warning mb-1 mt-2 me-1">Tidak</button>
       <button onclick="confirmDelete()" class="yes-button btn btn-danger mb-1 mt-2 ms-1">Ya</button>
     </div>
   </div>
 
+  {{-- Include custom JS --}}
   <script src="{{ asset('js/script.js') }}"></script>
+  <script src="{{ asset('js/katalog.js') }}"></script>
+
+  {{-- Initialize Feather Icons --}}
   <script>
     feather.replace();
-
   </script>
 
-  <script src="{{ asset("js/katalog.js") }}"></script>
+  {{-- Script to manage delete confirmation modal visibility --}}
+  <script>
+    function showDeleteModal(item) {
+      $('.itemForDelete').text(item);
+      $('.confirm-delete-card').show();
+    }
+
+    function cancelDelete() {
+      $('.confirm-delete-card').hide();
+    }
+
+    function confirmDelete() {
+      // Your delete logic here
+      cancelDelete();
+    }
+  </script>
 </body>
 </html>

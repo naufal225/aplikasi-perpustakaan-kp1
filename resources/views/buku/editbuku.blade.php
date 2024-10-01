@@ -118,7 +118,7 @@
                 </div>
             </div>
               
-              <button class="btn btn-primary shadow" type="submit">Tambah</button>
+              <button class="btn btn-primary shadow" type="submit">Edit</button>
         </form>
     </div>
 </div>

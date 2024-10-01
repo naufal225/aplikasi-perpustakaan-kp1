@@ -90,5 +90,5 @@
         </div>
       </div>
 
-      <a href="" class="btn btn-primary shadow">Cetak Laporan Transaksi Pengembalian Buku</a>
+      <a href="/cetak-kembali" class="btn btn-primary shadow">Cetak Laporan Transaksi Pengembalian Buku</a>
 @endsection

@@ -62,3 +62,7 @@ Route::post('/hapus-item/{kode_buku}', [TransaksiPinjamController::class, 'hapus
 Route::get('/katalog', [KatalogController::class, "index"]);
 
 Route::get('/katalog/detail', [KatalogController::class, "show"]);
+
+Route::get('/cetak-pinjam', [TransaksiPinjamController::class, "reportpdf"]);
+
+Route::get('/cetak-kembali', [TransaksiKembaliController::class, "reportpdf"]);

@@ -21,5 +21,9 @@ class TransaksiKembali extends Model
         return $this->belongsTo(Buku::class, "id_buku");
     }
 
+    public function member() {
+        return $this->belongsTo(Members::class, "id_member");
+    }
+
 
 }

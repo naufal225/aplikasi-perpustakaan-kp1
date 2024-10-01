@@ -283,4 +283,23 @@ class TransaksiPinjamController extends Controller
         return redirect()->back()->with('success', 'Item berhasil dihapus dari keranjang.');
     }
 
+    public function reportpdf() {
+        // Ambil semua data transaksi
+        $data = TransaksiPinjam::with(['member', 'buku'])->get();
+
+        // Buat array berisi data
+        $dataReport = [
+            'nama_perpustakaan' => 'Perpustakaan 123',
+            'alamat_perpustakaan' => 'Jl. Meranti Raya No.3, Desa Setia Mekar, Kec. Tambun Selatan, Kab. Bekasi, Jawa Barat, 17510',
+            'tanggal_jam' => now(),
+            'data' => $data,
+        ];
+
+        $pdf = PDF::loadView('transaksi.reportPinjam', $dataReport);
+
+        // Return 
+
+        return $pdf->download('laporan-peminjaman.pdf');
+    }
+
 }
