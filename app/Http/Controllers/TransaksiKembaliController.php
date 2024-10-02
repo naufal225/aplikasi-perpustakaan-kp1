@@ -9,6 +9,9 @@ use App\Models\TransaksiPinjam;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Number;
 
 class TransaksiKembaliController extends Controller
 {
@@ -26,8 +29,8 @@ class TransaksiKembaliController extends Controller
                 ->orWhere('buku.judul_buku', 'like', "%$request->s%");
         });
 
-        if($request->has("tanggal_awal") && $request->has("tanggal_akhir")) {
-            $transaksi = $query->whereBetween("transaksi_kembali.tgl_pengembalian", [$request->tanggal_awal, $request->tanggal_akhir]);
+        if ($request->filled('tanggal_awal') && $request->filled('tanggal_akhir')) {
+            $query->whereBetween("tgl_peminjaman", [$request->tanggal_awal, $request->tanggal_akhir]);
         }
 
         $transaksi = $query->latest()->paginate(5);
@@ -55,9 +58,25 @@ class TransaksiKembaliController extends Controller
             return redirect()->back()->with("gagal", "Anda tidak mencentang 1 buku pun");
         }
 
+        $kodeTransaksi = "";
+
+        // Menyimpan transaksi pengembalian
+        $tgl_default = Carbon::today()->format("ymd");
+        $transaksiTerakhir = TransaksiKembali::whereDate("tgl_pengembalian", Carbon::today())->latest()->first() ?? "TRK24" . $tgl_default . "000";
+
+        if ($transaksiTerakhir != "TRK" . $tgl_default . "000") {
+            $jumlahTransaksiTerakhir = TransaksiKembali::whereDate("tgl_pengembalian", Carbon::today())->count() + 1;
+            $jumlahTransaksiTerakhir = str_pad($jumlahTransaksiTerakhir, 3, "0", STR_PAD_LEFT);
+            $kodeTransaksi = "TRK" . Carbon::today()->format("ymd") . $jumlahTransaksiTerakhir;
+        } else {
+            $kodeTransaksi = "TRK" . Carbon::today()->format("ymd") . "001";
+        }
+
         foreach ($request->input('kembali') as $kode_buku) {
             // Mendapatkan id buku terkait dan id peminjaman terkait
             // dd($request->input('kondisi')[$kode_buku]);
+            $denda_hilang_atau_rusak = 0;
+            $denda_keterlambatan = 0;
 
             $id_buku = Buku::where("kode_buku", $kode_buku)->first()->id;
             $transaksiPinjam = TransaksiPinjam::where("kode_peminjaman", $request->kode_peminjaman)
@@ -69,30 +88,41 @@ class TransaksiKembaliController extends Controller
     
             $id_peminjaman = $transaksiPinjam->id;
     
-            // Menyimpan transaksi pengembalian
-            $tgl_default = Carbon::today()->format("ymd");
-            $transaksiTerakhir = TransaksiKembali::whereDate("tgl_pengembalian", Carbon::today())->latest()->first() ?? "TRK24" . $tgl_default . "000";
-    
-            if ($transaksiTerakhir != "TRK" . $tgl_default . "000") {
-                $jumlahTransaksiTerakhir = TransaksiKembali::whereDate("tgl_pengembalian", Carbon::today())->count() + 1;
-                $jumlahTransaksiTerakhir = str_pad($jumlahTransaksiTerakhir, 3, "0", STR_PAD_LEFT);
-                $kodeTransaksi = "TRK" . Carbon::today()->format("ymd") . $jumlahTransaksiTerakhir;
-            } else {
-                $kodeTransaksi = "TRK" . Carbon::today()->format("ymd") . "001";
-            }
-    
             $kondisi = $request->input('kondisi')[$kode_buku] ? $request->input('kondisi')[$kode_buku] : "hilang atau rusak";
             $status = $request->input('status');
 
             // dd($kondisi);
+
+            // Mengecek telat atau tidak dengan melihat status nya
+            if($status != "belum telat") {
+                // Menghitung denda keterlambatan
+                $tanggalSekarang = Carbon::now(); // Mendapatkan tanggal sekarang
+                $estimasiKembali = Carbon::parse($transaksiPinjam->estimasi_tgl_kembali); // Mengonversi string ke objek Carbon
+                
+                // Menghitung selisih hari
+                $selisihHari = $tanggalSekarang->diffInDays($estimasiKembali);
+
+                if($selisihHari > 0) {
+                    $denda_keterlambatan = $selisihHari * 1000;
+                }
+            }
+
+            // Mengecek kondisi
+            if($kondisi != "baik") {
+                // Menghitung denda hilang atau rusak
+                $denda_hilang_atau_rusak = Buku::find($id_buku)->harga;
+            }
+
     
             // Simpan transaksi pengembalian
             TransaksiKembali::create([
                 "id_buku" => $id_buku,
                 "kode_pengembalian" => $kodeTransaksi,
-                "tgl_pengembalian" => Carbon::today()->format("ymd"),
+                "tgl_pengembalian" => now()->format('Y-m-d H:i:s'),
                 "id_peminjaman" => $id_peminjaman,
                 "kondisi" => $kondisi,
+                "denda_keterlambatan" => $denda_keterlambatan,
+                "denda_hilang_atau_rusak" => $denda_hilang_atau_rusak,
                 "status" => $status,
             ]);
     
@@ -131,8 +161,35 @@ class TransaksiKembaliController extends Controller
     
         // Menyimpan struk atau menampilkan ke user
         // Logika struk
+
+        // Ambil data transaksi untuk PDF
+        $transaksi = TransaksiKembali::where('kode_pengembalian', $kodeTransaksi)->with('buku')->get();
+        
+        if ($transaksi->isEmpty()) {
+            return redirect()->back()->with('gagal', 'Transaksi tidak ditemukan.');
+        }
     
-        return redirect()->back()->with("success", "Transaksi Peminjaman Berhasil Ditambahkan");
+        $data = [
+            'nama_perpustakaan' => 'Perpustakaan 123',
+            'alamat_perpustakaan' => 'Jl. Meranti Raya No.3, Desa Setia Mekar, Kec. Tambun Selatan, Kab. Bekasi, Jawa Barat, 17510',
+            'tanggal_jam' => now(),
+            'kode_transaksi' => $kodeTransaksi,
+            'nama_member' => $transaksi->first()->transaksi_pinjam->member->nama_lengkap,
+            'daftar_buku' => $transaksi->map(function ($item) {
+                return $item->buku->judul_buku;
+            }),
+        ];
+    
+        // Generate PDF
+        $pdf = Pdf::loadView('transaksi.strukKembali', $data);
+        $pdfPath = 'struk_peminjaman_'.$kodeTransaksi.'.pdf';
+        $pdf->save(storage_path('app/public/'.$pdfPath));
+    
+        // Redirect dengan JSON response
+        return response()->json([
+            'pdf_url' => asset('storage/'.$pdfPath),
+            'redirect_url' => url('/transaksi/pinjam-buku'),
+        ]);
 
         // return view("")->with([
         //     "success" => true,
@@ -185,9 +242,27 @@ class TransaksiKembaliController extends Controller
         }
 
         $transaksiPinjam = TransaksiPinjam::where("kode_peminjaman", $request->kode_peminjaman)->where("keterangan", "belum selesai")->get();
-        
+
         if(!count($transaksiPinjam)) {
             return redirect()->back()->with("success", "Transaksi peminjaman sudah selesai");
+        }
+
+        $telat = $transaksiPinjam[0]->status == "telat" ? true : false;
+        $jumlahDendaTelat = 0;
+
+        if ($telat) {
+            // Menggunakan Carbon untuk mendapatkan tanggal saat ini
+            $tanggalSekarang = Carbon::now(); // Mendapatkan tanggal sekarang
+            $estimasiKembali = Carbon::parse($transaksiPinjam->estimasi_tgl_kembali); // Mengonversi string ke objek Carbon
+        
+            // Menghitung selisih hari
+            $selisihHari = $tanggalSekarang->diffInDays($estimasiKembali);
+        
+            // Pastikan selisih hari positif (hanya menghitung denda jika telat)
+            if ($selisihHari > 0) {
+                // denda per hari adalah 1000
+                $jumlahDendaTelat = $selisihHari * 1000; // Ubah sesuai jumlah denda per hari
+            }
         }
         
         $kode_member = Members::where("id", $transaksiPinjam[0]->id_member)->first()->kode_member;
@@ -200,6 +275,8 @@ class TransaksiKembaliController extends Controller
                 "kode_buku" => $buku->kode_buku,
                 "judul_buku" => $buku->judul_buku,
                 "status" => $transaksi->status,
+                "harga_buku" => $buku->harga,
+                "jumlah_denda_telat" => $jumlahDendaTelat,
             ];
         }
         
@@ -211,22 +288,46 @@ class TransaksiKembaliController extends Controller
         ]);
     }
 
-    public function reportpdf() {
-        // Ambil semua data transaksi
-        $data = TransaksiKembali::with(['member', 'buku'])->get();
+    public function reportpdf(Request $request)
+{
+    // Filter ulang sesuai inputan sebelumnya
+    $query = TransaksiKembali::query();
 
-        // Buat array berisi data
-        $dataReport = [
-            'nama_perpustakaan' => 'Perpustakaan 123',
-            'alamat_perpustakaan' => 'Jl. Meranti Raya No.3, Desa Setia Mekar, Kec. Tambun Selatan, Kab. Bekasi, Jawa Barat, 17510',
-            'tanggal_jam' => now(),
-            'data' => $data,
-        ];
-
-        $pdf = PDF::loadView('transaksi.reportKembali', $dataReport);
-
-        // Return 
-
-        return $pdf->download('laporan-pengembalian.pdf');
+    if ($request->s) {
+        $query->where(function ($q) use ($request) {
+            $q->where('kode_pengembalian', 'like', '%' . $request->s . '%')
+                ->orWhereHas('member', function ($q) use ($request) {
+                    $q->where('nama_lengkap', 'like', '%' . $request->s . '%');
+                })
+                ->orWhereHas('buku', function ($q) use ($request) {
+                    $q->where('judul_buku', 'like', '%' . $request->s . '%');
+                })
+                ->orWhereHas('kode_peminjaman', function($q) use ($request) {
+                    $q->where('kode_peminjaman', 'like', '%' . $request->s . '%');
+                });
+        });
     }
+
+    if ($request->tanggal_awal && $request->tanggal_akhir) {
+        $query->whereBetween('tgl_pengembalian', [$request->tanggal_awal, $request->tanggal_akhir]);
+    }
+
+    $transaksi = $query->get();
+
+    // Data untuk ditampilkan di laporan
+    $data = [
+        'transaksi' => $transaksi,
+        'pustakawan' => Auth::user()->nama_lengkap,
+    ];
+
+    // Pertama, render PDF untuk menghitung total halaman
+    $pdf = PDF::loadView('transaksi.reportKembali', $data);
+    $pdf->setPaper('A4', 'portrait');
+
+    // Lakukan output untuk mendapatkan konten pertama
+    $pdfContent = $pdf->output();
+
+    // Kembali render PDF dengan total halaman yang benar
+    return $pdf->stream('laporan_transaksi_pengembalian.pdf');
+}
 }

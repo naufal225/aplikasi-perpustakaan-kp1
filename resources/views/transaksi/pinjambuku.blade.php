@@ -20,23 +20,22 @@
       </div>
   </form>
 
-  <form action="">
+  <form action="/transaksi/pinjam-buku" method="get">
     <div class="row">
-    <div class="col-md-3">
-      <label for="" class="fw-bold">Tanggal Awal</label> <br>
-      <input type="date" name="tanggal_awal" id="">
+        <div class="col-md-3">
+            <label for="tanggal_awal" class="fw-bold">Tanggal Awal</label>
+            <input type="date" name="tanggal_awal" id="tanggal_awal" class="form-control" value="{{ request('tanggal_awal') }}">
+        </div>
+        <div class="col-md-3">
+            <label for="tanggal_akhir" class="fw-bold">Tanggal Akhir</label>
+            <input type="date" name="tanggal_akhir" id="tanggal_akhir" class="form-control" value="{{ request('tanggal_akhir') }}">
+        </div>
+        <div class="col-md-4 mt-2">
+            <button type="submit" class="btn btn-primary shadow">Filter</button>
+        </div>
     </div>
-    <div class="col-md-3">
-      <label for="" class="fw-bold">Tanggal Akhir</label> <br>
-      <input type="date" name="tanggal_akhir" id="">
-      
-    </div>
-    <div class="col-md-4 mt-2">
-      <button type="submit" class="btn btn-primary shadow">Filter</button>
-    </div>
-
-  </div>
 </form>
+
 
   <div class="row">
     <div class="col-md-5">
@@ -55,7 +54,7 @@
         <table class="table table-striped">
             <thead>
               <tr class="text-center">
-                <th scope="col">#</th>
+                <th scope="col">No</th>
                 <th scope="col">Kode Peminjaman</th>
                 <th scope="col">Nama Peminjam</th>
                 <th scope="col">Judul Buku</th>
@@ -87,6 +86,23 @@
         </div>
       </div>
 
-      <a href="/cetak-pinjam" class="btn btn-primary shadow">Cetak Laporan Transaksi Peminjaman Buku</a>
+      <div class="border-bottom"></div>
+
+      <form action="/cetak-pinjam?s={{ request('s') }}&tanggal_awal={{ request('tanggal_awal') }}&tanggal_akhir={{ request('tanggal_akhir') }}" class="mt-3" method="get">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="tanggal_awal" class="fw-bold">Tanggal Awal</label>
+                <input type="date" name="tanggal_awal" id="tanggal_awal" class="form-control" value="{{ request('tanggal_awal') }}">
+            </div>
+            <div class="col-md-3">
+                <label for="tanggal_akhir" class="fw-bold">Tanggal Akhir</label>
+                <input type="date" name="tanggal_akhir" id="tanggal_akhir" class="form-control" value="{{ request('tanggal_akhir') }}">
+            </div>
+          </div>
+          <div class="col-md-4 mt-2">
+              <button type="submit" class="btn btn-primary shadow mt-3">Cetak Laporan Transaksi Peminjaman Buku</button>
+          </div>
+    </form>
+
 
 @endsection

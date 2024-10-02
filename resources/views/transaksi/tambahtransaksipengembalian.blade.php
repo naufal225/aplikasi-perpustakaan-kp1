@@ -55,7 +55,7 @@
     </div>
 </div>
 
-<form action="/transaksi/kembali-buku" method="POST">
+<form id="transaksiForm" action="/transaksi/kembali-buku" method="POST">
     @csrf
     <div class="row col-md-11 mt-2 border border-dark">
         <div class="table-container" style="overflow-x: scroll;">
@@ -67,31 +67,36 @@
                     <th scope="col">Judul Buku</th>
                     <th scope="col">Pilih</th>
                     <th scope="col">Kondisi</th>
+                    <th scope="col">Denda Keterlambatan</th>
+                    <th scope="col">Denda Hilang Atau Rusak</th>
                   </tr>
                 </thead>
                 <tbody>
                     @if (session()->has('data_peminjaman'))
                     @foreach (session('data_peminjaman') as $item)
-                        <tr class="text-center" id="row-{{ $item['kode_buku'] }}">
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item['kode_buku'] }}</td>
-                            <td>{{ $item['judul_buku'] }}</td>
-                            <td>
-                                <input type="hidden" name="status" value="{{ $item['status'] }}">
-                                <input type="hidden" name="kode_peminjaman" value="{{ session("kode_peminjaman") ? session("kode_peminjaman") : "" }}">
-                                <input type="checkbox" name="kembali[]" value="{{ $item['kode_buku'] }}" class="checkbox-kembali">
-                            </td>
-                            <td>
-                                <select class="form-control kondisi" name="kondisi[{{ $item['kode_buku'] }}]" id="kondisi-{{ $item['kode_buku'] }}">
-                                    <option value="baik">Baik</option>
-                                    <option value="rusak atau hilang">Rusak atau hilang</option>
-                                </select>
-                            </td>
-                        </tr>
+                    <tr class="text-center" id="row-{{ $item['kode_buku'] }}" data-harga-buku="{{ $item['harga_buku'] }}">
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $item['kode_buku'] }}</td>
+                        <td>{{ $item['judul_buku'] }}</td>
+                        <td>
+                            <input type="hidden" name="status" value="{{ $item['status'] }}">
+                            <input type="hidden" name="kode_peminjaman" value="{{ session("kode_peminjaman") ? session("kode_peminjaman") : "" }}">
+                            <input type="checkbox" name="kembali[]" value="{{ $item['kode_buku'] }}" class="checkbox-kembali">
+                        </td>
+                        <td>
+                            <select class="form-control kondisi" name="kondisi[{{ $item['kode_buku'] }}]" id="kondisi-{{ $item['kode_buku'] }}">
+                                <option value="baik">Baik</option>
+                                <option value="rusak atau hilang">Rusak atau hilang</option>
+                            </select>
+                        </td>
+                        <td>{{ $item['jumlah_denda_telat'] > 0 ? $item['jumlah_denda_telat'] : 0 }}</td>
+                        <td>0</td> <!-- Ini kolom denda hilang/rusak -->
+                    </tr>
+                    
                     @endforeach
                     @else
                         <tr>
-                            <td colspan="5">Tidak ada buku di dalam keranjang.</td>
+                            <td colspan="7">Tidak ada buku di dalam keranjang.</td>
                         </tr>
                     @endif
                 </tbody>
@@ -104,4 +109,35 @@
         </div>
     </div>
 </form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $('#transaksiForm').on('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+    
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    // Create a temporary link and simulate a click to download PDF
+                    var link = document.createElement('a');
+                    link.href = response.pdf_url;
+                    link.download = 'struk_pengembalian.pdf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+    
+                    // Redirect after download
+                    window.location.href = response.redirect_url;
+                },
+                error: function(xhr) {
+                    alert('Terjadi kesalahan: ' + xhr.responseText);
+                }
+            });
+        });
+    </script>
+
+
 @endsection

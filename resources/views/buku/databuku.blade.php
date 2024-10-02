@@ -38,7 +38,7 @@
         <table class="table table-striped" style="width: 1400px">
             <thead>
               <tr class="text-center">
-                <th scope="col">#</th>
+                <th scope="col">No</th>
                 <th scope="col">Kode Buku</th>
                 <th scope="col">Judul Buku</th>
                 <th scope="col">Gambar</th>

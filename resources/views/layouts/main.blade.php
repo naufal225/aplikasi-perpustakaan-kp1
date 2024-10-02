@@ -76,6 +76,10 @@
     </div>
   </div>
 
+  @if(Request::is('transaksi/kembali-buku/create'))
+  <script src="{{ asset('js/kembali.js') }}"></script>
+  @endif
+
   <script src="{{ asset('js/script.js') }}"></script>
   <script>
     feather.replace();

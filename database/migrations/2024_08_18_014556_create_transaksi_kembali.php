@@ -16,9 +16,11 @@ return new class extends Migration
             $table->string("kode_pengembalian");
             $table->foreignId("id_peminjaman")->constrained('transaksi_pinjam')->onDelete('cascade');
             $table->foreignId("id_buku")->constrained('buku')->onDelete('cascade');
-            $table->date("tgl_pengembalian");
+            $table->dateTime("tgl_pengembalian");
             $table->enum("kondisi", ['hilang atau rusak', 'baik']);
             $table->enum("status", ['telat', 'belum telat']);
+            $table->integer("denda_keterlambatan")->default(0);
+            $table->integer("denda_hilang_atau_rusak")->default(0);
             $table->timestamps();
         });
     }

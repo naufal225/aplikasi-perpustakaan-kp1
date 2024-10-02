@@ -38,7 +38,7 @@
         <table class="table table-striped">
             <thead>
               <tr class="text-center">
-                <th scope="col">#</th>
+                <th scope="col">No</th>
                 <th scope="col">Kode Kategori</th>
                 <th scope="col">Kategori</th>
                 <th scope="col">Aksi</th>

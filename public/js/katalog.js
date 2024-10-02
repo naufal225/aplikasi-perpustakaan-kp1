@@ -66,7 +66,7 @@ $(document).ready(function() {
     $("#search-input").on("keyup", function() {
         let query = $(this).val();
 
-        if(query.length > 2) {
+        if(query.length > 0) {
             $.ajax({
                 url: API,
                 type: "GET",

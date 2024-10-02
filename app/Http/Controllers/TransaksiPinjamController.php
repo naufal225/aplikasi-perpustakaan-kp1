@@ -9,32 +9,50 @@ use Illuminate\Support\Facades\Date;
 use App\Models\Buku;
 use App\Models\Members;
 use Barryvdh\DomPDF\Facade\Pdf;
+use DateTime;
+use Illuminate\Support\Facades\Auth;
+
 class TransaksiPinjamController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        $query = TransaksiPinjam::select("transaksi_pinjam.*", "buku.judul_buku", "members.nama_lengkap")
-        ->join('buku', 'transaksi_pinjam.id_buku', '=', 'buku.id')
-        ->join('members', "transaksi_pinjam.id_member", '=', 'members.id')
-        ->where(function($q) use($request) {
-            $q->where("transaksi_pinjam.kode_peminjaman", "like", "%$request->s%")
-                  ->orWhere("members.nama_lengkap", "like", "%$request->s%")
-                  ->orWhere("buku.judul_buku", "like", "%$request->s%");
+{
+    // Validasi filter tanggal
+    $request->validate([
+        'tanggal_awal' => 'nullable|date',
+        'tanggal_akhir' => 'nullable|date|after_or_equal:tanggal_awal',
+    ]);
+
+    // Query untuk mendapatkan transaksi
+    $query = TransaksiPinjam::query();
+
+    // Filter berdasarkan kata kunci pencarian
+    if ($request->s) {
+        $query->where(function ($q) use ($request) {
+            $q->where('kode_peminjaman', 'like', '%' . $request->s . '%')
+                ->orWhereHas('member', function ($q) use ($request) {
+                    $q->where('nama_lengkap', 'like', '%' . $request->s . '%');
+                })
+                ->orWhereHas('buku', function ($q) use ($request) {
+                    $q->where('judul_buku', 'like', '%' . $request->s . '%');
+                });
         });
-
-        if($request->has("tanggal_awal") && $request->has("tanggal_akhir")) {
-            $transaksi = $query->whereBetween("tgl_peminjaman", [$request->tanggal_awal, $request->tanggal_akhir]);
-        }
-
-        $transaksi = $query->latest()->paginate(5);
-
-        return view('transaksi.pinjambuku', [
-            "transaksi" => $transaksi
-        ]);
     }
+
+    // Filter berdasarkan tanggal
+    if ($request->tanggal_awal && $request->tanggal_akhir) {
+        $query->whereBetween('tgl_peminjaman', [$request->tanggal_awal, $request->tanggal_akhir]);
+    }
+
+    // Ambil data transaksi yang difilter
+    $transaksi = $query->latest()->paginate(10);
+
+    return view('transaksi.pinjambuku', compact('transaksi'));
+}
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -103,7 +121,7 @@ class TransaksiPinjamController extends Controller
                     "id_buku" => $id_buku,
                     "status" => "belum telat",
                     "keterangan" => "belum selesai",
-                    "tgl_peminjaman" => date("Y-m-d"),
+                    "tgl_peminjaman" => now()->format('Y-m-d H:i:s'),
                     "estimasi_tgl_kembali" => date("Y-m-d", strtotime(date("Y-m-d") . " + 7 days"))
                 ]);
     
@@ -135,7 +153,7 @@ class TransaksiPinjamController extends Controller
         ];
     
         // Generate PDF
-        $pdf = Pdf::loadView('transaksi.struk', $data);
+        $pdf = Pdf::loadView('transaksi.strukPinjam', $data);
         $pdfPath = 'struk_peminjaman_'.$kode_transaksi.'.pdf';
         $pdf->save(storage_path('app/public/'.$pdfPath));
     
@@ -283,23 +301,47 @@ class TransaksiPinjamController extends Controller
         return redirect()->back()->with('success', 'Item berhasil dihapus dari keranjang.');
     }
 
-    public function reportpdf() {
-        // Ambil semua data transaksi
-        $data = TransaksiPinjam::with(['member', 'buku'])->get();
+    public function reportpdf(Request $request)
+{
+    // Filter ulang sesuai inputan sebelumnya
+    $query = TransaksiPinjam::query();
 
-        // Buat array berisi data
-        $dataReport = [
-            'nama_perpustakaan' => 'Perpustakaan 123',
-            'alamat_perpustakaan' => 'Jl. Meranti Raya No.3, Desa Setia Mekar, Kec. Tambun Selatan, Kab. Bekasi, Jawa Barat, 17510',
-            'tanggal_jam' => now(),
-            'data' => $data,
-        ];
-
-        $pdf = PDF::loadView('transaksi.reportPinjam', $dataReport);
-
-        // Return 
-
-        return $pdf->download('laporan-peminjaman.pdf');
+    if ($request->s) {
+        $query->where(function ($q) use ($request) {
+            $q->where('kode_peminjaman', 'like', '%' . $request->s . '%')
+                ->orWhereHas('member', function ($q) use ($request) {
+                    $q->where('nama_lengkap', 'like', '%' . $request->s . '%');
+                })
+                ->orWhereHas('buku', function ($q) use ($request) {
+                    $q->where('judul_buku', 'like', '%' . $request->s . '%');
+                });
+        });
     }
+
+    if ($request->tanggal_awal && $request->tanggal_akhir) {
+        $query->whereBetween('tgl_peminjaman', [$request->tanggal_awal, $request->tanggal_akhir]);
+    }
+
+    $transaksi = $query->get();
+
+    // Data untuk ditampilkan di laporan
+    $data = [
+        'transaksi' => $transaksi,
+        'pustakawan' => Auth::user()->nama_lengkap,
+    ];
+
+    // Pertama, render PDF untuk menghitung total halaman
+    $pdf = PDF::loadView('transaksi.reportPinjam', $data);
+    $pdf->setPaper('A4', 'portrait');
+
+    // Lakukan output untuk mendapatkan konten pertama
+    $pdfContent = $pdf->output();
+
+    // Kembali render PDF dengan total halaman yang benar
+    return $pdf->stream('laporan_transaksi_peminjaman.pdf');
+}
+
+    
+    
 
 }
