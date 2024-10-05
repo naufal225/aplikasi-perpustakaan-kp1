@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
     .then(response => response.json())
     .then(data => {
         console.log(data);
-        const labels = Object.keys(data); // Tanggal sebagai label
+        const labels = Object.keys(data).sort((a,b) => a-b); // Tanggal sebagai label
         const kembaliData = Object.values(data).map(item => item.jumlahPengembalian);
         const pinjamData = Object.values(data).map(item => item.jumlahPeminjaman);
         const keterlambatanData = Object.values(data).map(item => item.jumlahKeterlambatan);

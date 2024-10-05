@@ -45,7 +45,7 @@
 <div class="row">
     <div class="col-md-9">
         <div class="mt-5 border-dark border-0 rounded shadow p-4 container-chart">
-            <h6 class="text-center">Tabel Data Transaksi Per Bulan {{ $bulanHuruf }}</h6>
+            <h6 class="text-center">Tabel Data Transaksi Per Bulan {{ $bulanHuruf }} Tahun {{ date("Y") }}</h6>
             <canvas id="chart"></canvas>
         </div>
     </div>

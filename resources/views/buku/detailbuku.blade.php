@@ -28,7 +28,7 @@
 
             <div class="mb-4">
                 <h5 class="text-secondary">Sinopsis</h5>
-                <p class="text-justify">{{ $buku->sinopsis }}</p>
+                <p class="" style="text-align: justify">{{ $buku->sinopsis }}</p>
             </div>
 
             <div class="row">
@@ -39,7 +39,7 @@
                     <p><strong>ISBN: </strong>{{ $buku->isbn }}</p>
                 </div>
                 <div class="col-md-4">
-                    <p><strong>Harga: </strong>{{ $buku->harga }}</p>
+                    <p><strong>Harga: </strong>Rp. {{ number_format($buku->harga, 0, ",", ".") }}</p>
                 </div>
             </div>
         </div>

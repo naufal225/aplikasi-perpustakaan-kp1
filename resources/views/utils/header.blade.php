@@ -4,14 +4,10 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="d-flex justify-content-between me-5">
+    <a class="text-decoration-none" href="/#" aria-describedby="Pengaturan Akun">
       <h5 class="text-white ms-3 my-2 akun position-relative">
           <i class="bi bi-person mr-2"></i>{{ Auth::user()->nama_lengkap }}
-          <!-- Card muncul saat hover -->
-          <div class="profile-card shadow p-3 mb-5 bg-white rounded" id="profile-card">
-              <img src="{{ Auth::user()->pp ? asset('storage/' . Auth::user()->gambar) : asset('img/apalah.png') }}" alt="Profile Picture" class="img-thumbnail rounded-circle ml-4" width="200" height="200">
-              <h6 class="mt-2">{{ Auth::user()->nama_lengkap }}</h6>
-              <a href="/profile/settings" class="btn btn-sm btn-outline-primary">Pengaturan</a>
-          </div>
       </h5>
+    </a>
   </div>
 </header>

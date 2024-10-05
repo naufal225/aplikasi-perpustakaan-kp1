@@ -15,9 +15,9 @@
     </div>
 </div>
 
-<div class="row mt-3" id="search-result">
+<div class="row mt-3 justify-content-center" id="search-result">
     @foreach ($data as $item)
-        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4" class="search-result-card">
             <a href="/katalog/detail?judul={{ $item->judul_buku }}" class="text-decoration-none text-dark">
                 <div class="card shadow h-100">
                     <img src="/storage/{{ $item->gambar }}" class="card-img-top border-bottom" alt="{{ $item->judul_buku }}">

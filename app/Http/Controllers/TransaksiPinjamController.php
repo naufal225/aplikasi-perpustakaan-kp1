@@ -302,45 +302,54 @@ class TransaksiPinjamController extends Controller
     }
 
     public function reportpdf(Request $request)
-{
-    // Filter ulang sesuai inputan sebelumnya
-    $query = TransaksiPinjam::query();
-
-    if ($request->s) {
-        $query->where(function ($q) use ($request) {
-            $q->where('kode_peminjaman', 'like', '%' . $request->s . '%')
-                ->orWhereHas('member', function ($q) use ($request) {
-                    $q->where('nama_lengkap', 'like', '%' . $request->s . '%');
-                })
-                ->orWhereHas('buku', function ($q) use ($request) {
-                    $q->where('judul_buku', 'like', '%' . $request->s . '%');
-                });
-        });
-    }
-
-    if ($request->tanggal_awal && $request->tanggal_akhir) {
-        $query->whereBetween('tgl_peminjaman', [$request->tanggal_awal, $request->tanggal_akhir]);
-    }
-
-    $transaksi = $query->get();
-
-    // Data untuk ditampilkan di laporan
-    $data = [
-        'transaksi' => $transaksi,
-        'pustakawan' => Auth::user()->nama_lengkap,
-    ];
-
-    // Pertama, render PDF untuk menghitung total halaman
+    {
+        // Filter ulang sesuai inputan sebelumnya
+        $query = TransaksiPinjam::query();
+    
+        if ($request->s) {
+            $query->where(function ($q) use ($request) {
+                $q->where('kode_peminjaman', 'like', '%' . $request->s . '%')
+                    ->orWhereHas('member', function ($q) use ($request) {
+                        $q->where('nama_lengkap', 'like', '%' . $request->s . '%');
+                    })
+                    ->orWhereHas('buku', function ($q) use ($request) {
+                        $q->where('judul_buku', 'like', '%' . $request->s . '%');
+                    });
+            });
+        }
+    
+        if ($request->tanggal_awal && $request->tanggal_akhir) {
+            $query->whereBetween('tgl_peminjaman', [$request->tanggal_awal, $request->tanggal_akhir]);
+        }
+    
+        $transaksi = $query->get();
+    
+        // Data untuk ditampilkan di laporan
+        $data = [
+            'transaksi' => $transaksi,
+            'pustakawan' => Auth::user()->nama_lengkap,
+            'nama_perpustakaan' => "Perpustakaan ABC",
+            'alamat_perpustakaan' => 'Jl. Meranti Raya No.3, RT 3 RW 14, Desa Setia Mekar, Kec. Tambun Selatan, Kab. Bekasi 17510',
+            'tanggal_jam' => Carbon::now()->format("Y-m-d H:m:s")
+        ];
+    
+        // Render PDF dengan Snappy
     $pdf = PDF::loadView('transaksi.reportPinjam', $data);
     $pdf->setPaper('A4', 'portrait');
 
-    // Lakukan output untuk mendapatkan konten pertama
+    // Output untuk mendapatkan konten dan menghitung total halaman
     $pdfContent = $pdf->output();
+    $totalPages = $pdf->getCanvas()->get_page_count(); // Hitung total halaman
 
-    // Kembali render PDF dengan total halaman yang benar
+    // Set data untuk halaman
+    $data['totalPages'] = $totalPages; // Total halaman
+    $data['page'] = 1; // Untuk halaman pertama, bisa Anda atur jika Anda mengatur halaman
+    $data['chunksCount'] = ceil($transaksi->count() / 15); // Jika setiap halaman 15 item
+    // Memuat ulang tampilan dengan data halaman
+    $pdf = PDF::loadView('transaksi.reportPinjam', $data);
     return $pdf->stream('laporan_transaksi_peminjaman.pdf');
-}
-
+    }
+    
     
     
 

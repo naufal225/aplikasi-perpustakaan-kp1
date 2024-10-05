@@ -138,10 +138,10 @@ function previewGambar() {
     }
 }
 
-$('.akun').on('mouseleave', function() {
-    $('#profile-card').fadeOut(1000); // Smooth fade-out effect
-});
+// $('.akun').on('mouseleave', function() {
+//     $('#profile-card').fadeOut(1000); // Smooth fade-out effect
+// });
 
-$('.akun').on('mouseenter', function() {
-    $('#profile-card').fadeIn(1000); // Smooth fade-in effect
-});
+// $('.akun').on('mouseenter', function() {
+//     $('#profile-card').fadeIn(1000); // Smooth fade-in effect
+// });

@@ -64,7 +64,7 @@
                     <td>{{ $item->kategori }}</td>
                     <td>{{ $item->penulis }}</td>
                     <td>{{ $item->penerbit }}</td>
-                    <td>{{ $item->harga }}</td>
+                    <td>Rp. {{ number_format($item->harga, 0, ",", ".") }}</td>
                     <td>{{ $item->stok }}</td>
                     <td>
                         <a href="/kelola-data-buku/{{ $item->slug }}" class="btn btn-info mx-1"><i class="bi bi-eye"></i></a>

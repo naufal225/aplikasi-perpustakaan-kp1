@@ -1,140 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Peminjaman Buku</title>
+    <title>Laporan Transaksi Peminjaman</title>
     <style>
-        @page {
-            margin: 1cm;
-        }
-
         body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding-top: 4cm; /* Menambah jarak dari atas halaman */
-        }
-
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            text-align: center;
-            line-height: 1.5cm;
+            font-family: Arial, sans-serif;
             font-size: 12px;
+            margin: 0;
+            padding: 0;
+            counter-reset: page;
         }
-
+        @media print {
+            @page {
+                margin: 100px 20px; /* Set margin for the printed page */
+            }
+            .header, .footer {
+                position: fixed;
+                left: 0;
+                right: 0;
+                height: 50px;
+                font-size: 10px;
+                padding-top: 10px;
+            }
+            .header {
+                top: 0; /* Place header at the top */
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .header img {
+                max-width: 100px; /* Ukuran logo */
+            }
+            .info {
+                text-align: left;
+                padding-right: 20px;
+            }
+            .address {
+                font-size: 10px;
+            }
+            .footer {
+                position: fixed;
+                bottom: 0; /* Place footer at the bottom */
+                border-top: 1px solid #000;
+            }
+            .footer .page-number:before {
+                content: "Halaman " counter(page) " dari " attr(data-total-pages);
+            }
+            .page {
+                page-break-after: always;
+                page-break-inside: avoid;
+                margin-top: 120px; /* Tambah jarak agar tidak menimpa header */
+            }
+        }
         .footer {
             position: fixed;
-            bottom: 0;
+            bottom: 0; /* Place footer at the bottom */
             left: 0;
             right: 0;
-            height: 2cm;
-            text-align: center;
-            line-height: 1.5cm;
-            font-size: 12px;
+            border-top: 1px solid #000;
         }
-
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header img {
+            float: left;
+            max-width: 70px;
+        }
+        .info {
+            text-align: center;
+        }
+        .address {
+            font-size: 10px;
+            margin-top: 5px;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 1cm; /* Memberikan jarak antara tabel dan header */
+            margin-bottom: 40px;
         }
-
         table, th, td {
             border: 1px solid black;
-        }
-
-        th, td {
             padding: 8px;
             text-align: left;
         }
-
         th {
-            background-color: #f2f2f2; /* Warna latar belakang untuk header */
+            background-color: #f2f2f2;
         }
-
-        .ttd > table > th, td {
-            border: none;
+        .signature {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            position: fixed;
+            bottom: 2cm;
+            right: 0;
+            left: 0;
         }
-
-        .page-number::before {
-            content: counter(page);
+        .page-break {
+            page-break-after: always;
         }
-
-        .total-pages::before {
-            content: "1"; /* Default value */
+        .clearfix::after {
+          content: "";
+          clear: both;
+          display: table;
         }
     </style>
 </head>
 <body>
 
+    
+    @foreach ($transaksi->chunk(15) as $chunk)
     <div class="header">
-        <h2>Perpustakaan XYZ</h2>
-        <p>Pustakawan: {{ $pustakawan }}</p>
-        <p>Alamat: Jl. Contoh No. 123, Kota X</p>
-        <hr>
+        <img src="data:image/{{ pathinfo(public_path('img/apalah.png'), PATHINFO_EXTENSION) }};base64,{{ base64_encode(file_get_contents(public_path('img/apalah.png'))) }}" alt="Logo Perpustakaan">
+        <div class="info">
+            <h2 style="font-size: 23px;margin-top: 0px;">{{ $nama_perpustakaan }}</h2>
+            <p class="address" style="font-size: 13px;">{{ $alamat_perpustakaan }}</p>
+        </div>
     </div>
-
-    <h3 style="text-align: center;">Laporan Rekapitulasi Peminjaman Buku</h3>
-
+    
+    <hr>
     <table>
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Kode Peminjaman</th>
-                <th>Nama Peminjam</th>
-                <th>Judul Buku</th>
-                <th>Tanggal Pinjam</th>
-                <th>Status</th>
-                <th>Keterangan</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($transaksi as $item)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $item->kode_peminjaman }}</td>
-                    <td>{{ $item->member->nama_lengkap }}</td>
-                    <td>{{ $item->buku->judul_buku }}</td>
-                    <td>{{ $item->tgl_peminjaman }}</td>
-                    <td>{{ $item->status }}</td>
-                    <td>{{ $item->keterangan }}</td>
-                </tr>
-            @endforeach
-        </tbody>
+        <tr>
+            <td class="no-border"><strong>Tanggal & Waktu:</strong></td>
+            <td class="no-border">{{ $tanggal_jam }}</td>
+        </tr>
+        <tr>
+            <td class="no-border"><strong>Nama Pustakawan:</strong></td>
+            <td class="no-border">{{ $pustakawan }}</td>
+        </tr>
     </table>
+        <div class="page"> <!-- Start a new page for each chunk -->
+            <h3>Rekapitulasi Laporan Peminjaman Buku</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Kode Peminjaman</th>
+                        <th>Nama Anggota</th>
+                        <th>Kode Buku</th>
+                        <th>Tanggal Pinjam</th>
+                        <th>Status</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($chunk as $item)
+                        <tr>
+                            <td>{{ $loop->iteration + ($loop->parent->iteration - 1) * 15 }}</td>
+                            <td>{{ $item->kode_peminjaman }}</td>
+                            <td>{{ $item->member->nama_lengkap }}</td>
+                            <td>{{ $item->buku->kode_buku }}</td>
+                            <td>{{ $item->tgl_peminjaman }}</td>
+                            <td>{{ $item->status }}</td>
+                            <td>{{ $item->keterangan }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
 
-    <div class="ttd" style="margin-top: 2cm;">
-        <table style="width: 100%; border: none;">
-            <tr>
-                <td style="text-align: center;">Kepala Pustakawan</td>
-                <td style="text-align: center;">Pustakawan</td>
-            </tr>
-            <tr>
-                <td style="height: 80px;"></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">(...................................)</td>
-                <td style="text-align: center;">(...................................)</td>
-            </tr>
-        </table>
-    </div>
+            <!-- Check if this is the last chunk to display signatures -->
+            @if ($loop->last)
+                <div class="signature" style="text-align:center">
+                    <div style="float: left;margin-left:2cm">
+                        <p>Kepala Pustakawan</p>
+                        <br><br><br>
+                        <p>Naufal Ma'ruf Ashrori</p>
+                    </div>
+                    <div style="margin-left: 8cm;">
+                        <p>Pustakawan</p>
+                        <br><br><br>
+                        <p>{{ Auth::user()->nama_lengkap }}</p>
+                    </div>
+                </div>
+            @endif
 
-    <div class="footer">
-        <hr>
-        <table style="width: 100%; border: none">
-            <tr>
-                <td style="text-align: left; border: none;">Divisi Administrasi</td>
-                <td style="text-align: right; border: none;">
-                    Halaman <span class="page-number"></span> dari <span class="total-pages"></span>
-                </td>
-            </tr>
-        </table>
-    </div>
+            <div class="clearfix"></div>
+
+            <div class="footer">
+                <p style="float: left;">Divisi Administrasi</p>
+                <p style="text-align: right">Halaman ke {{ $loop->iteration }} dari {{ isset($chunksCount) ? $chunksCount : 15 }}</p> <!-- Update the footer -->
+            </div>
+
+            @if (!$loop->last)
+                <div class="page-break"></div>
+            @endif
+        </div>
+    @endforeach
 
 </body>
 </html>

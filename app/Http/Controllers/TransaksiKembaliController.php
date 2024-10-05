@@ -170,10 +170,13 @@ class TransaksiKembaliController extends Controller
         }
     
         $data = [
-            'nama_perpustakaan' => 'Perpustakaan 123',
-            'alamat_perpustakaan' => 'Jl. Meranti Raya No.3, Desa Setia Mekar, Kec. Tambun Selatan, Kab. Bekasi, Jawa Barat, 17510',
+            'nama_perpustakaan' => 'Perpustakaan ABC',
+            'alamat_perpustakaan' => 'Jl. Meranti Raya No.3, RT 3 RW 14, Desa Setia Mekar, Kec. Tambun Selatan, Kab. Bekasi 17510',
             'tanggal_jam' => now(),
             'kode_transaksi' => $kodeTransaksi,
+            'kondisi_buku' => $transaksi->first()->kondisi,
+            'status' => $transaksi->first()->status,
+            'denda_total' => $transaksi->first()->denda_keterlambatan + $transaksi->first()->denda_hilang_atau_rusak,
             'nama_member' => $transaksi->first()->transaksi_pinjam->member->nama_lengkap,
             'daftar_buku' => $transaksi->map(function ($item) {
                 return $item->buku->judul_buku;
@@ -302,7 +305,7 @@ class TransaksiKembaliController extends Controller
                 ->orWhereHas('buku', function ($q) use ($request) {
                     $q->where('judul_buku', 'like', '%' . $request->s . '%');
                 })
-                ->orWhereHas('kode_peminjaman', function($q) use ($request) {
+                ->orWhereHas('transaksiPinjam', function ($q) use ($request) {
                     $q->where('kode_peminjaman', 'like', '%' . $request->s . '%');
                 });
         });
@@ -318,16 +321,27 @@ class TransaksiKembaliController extends Controller
     $data = [
         'transaksi' => $transaksi,
         'pustakawan' => Auth::user()->nama_lengkap,
+        'nama_perpustakaan' => "Perpustakaan ABC",
+        'alamat_perpustakaan' => "Jl. Meranti Raya No.3, RT 3 RW 14, Desa Setia Mekar, Kec. Tambun Selatan, Kab. Bekasi 17510",
+        'tanggal_jam' => Carbon::now()->format("Y-m-d H:m:s")
     ];
 
-    // Pertama, render PDF untuk menghitung total halaman
+    // Render PDF untuk menghitung total halaman
     $pdf = PDF::loadView('transaksi.reportKembali', $data);
     $pdf->setPaper('A4', 'portrait');
 
-    // Lakukan output untuk mendapatkan konten pertama
+    // Output untuk mendapatkan konten dan menghitung total halaman
     $pdfContent = $pdf->output();
+    $totalPages = $pdf->getCanvas()->get_page_count(); // Hitung total halaman
 
-    // Kembali render PDF dengan total halaman yang benar
+    // Set data untuk halaman
+    $data['totalPages'] = $totalPages; // Total halaman
+    $data['page'] = 1; // Untuk halaman pertama, bisa Anda atur jika Anda mengatur halaman
+    $data['chunksCount'] = ceil($transaksi->count() / 15); // Jika setiap halaman 15 item
+
+    // Memuat ulang tampilan dengan data halaman
+    $pdf = PDF::loadView('transaksi.reportKembali', $data);
     return $pdf->stream('laporan_transaksi_pengembalian.pdf');
 }
+
 }
