@@ -4,7 +4,7 @@ $('.kondisi').on('change', function() {
     var hargaBuku = row.data('harga-buku'); // Ambil harga buku dari data attribute
     var dendaHilangRusak = row.find('td:last'); // Kolom denda terakhir
 
-    if (kondisi === 'rusak atau hilang') {
+    if (kondisi === 'hilang atau rusak') {
         // Set nilai denda ke harga buku
         dendaHilangRusak.text(hargaBuku);
     } else {

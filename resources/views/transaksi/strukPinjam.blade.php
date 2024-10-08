@@ -52,7 +52,7 @@
     <table>
         <tr>
             <td class="no-border"><strong>Tanggal & Waktu:</strong></td>
-            <td class="no-border">{{ $tanggal_jam }}</td>
+            <td class="no-border">{{ now()->format('d-m-Y H:m:s') }}</td>
         </tr>
         <tr>
             <td class="no-border"><strong>Kode Transaksi:</strong></td>

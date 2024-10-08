@@ -86,7 +86,7 @@
                         <td>
                             <select class="form-control kondisi" name="kondisi[{{ $item['kode_buku'] }}]" id="kondisi-{{ $item['kode_buku'] }}">
                                 <option value="baik">Baik</option>
-                                <option value="rusak atau hilang">Rusak atau hilang</option>
+                                <option value="hilang atau rusak">Rusak atau hilang</option>
                             </select>
                         </td>
                         <td>{{ $item['jumlah_denda_telat'] > 0 ? $item['jumlah_denda_telat'] : 0 }}</td>

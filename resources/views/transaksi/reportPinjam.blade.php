@@ -93,10 +93,6 @@
             display: flex;
             justify-content: space-between;
             margin-top: 40px;
-            position: fixed;
-            bottom: 2cm;
-            right: 0;
-            left: 0;
         }
         .page-break {
             page-break-after: always;
@@ -132,7 +128,7 @@
         </tr>
     </table>
         <div class="page"> <!-- Start a new page for each chunk -->
-            <h3>Rekapitulasi Laporan Peminjaman Buku</h3>
+            <h3 style="text-align: center">Laporan Rekapitulasi Peminjaman Buku</h3>
             <table>
                 <thead>
                     <tr>
@@ -152,7 +148,7 @@
                             <td>{{ $item->kode_peminjaman }}</td>
                             <td>{{ $item->member->nama_lengkap }}</td>
                             <td>{{ $item->buku->kode_buku }}</td>
-                            <td>{{ $item->tgl_peminjaman }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->tgl_peminjaman)->format('d-m-Y H:i:s') }}</td>
                             <td>{{ $item->status }}</td>
                             <td>{{ $item->keterangan }}</td>
                         </tr>
@@ -162,24 +158,25 @@
 
             <!-- Check if this is the last chunk to display signatures -->
             @if ($loop->last)
-                <div class="signature" style="text-align:center">
-                    <div style="float: left;margin-left:2cm">
-                        <p>Kepala Pustakawan</p>
-                        <br><br><br>
-                        <p>Naufal Ma'ruf Ashrori</p>
-                    </div>
-                    <div style="margin-left: 8cm;">
-                        <p>Pustakawan</p>
-                        <br><br><br>
-                        <p>{{ Auth::user()->nama_lengkap }}</p>
-                    </div>
+        <p style="text-align: right; margin-right: 73px">Mengetahui,</p>
+            <div class="signature" style="text-align:center">
+                <div style="float: left;margin-left:2cm">
+                    <p>Kepala Pustakawan</p>
+                    <br><br><br>
+                    <p>Naufal Ma'ruf Ashrori</p>
                 </div>
-            @endif
+                <div style="margin-left: 8cm;">
+                    <p>Pustakawan</p>
+                    <br><br><br>
+                    <p>{{ Auth::user()->nama_lengkap }}</p>
+                </div>
+            </div>
+        @endif
 
             <div class="clearfix"></div>
 
             <div class="footer">
-                <p style="float: left;">Divisi Administrasi</p>
+                <p style="float: left;">Divisi Administrasi Perpustakaan</p>
                 <p style="text-align: right">Halaman ke {{ $loop->iteration }} dari {{ isset($chunksCount) ? $chunksCount : 15 }}</p> <!-- Update the footer -->
             </div>
 

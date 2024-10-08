@@ -170,9 +170,9 @@ class TransaksiKembaliController extends Controller
         }
     
         $data = [
-            'nama_perpustakaan' => 'Perpustakaan ABC',
+            'nama_perpustakaan' => 'PERPUSTAKAAN ABC',
             'alamat_perpustakaan' => 'Jl. Meranti Raya No.3, RT 3 RW 14, Desa Setia Mekar, Kec. Tambun Selatan, Kab. Bekasi 17510',
-            'tanggal_jam' => now(),
+            'tanggal_jam' => Carbon::now()->format("d-m-Y H:m:s"),
             'kode_transaksi' => $kodeTransaksi,
             'kondisi_buku' => $transaksi->first()->kondisi,
             'status' => $transaksi->first()->status,
@@ -191,7 +191,7 @@ class TransaksiKembaliController extends Controller
         // Redirect dengan JSON response
         return response()->json([
             'pdf_url' => asset('storage/'.$pdfPath),
-            'redirect_url' => url('/transaksi/pinjam-buku'),
+            'redirect_url' => url('/transaksi/kembali-buku'),
         ]);
 
         // return view("")->with([
@@ -321,9 +321,9 @@ class TransaksiKembaliController extends Controller
     $data = [
         'transaksi' => $transaksi,
         'pustakawan' => Auth::user()->nama_lengkap,
-        'nama_perpustakaan' => "Perpustakaan ABC",
+        'nama_perpustakaan' => "PERPUSTAKAAN ABC",
         'alamat_perpustakaan' => "Jl. Meranti Raya No.3, RT 3 RW 14, Desa Setia Mekar, Kec. Tambun Selatan, Kab. Bekasi 17510",
-        'tanggal_jam' => Carbon::now()->format("Y-m-d H:m:s")
+        'tanggal_jam' => Carbon::now()->format("d-m-Y H:m:s")
     ];
 
     // Render PDF untuk menghitung total halaman
