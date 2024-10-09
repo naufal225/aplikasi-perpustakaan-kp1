@@ -133,7 +133,7 @@
                 <tr>
                     <th>No</th>
                     <th>Kode Pengembalian</th>
-                    <th>Nama Anggota</th>
+                    <th>Kode Member</th>
                     <th>Kode Buku</th>
                     <th>Tanggal Kembali</th>
                     <th>Kondisi Buku</th>
@@ -145,7 +145,7 @@
                     <tr>
                         <td>{{ $loop->iteration + ($loop->parent->iteration - 1) * 15 }}</td>
                         <td>{{ $item->kode_pengembalian }}</td>
-                        <td>{{ $item->transaksi_pinjam->member->nama_lengkap }}</td>
+                        <td>{{ $item->transaksi_pinjam->member->kode_member }}</td>
                         <td>{{ $item->buku->kode_buku }}</td>
                         <td>{{ \Carbon\Carbon::parse($item->tgl_pengembalian)->format('d-m-Y H:i:s') }}</td>
                         <td>{{ $item->kondisi }}</td> <!-- Assuming 'kondisi' is the field for book condition -->

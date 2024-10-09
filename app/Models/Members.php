@@ -16,4 +16,8 @@ class Members extends Model
     public function getRouteKeyName() {
         return "kode_member";
     }
+
+    public function rate_buku() {
+        return $this->hasMany(RateBuku::class);
+    }
 }

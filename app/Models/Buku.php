@@ -26,6 +26,10 @@ class Buku extends Model
         return $this->hasMany(TransaksiKembali::class);
     }
 
+    public function rate_buku() {
+        return $this->belongsToMany(RateBuku::class, 'rate_buku');
+    }
+
     public function getRouteKeyName() {
         return "slug";
     }

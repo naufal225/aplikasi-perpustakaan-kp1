@@ -169,19 +169,24 @@ class TransaksiKembaliController extends Controller
             return redirect()->back()->with('gagal', 'Transaksi tidak ditemukan.');
         }
     
+        $transaksi_data = $transaksi->map(function($item) {
+            return [
+                'judul_buku' => $item->buku->judul_buku,
+                'kondisi' => $item->kondisi,
+                'status' => $item->status,
+                'denda_total' => $item->denda_hilang_atau_rusak + $item->denda_keterlambatan,
+            ];
+        });
+        
         $data = [
             'nama_perpustakaan' => 'PERPUSTAKAAN ABC',
             'alamat_perpustakaan' => 'Jl. Meranti Raya No.3, RT 3 RW 14, Desa Setia Mekar, Kec. Tambun Selatan, Kab. Bekasi 17510',
-            'tanggal_jam' => Carbon::now()->format("d-m-Y H:m:s"),
+            'tanggal_jam' => Carbon::now()->format("d-m-Y H:i:s"),
             'kode_transaksi' => $kodeTransaksi,
-            'kondisi_buku' => $transaksi->first()->kondisi,
-            'status' => $transaksi->first()->status,
-            'denda_total' => $transaksi->first()->denda_keterlambatan + $transaksi->first()->denda_hilang_atau_rusak,
             'nama_member' => $transaksi->first()->transaksi_pinjam->member->nama_lengkap,
-            'daftar_buku' => $transaksi->map(function ($item) {
-                return $item->buku->judul_buku;
-            }),
+            'transaksi_data' => $transaksi_data,  // Gantikan 'daftar_buku' dengan 'transaksi_data'
         ];
+        
     
         // Generate PDF
         $pdf = Pdf::loadView('transaksi.strukKembali', $data);

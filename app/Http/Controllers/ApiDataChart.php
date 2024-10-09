@@ -17,32 +17,32 @@ class ApiDataChart extends Controller
 
         // Ambil transaksi pengembalian
         $transaksiKembali = DB::table("transaksi_kembali")
-            ->select(DB::raw("DAY(tgl_pengembalian) as tanggal, count(*) as jumlah"))
+            ->select(DB::raw("DAY(tgl_pengembalian) as tanggal, COUNT(DISTINCT kode_pengembalian) as jumlah"))
             ->whereMonth('tgl_pengembalian', $bulan)
             ->whereYear('tgl_pengembalian', $tahun)
-            ->groupBy(DB::raw("DAY(tgl_pengembalian)"))
             ->groupBy("kode_pengembalian")
+            ->groupBy(DB::raw("DAY(tgl_pengembalian)"))
             ->get()
             ->keyBy("tanggal");
 
         // Ambil transaksi peminjaman
         $transaksiPinjam = DB::table("transaksi_pinjam")
-            ->select(DB::raw("DAY(tgl_peminjaman) as tanggal, count(*) as jumlah"))
+            ->select(DB::raw("DAY(tgl_peminjaman) as tanggal, COUNT(DISTINCT kode_peminjaman) as jumlah"))
             ->whereMonth('tgl_peminjaman', $bulan)
             ->whereYear('tgl_peminjaman', $tahun)
-            ->groupBy(DB::raw("DAY(tgl_peminjaman)"))
             ->groupBy("kode_peminjaman")
+            ->groupBy(DB::raw("DAY(tgl_peminjaman)"))
             ->get()
             ->keyBy("tanggal");
 
         // Ambil transaksi yang terlambat
         $keterlambatan = DB::table("transaksi_pinjam")
-            ->select(DB::raw("DAY(tgl_peminjaman) as tanggal, count(*) as jumlah"))
+            ->select(DB::raw("DAY(tgl_peminjaman) as tanggal, COUNT(DISTINCT kode_peminjaman) as jumlah"))
             ->whereMonth('tgl_peminjaman', $bulan)
             ->whereYear('tgl_peminjaman', $tahun)
             ->where("status", "telat")
-            ->groupBy(DB::raw("DAY(tgl_peminjaman)"))
             ->groupBy("kode_peminjaman")
+            ->groupBy(DB::raw("DAY(tgl_peminjaman)"))
             ->get()
             ->keyBy("tanggal");
 

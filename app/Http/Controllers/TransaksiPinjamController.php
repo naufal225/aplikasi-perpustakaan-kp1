@@ -47,7 +47,7 @@ class TransaksiPinjamController extends Controller
     }
 
     // Ambil data transaksi yang difilter
-    $transaksi = $query->latest()->paginate(10);
+    $transaksi = $query->latest()->paginate(5);
 
     return view('transaksi.pinjambuku', compact('transaksi'));
 }

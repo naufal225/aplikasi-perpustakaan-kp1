@@ -128,17 +128,15 @@
         </tr>
     </table>
         <div class="page"> <!-- Start a new page for each chunk -->
-            <h3 style="text-align: center">Laporan Rekapitulasi Peminjaman Buku</h3>
+            <h3 style="text-align: center">LAPORAN REKAPITULASI PEMINJAMAN BUKU</h3>
             <table>
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>Kode Peminjaman</th>
-                        <th>Nama Anggota</th>
+                        <th>Kode Member</th>
                         <th>Kode Buku</th>
                         <th>Tanggal Pinjam</th>
-                        <th>Status</th>
-                        <th>Keterangan</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -146,11 +144,9 @@
                         <tr>
                             <td>{{ $loop->iteration + ($loop->parent->iteration - 1) * 15 }}</td>
                             <td>{{ $item->kode_peminjaman }}</td>
-                            <td>{{ $item->member->nama_lengkap }}</td>
+                            <td>{{ $item->member->kode_member }}</td>
                             <td>{{ $item->buku->kode_buku }}</td>
                             <td>{{ \Carbon\Carbon::parse($item->tgl_peminjaman)->format('d-m-Y H:i:s') }}</td>
-                            <td>{{ $item->status }}</td>
-                            <td>{{ $item->keterangan }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -163,12 +159,12 @@
                 <div style="float: left;margin-left:2cm">
                     <p>Kepala Pustakawan</p>
                     <br><br><br>
-                    <p>Naufal Ma'ruf Ashrori</p>
+                    <p>(Naufal Ma'ruf Ashrori)</p>
                 </div>
                 <div style="margin-left: 8cm;">
                     <p>Pustakawan</p>
                     <br><br><br>
-                    <p>{{ Auth::user()->nama_lengkap }}</p>
+                    <p>({{ Auth::user()->nama_lengkap }})</p>
                 </div>
             </div>
         @endif

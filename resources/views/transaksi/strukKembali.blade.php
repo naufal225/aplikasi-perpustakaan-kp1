@@ -76,13 +76,13 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($daftar_buku as $index => $judul_buku)
+            @foreach ($transaksi_data as $index => $item)
             <tr>
                 <td>{{ $index + 1 }}</td>
-                <td>{{ $judul_buku }}</td>
-                <td>{{ $kondisi_buku }}</td>
-                <td>{{ $status }}</td>
-                <td>Rp. {{ number_format($denda_total, 2) }}</td>
+                <td>{{ $item['judul_buku'] }}</td>
+                <td>{{ $item['kondisi'] }}</td>
+                <td>{{ $item['status'] }}</td>
+                <td>Rp. {{ $item['denda_total'] }}</td>
             </tr>
             @endforeach
         </tbody>
