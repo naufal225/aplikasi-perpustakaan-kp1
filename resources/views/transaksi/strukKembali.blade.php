@@ -68,11 +68,11 @@
     <table>
         <thead>
             <tr>
-                <th>No</th>
-                <th>Judul Buku</th>
-                <th>Kondisi Buku</th>
-                <th>Status</th>
-                <th>Denda Total</th>
+                <th style="text-align: center">No</th>
+                <th style="text-align: center">Judul Buku</th>
+                <th style="text-align: center">Kondisi Buku</th>
+                <th style="text-align: center">Status</th>
+                <th style="text-align: center">Denda Total</th>
             </tr>
         </thead>
         <tbody>

@@ -131,13 +131,13 @@
         <table>
             <thead>
                 <tr>
-                    <th>No</th>
-                    <th>Kode Pengembalian</th>
-                    <th>Kode Member</th>
-                    <th>Kode Buku</th>
-                    <th>Tanggal Kembali</th>
-                    <th>Kondisi Buku</th>
-                    <th>Keterangan</th>
+                    <th style="text-align: center">No</th>
+                    <th style="text-align: center">Kode Pengembalian</th>
+                    <th style="text-align: center">Kode Member</th>
+                    <th style="text-align: center">Kode Buku</th>
+                    <th style="text-align: center">Tanggal Kembali</th>
+                    <th style="text-align: center">Kondisi Buku</th>
+                    <th style="text-align: center">Keterangan</th>
                 </tr>
             </thead>
             <tbody>

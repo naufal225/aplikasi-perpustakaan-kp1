@@ -68,8 +68,8 @@
     <table>
         <thead>
             <tr>
-                <th>No</th>
-                <th>Judul Buku</th>
+                <th style="text-align: center">No</th>
+                <th style="text-align: center">Judul Buku</th>
             </tr>
         </thead>
         <tbody>

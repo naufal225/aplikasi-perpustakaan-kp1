@@ -132,11 +132,11 @@
             <table>
                 <thead>
                     <tr>
-                        <th>No</th>
-                        <th>Kode Peminjaman</th>
-                        <th>Kode Member</th>
-                        <th>Kode Buku</th>
-                        <th>Tanggal Pinjam</th>
+                        <th style="text-align: center">No</th>
+                        <th style="text-align: center">Kode Peminjaman</th>
+                        <th style="text-align: center">Kode Member</th>
+                        <th style="text-align: center">Kode Buku</th>
+                        <th style="text-align: center">Tanggal Pinjam</th>
                     </tr>
                 </thead>
                 <tbody>
