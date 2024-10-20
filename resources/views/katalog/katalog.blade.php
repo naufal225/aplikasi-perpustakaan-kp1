@@ -1,6 +1,19 @@
 @extends('layouts.mainkatalog')
 
 @section('container')
+
+@if(session()->has("RegisterSuccess"))
+        <div class="col-md-8 mx-auto">
+            <div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
+                {{ session("RegisterSuccess") }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert">
+                    
+                </button>
+            </div>
+        </div>
+        @endif
+
+
 <div class="d-flex mt-2 justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
     <h1 class="h2">Cari Data Buku</h1>
 </div>

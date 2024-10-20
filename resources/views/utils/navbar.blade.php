@@ -15,6 +15,12 @@
         </li>
         @can('admin')
         <li class="nav-item">
+          <a class="nav-link {{ Request::is('konfirmasi-registrasi-member*') ? 'active' : '' }}" aria-current="page" href="/konfirmasi-registrasi-member">
+            <span data-feather="users"></span>
+            Konfirmasi Registrasi Member
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link {{ Request::is('kelola-data-buku*') ? 'active' : '' }}" aria-current="page" href="/kelola-data-buku">
             <span data-feather="book"></span>
             Kelola Data Buku

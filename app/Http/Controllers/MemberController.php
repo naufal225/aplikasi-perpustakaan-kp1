@@ -125,5 +125,9 @@ class MemberController extends Controller
         return redirect('/kelola-data-member')->with("success", "Data Member \"$nama\" Berhasil Dihapus");
     }
 
+    public function accRegistrasi(Request $request) {
+        
+    }
+
     
 }
