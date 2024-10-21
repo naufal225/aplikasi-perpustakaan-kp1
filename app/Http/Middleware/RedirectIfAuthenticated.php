@@ -17,14 +17,27 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, string ...$guards): Response
     {
+        // Jika tidak ada guard yang diberikan, gunakan null (default guard)
         $guards = empty($guards) ? [null] : $guards;
 
         foreach ($guards as $guard) {
+            // Cek apakah user sudah login di guard tertentu (admin atau member)
             if (Auth::guard($guard)->check()) {
+                // Redirect berdasarkan guard
+                if ($guard === 'admin') {
+                    return redirect('/home');
+                }
+
+                if ($guard === 'member') {
+                    return redirect('/katalog');
+                }
+
+                // Jika guard lain, redirect ke HOME default
                 return redirect(RouteServiceProvider::HOME);
             }
         }
 
+        // Jika tidak ada yang login, lanjutkan ke request berikutnya (guest)
         return $next($request);
     }
 }

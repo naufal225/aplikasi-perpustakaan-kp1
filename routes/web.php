@@ -4,6 +4,7 @@ use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KatalogController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\KonfirmasiRegistrasiController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PustakawanController;
@@ -38,12 +39,7 @@ Route::get('/home', [DashboardController::class, "index"])->middleware("auth");
 
 Route::resource('/kelola-data-member', MemberController::class)->middleware("auth")->parameters(['members' => 'kode_member']);
 
-Route::get('/konfirmasi-registrasi-member', function() {
-    $data = Registrasi::where("acc", "belum")->get();
-    return view("member.acc", [
-        "data" => $data
-    ]);
-})->middleware("admin");
+Route::get('/konfirmasi-registrasi-member', [KonfirmasiRegistrasiController::class, "index"])->middleware("admin");
 
 Route::resource('/kelola-data-buku', BukuController::class)->middleware("admin");
 
@@ -73,15 +69,15 @@ Route::get('/katalog/detail', [KatalogController::class, "show"]);
 
 Route::get('/katalog/login', function() {
     return view('katalog.login');
-})->middleware("guest");
+});
 
-Route::post('/katalog/login', [KatalogController::class, "login"])->middleware("guest");
+Route::post('/katalog/login', [KatalogController::class, "login"]);
 
 Route::get('/katalog/registrasi', function() {
     return view('katalog.register');
-})->middleware("guest");
+});
 
-Route::post('/katalog/register', [KatalogController::class, "register"])->middleware("guest");
+Route::post('/katalog/register', [KatalogController::class, "register"]);
 
 Route::get('/cetak-pinjam', [TransaksiPinjamController::class, "reportpdf"]);
 

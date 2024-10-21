@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('no_telp');
             $table->string('email');
             $table->string('password');
-            $table->enum("acc", ['belum', 'sudah'])->default('belum');
+            $table->enum("acc", ['belum', 'acc', 'ditolak'])->default('belum');
             $table->timestamps();
         });
     }

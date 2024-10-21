@@ -50,6 +50,7 @@
   </style>
 </head>
 <body>
+  <script src="{{ asset("js/jquery-3.7.1.min.js") }}"></script>
   {{-- Include the header for catalog --}}
   @include('utils.headerkatalog')
 
@@ -68,7 +69,6 @@
   <script src="{{ asset('js/bs/bootstrap.js') }}"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
 
   {{-- Conditionally include Chart.js if on 'home' page --}}
   @if(Request::is('home'))
