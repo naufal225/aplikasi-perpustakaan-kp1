@@ -31,10 +31,6 @@ class KonfirmasiRegistrasiController extends Controller
         $email = $registrasi->email;
         $password = $registrasi->password;
 
-        // crypt dulu pw nya boss
-
-        $password = bcrypt($password);
-
         // buat kode member
 
         $memberTerakhir = Members::latest()->first()->kode_member ?? "M000";

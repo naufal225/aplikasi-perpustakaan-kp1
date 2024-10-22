@@ -8,6 +8,10 @@
 
   <title>Katalog Perpustakaan KP 1</title>
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <link rel="stylesheet" href="{{ asset("css/rating.css") }}">
+
   <link rel="icon" type="image/x-icon" href="img/apalah.png">
 
   <!-- Include Bootstrap CSS from jsDelivr CDN -->

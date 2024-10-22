@@ -33,28 +33,32 @@
                             <p class="card-text"><strong>Status:</strong> {{ $item->keterangan }}</p>
                         </div>
                     </div>                    
-                    @if (!$item->rating_ada)
+                    @if (!$item->rating_ada && $item->keterangan == "selesai")
                     <div class="row">
                         <div class="col">
-
                         </div>
                         <div class="col">
                             <form action="{{ route('rate.buku') }}" method="POST">
                                 @csrf
+                                <input type="hidden" name="id_buku" value="{{ $item->buku->id }}">
+                    
                                 <div class="mb-3">
-                                    <input type="hidden" name="id_buku" value="{{ $item->buku->id }}">
                                     <label for="rating" class="form-label">Berikan Rating:</label>
-                                    <select name="rating" id="rating" class="form-select" required>
-                                        <option value="">Pilih Rating</option>
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <option value="{{ $i }}">{{ $i }}</option>
+                                    <div class="star-rating">
+                                        @for ($i = 5; $i >= 1; $i--)
+                                            <input type="radio" id="star{{ $i }}" name="rating" value="{{ $i }}" required />
+                                            <label for="star{{ $i }}" title="{{ $i }} stars">
+                                                <i class="fas fa-star"></i>
+                                            </label>
                                         @endfor
-                                    </select>
+                                    </div>
                                 </div>
+                    
                                 <button type="submit" class="btn btn-primary">Rate</button>
                             </form>
                         </div>
                     </div>
+                    
                     @endif
                 </div>
             </div>

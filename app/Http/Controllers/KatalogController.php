@@ -7,6 +7,7 @@ use App\Models\Members;
 use App\Models\Registrasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class KatalogController extends Controller
 {
@@ -51,15 +52,26 @@ class KatalogController extends Controller
             "email.email" => "Pastikan Email Anda Valid",
             "password.required" => "Masukan Password Anda"
         ]);
-
+    
         $remember = $request->has('ingatSaya');
-
+    
+        // Cek apakah data email ada di database
+        $member = Members::where('email', $request->email)->first();
+        if (!$member) {
+            return back()->with("LoginError", "Email tidak ditemukan.");
+        }
+    
+        // Debugging: Cek password yang diinput dan hash di DB
+        if (!Hash::check($request->password, $member->password)) {
+            return back()->with("LoginError", "Password tidak sesuai.");
+        }
+    
+        // Lanjutkan jika password benar
         if(Auth::guard("member")->attempt($credentials, $remember)) {
             $request->session()->regenerate();
-
             return redirect()->intended("/katalog");
         }
-
+    
         return back()->with("LoginError", "Login Gagal");
     }
 
