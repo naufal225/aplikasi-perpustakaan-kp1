@@ -6,19 +6,22 @@
     </button>
     <div class="pe-5" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link {{ Request::is('katalog') ? 'active' : '' }} mx-2" aria-current="page" href="/katalog">Katalog</a>
+        </li>
         @auth('member')
         <li class="nav-item">
-          <a class="nav-link active mx-2" aria-current="page" href="/katalog/riwayat">Riwayat Registrasi</a>
+          <a class="nav-link {{ Request::is('katalog/riwayat') ? 'active' : '' }} mx-2" aria-current="page" href="/katalog/riwayat">Riwayat Registrasi</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active mx-2" aria-current="page" href="/katalog/logout">Logout</a>
+          <a class="nav-link active text-white bg-danger mx-2" aria-current="page" href="/katalog/logout">Logout</a>
         </li>
         @else
         <li class="nav-item">
-          <a class="nav-link active mx-2" aria-current="page" href="/katalog/login">Login</a>
+          <a class="nav-link active text-white bg-success mx-2" aria-current="page" href="/katalog/login">Login</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active mx-2" aria-current="page" href="/katalog/registrasi">Registrasi</a>
+          <a class="nav-link active text-white bg-success mx-2" aria-current="page" href="/katalog/registrasi">Registrasi</a>
         </li>
         @endauth
       </ul>

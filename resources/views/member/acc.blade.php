@@ -5,6 +5,31 @@
     <h1 class="h2">Konfirmasi Registrasi Member</h1>
 </div>
 
+<div class="row">
+  <div class="col-md-5">
+    @if (session()->has('accRegistrasiSuccess'))
+    <div class="alert alert-success" role="alert">
+        {{ session('accRegistrasiSuccess') }}
+        <button type="button" style="float: right" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+        
+    @endif
+
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-5">
+    @if (session()->has('accRegistrasiNotSuccess'))
+    <div class="alert alert-danger" role="alert">
+        {{ session('accRegistrasiNotSuccess') }}
+        <button type="button" style="float: right" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+        
+    @endif
+
+  </div>
+</div>
+
 
 <form action="/konfirmasi-registrasi-member" method="get">
     @csrf
@@ -41,16 +66,22 @@
                     <td>{{ $item->email }}</td>
                     <td>{{ $item->no_telp }}</td>
                     <td class="d-flex justify-content-center gap-4">
-                        <form action="/konfirmasi-registrasi-member/tolak/{{ $item->id }}" method="post">
-                          @method('post')
-                          @csrf
-                          <button type="submit" class="btn btn-danger"><i class="bi bi-x-circle"></i></button>
+                      @if($item->acc == "belum")
+                        <form action="/konfirmasi-registrasi-member/tolak" method="post" style="display: inline;">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $item->id }}">
+                            <button type="submit" class="btn btn-danger"><i class="bi bi-x-circle"></i></button>
                         </form>
-                        <form action="/konfirmasi-registrasi-member/acc/{{ $item->id }}" method="post">
-                          @method('post')
-                          @csrf
-                          <button type="submit" class="btn btn-success"><i class="bi bi-check"></i></button>
+                        <form action="/konfirmasi-registrasi-member/acc" method="post" style="display: inline;">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $item->id }}">
+                            <button type="submit" class="btn btn-success"><i class="bi bi-check"></i></button>
                         </form>
+                      @elseif($item->acc == "acc")
+                          <p class="text-success">Disetujui</p>
+                      @else
+                          <p class="text-danger">Ditolak</p>
+                      @endif
                     </td>
                   </tr>
               @endforeach

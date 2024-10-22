@@ -27,7 +27,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get("/", function() {
+Route::get('/', function() {
+    return redirect('/katalog');
+});
+
+Route::get("/login", function() {
     return view("login.index");
 })->middleware("guest")->name("login");
 
@@ -40,6 +44,10 @@ Route::get('/home', [DashboardController::class, "index"])->middleware("auth");
 Route::resource('/kelola-data-member', MemberController::class)->middleware("auth")->parameters(['members' => 'kode_member']);
 
 Route::get('/konfirmasi-registrasi-member', [KonfirmasiRegistrasiController::class, "index"])->middleware("admin");
+
+Route::post('/konfirmasi-registrasi-member/acc', [KonfirmasiRegistrasiController::class, "acc"])->middleware("admin");
+
+Route::post('/konfirmasi-registrasi-member/tolak', [KonfirmasiRegistrasiController::class, "tolak"])->middleware("admin");
 
 Route::resource('/kelola-data-buku', BukuController::class)->middleware("admin");
 
@@ -73,11 +81,17 @@ Route::get('/katalog/login', function() {
 
 Route::post('/katalog/login', [KatalogController::class, "login"]);
 
+Route::get('/katalog/logout', [KatalogController::class, "logout"]);
+
 Route::get('/katalog/registrasi', function() {
     return view('katalog.register');
 });
 
 Route::post('/katalog/register', [KatalogController::class, "register"]);
+
+Route::get('/katalog/riwayat', function() {
+    return view("katalog.riwayat");
+});
 
 Route::get('/cetak-pinjam', [TransaksiPinjamController::class, "reportpdf"]);
 

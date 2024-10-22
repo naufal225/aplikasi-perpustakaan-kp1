@@ -91,7 +91,7 @@ class KatalogController extends Controller
             "password.confirmed" => "Password harus terkonfirmasi",
             "nama_lengkap.required" => "Masukkan Nama Lengkap Anda",
             "alamat.required" => "Masukkan Data Alamat Lengkap Anda",
-            "no_telp.required" => "Masukkna Nomer Telepon Anda"
+            "no_telp.required" => "Masukkan Nomer Telepon Anda"
         ]);
 
         $emailTerdaftar = Members::where('email', $request->email)->first();

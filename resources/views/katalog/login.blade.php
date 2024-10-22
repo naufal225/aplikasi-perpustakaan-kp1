@@ -31,7 +31,7 @@
                 <h3 class="text-center fw-bold fs-2">Login</h3>
             </div>
             <div class="card-body border-0">
-                <form method="post" action="katalog/login">
+                <form method="post" action="/katalog/login">
                     @csrf
                     <div class="mb-3 my-2">
                         <input type="email" class="form-control shadow-sm @error("email") is-invalid @enderror" id="email" name="email" placeholder="Masukkan Email Anda" style="height:50px;">

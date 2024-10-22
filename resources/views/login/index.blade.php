@@ -34,7 +34,7 @@
                 <form method="post" action="/login">
                     @csrf
                     <div class="mb-3 my-2">
-                        <input type="email" class="form-control shadow-sm @error("email") is-invalid @enderror" id="email" name="email" placeholder="Masukan Email Anda" style="height:50px;">
+                        <input type="email" class="form-control shadow-sm @error("email") is-invalid @enderror" id="email" name="email" placeholder="Masukkan Email Anda" style="height:50px;">
                         @error("email")
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -42,7 +42,7 @@
                         @enderror
                     </div>
                     <div class="mb-3 my-3">
-                        <input type="password" class="form-control shadow-sm @error("password") is-invalid @enderror" id="password" name="password" placeholder="Masukan Password Anda" style="height:50px;">
+                        <input type="password" class="form-control shadow-sm @error("password") is-invalid @enderror" id="password" name="password" placeholder="Masukkan Password Anda" style="height:50px;">
                         @error("password")
                         <div class="invalid-feedback">
                             {{ $message }}

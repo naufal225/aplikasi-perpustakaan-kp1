@@ -8,6 +8,8 @@
 
   <title>Katalog Perpustakaan KP 1</title>
 
+  <link rel="icon" type="image/x-icon" href="img/apalah.png">
+
   <!-- Include Bootstrap CSS from jsDelivr CDN -->
   <link href="{{ asset('css/bs/bootstrap.css') }}" rel="stylesheet">
 
