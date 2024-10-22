@@ -33,7 +33,7 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
-                                <input type="text" class="form-control shadow-sm @error('nama_lengkap') is-invalid @enderror" id="nama_lengkap" name="nama_lengkap" placeholder="Masukkan Nama Anda">
+                                <input type="text" class="form-control shadow-sm @error('nama_lengkap') is-invalid @enderror" id="nama_lengkap" name="nama_lengkap" placeholder="Masukkan Nama Anda" value="{{ old("nama") }}">
                                 @error('nama_lengkap')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -42,7 +42,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="alamat" class="form-label">Alamat</label>
-                                <input type="text" class="form-control shadow-sm @error('alamat') is-invalid @enderror" id="alamat" name="alamat" placeholder="Masukkan Alamat Anda">
+                                <input type="text" class="form-control shadow-sm @error('alamat') is-invalid @enderror" id="alamat" name="alamat" placeholder="Masukkan Alamat Anda" value={{ old('alamat') }}>
                                 @error('alamat')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -51,7 +51,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="telp" class="form-label">No Telp</label>
-                                <input type="number" class="form-control shadow-sm @error('no_telp') is-invalid @enderror" name="no_telp" id="telp" placeholder="Masukkan Nomor Anda">
+                                <input type="number" class="form-control shadow-sm @error('no_telp') is-invalid @enderror" name="no_telp" id="telp" placeholder="Masukkan Nomor Anda" value={{ old('no_telp') }}>
                                 @error('no_telp')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -60,7 +60,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control shadow-sm @error('email') is-invalid @enderror" id="email" name="email" placeholder="Masukkan Email Anda">
+                                <input type="email" class="form-control shadow-sm @error('email') is-invalid @enderror" id="email" name="email" placeholder="Masukkan Email Anda" value={{ old('email') }}>
                                 @error('email')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -69,7 +69,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control shadow-sm @error('password') is-invalid @enderror" id="password" name="password" placeholder="Masukkan Password Anda">
+                                <input type="password" class="form-control shadow-sm @error('password') is-invalid @enderror" id="password" name="password" placeholder="Masukkan Password Anda" value={{ old('password') }}>
                                 @error('password')
                                 <div class="invalid-feedback">
                                     {{ $message }}

@@ -8,6 +8,8 @@ use App\Http\Controllers\KonfirmasiRegistrasiController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PustakawanController;
+use App\Http\Controllers\RateBukuController;
+use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\TransaksiKembaliController;
 use App\Http\Controllers\TransaksiPinjamController;
 use App\Models\Buku;
@@ -89,10 +91,10 @@ Route::get('/katalog/registrasi', function() {
 
 Route::post('/katalog/register', [KatalogController::class, "register"]);
 
-Route::get('/katalog/riwayat', function() {
-    return view("katalog.riwayat");
-});
+Route::get('/katalog/riwayat', [RiwayatController::class, 'index'])->middleware("member");
 
 Route::get('/cetak-pinjam', [TransaksiPinjamController::class, "reportpdf"]);
 
 Route::get('/cetak-kembali', [TransaksiKembaliController::class, "reportpdf"]);
+
+Route::post('/katalog/rate-buku', [RateBukuController::class, 'store'])->name('rate.buku');

@@ -16,7 +16,7 @@ class isMember
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(!Auth::check() || Auth::member() == null) {
+        if(!Auth::check() || Auth::guard("member") == null) {
             return redirect('/katalog');
         }
         return $next($request);

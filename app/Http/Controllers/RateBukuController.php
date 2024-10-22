@@ -2,64 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Buku;
 use App\Models\RateBuku;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RateBukuController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'id_buku' => 'required|exists:buku,id',
+            'rating' => 'required|integer|min:1|max:5',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(RateBuku $rateBuku)
-    {
-        //
-    }
+        RateBuku::updateOrCreate(
+            [
+                'id_member' => Auth::guard("member")->id(),
+                'id_buku' => $request->id_buku,
+            ],
+            [
+                'rating' => $request->rating,
+            ]
+        );
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(RateBuku $rateBuku)
-    {
-        //
-    }
+        $buku = Buku::find($request->id_buku);
+        if ($buku) {
+            $buku->calculateRating(); // Panggil method untuk menghitung rating
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, RateBuku $rateBuku)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(RateBuku $rateBuku)
-    {
-        //
+        return redirect()->back()->with('success', 'Berhasil menambahkan rating buku');
     }
 }

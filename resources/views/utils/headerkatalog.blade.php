@@ -11,7 +11,7 @@
         </li>
         @auth('member')
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('katalog/riwayat') ? 'active' : '' }} mx-2" aria-current="page" href="/katalog/riwayat">Riwayat Registrasi</a>
+          <a class="nav-link {{ Request::is('katalog/riwayat') ? 'active' : '' }} mx-2" aria-current="page" href="/katalog/riwayat">Riwayat Peminjaman</a>
         </li>
         <li class="nav-item">
           <a class="nav-link active text-white bg-danger mx-2" aria-current="page" href="/katalog/logout">Logout</a>

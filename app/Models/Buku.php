@@ -26,8 +26,9 @@ class Buku extends Model
         return $this->hasMany(TransaksiKembali::class);
     }
 
-    public function rate_buku() {
-        return $this->belongsToMany(RateBuku::class, 'rate_buku');
+    public function rate_buku()
+    {
+        return $this->hasMany(RateBuku::class, 'id_buku');
     }
 
     public function getRouteKeyName() {
@@ -41,5 +42,14 @@ class Buku extends Model
                 'source' => 'judul_buku'
             ]
         ];
+    }
+
+    public function calculateRating()
+    {
+        $averageRating = RateBuku::where('id_buku', $this->id)->avg('rating');
+
+        // Update kolom rating di tabel buku
+        $this->rating = $averageRating;
+        $this->save();
     }
 }
