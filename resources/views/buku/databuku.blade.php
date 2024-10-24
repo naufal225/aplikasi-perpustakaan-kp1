@@ -42,6 +42,7 @@
                 <th scope="col">Kode Buku</th>
                 <th scope="col">Judul Buku</th>
                 <th scope="col">Gambar</th>
+                <th scope="col">Rating</th>
                 <th scope="col">Kategori</th>
                 <th scope="col">Penulis</th>
                 <th scope="col">Penerbit</th>
@@ -61,6 +62,7 @@
                         <img src="/storage/{{ $item->gambar }}" alt="" class="border border-2 shadow-sm" style="width: 50px">
                       </a>
                     </td>
+                    <td><i style="color: rgb(123, 123, 27);" class="fas fa-star border-1"></i> {{ $item->rating }}</td>
                     <td>{{ $item->kategori }}</td>
                     <td>{{ $item->penulis }}</td>
                     <td>{{ $item->penerbit }}</td>

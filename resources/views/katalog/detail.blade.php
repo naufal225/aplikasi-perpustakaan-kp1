@@ -11,7 +11,16 @@
     <div class="row g-4">
         <!-- Gambar Buku -->
         <div class="col-md-3">
-            <div class="card shadow-sm">
+            <div class="card shadow-sm position-relative">
+                <!-- Rating di atas gambar -->
+                <div class="position-absolute top-0 start-0 bg-warning text-dark p-2 rounded-end shadow-sm">
+                    <i class="fas fa-star"></i> 
+                    @if($buku->rating)
+                        {{ $buku->rating }}
+                    @else
+                        Belum ada rating
+                    @endif
+                </div>
                 <img src="/storage/{{ $buku->gambar }}" class="card-img-top img-fluid border" alt="Gambar Buku">
             </div>
         </div>

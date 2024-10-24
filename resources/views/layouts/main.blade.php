@@ -6,6 +6,9 @@
   <meta name="description" content="">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
   @if(session()->has("kode_peminjaman") && session()->has("kode_member")) 
     <meta name="kode_peminjaman" content="{{ session('kode_peminjaman') }}">
     <meta name="kode_member" content="{{ session('kode_member') }}">
@@ -13,7 +16,7 @@
 
   <title>Aplikasi Perpustakaan KP 1</title>
 
-  <link rel="icon" type="image/x-icon" href="img/apalah.png">
+  <link rel="icon" type="image/x-icon" href="{{ asset('img/logoperpus.png') }}">
 
   <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
 

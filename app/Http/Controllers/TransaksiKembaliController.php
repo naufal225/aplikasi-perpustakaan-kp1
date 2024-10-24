@@ -175,6 +175,7 @@ class TransaksiKembaliController extends Controller
                 'kondisi' => $item->kondisi,
                 'status' => $item->status,
                 'denda_total' => $item->denda_hilang_atau_rusak + $item->denda_keterlambatan,
+                'tgl_peminjaman' => $item->transaksi_pinjam->created_at->format('d-m-Y H:m:s')
             ];
         });
         
@@ -189,7 +190,12 @@ class TransaksiKembaliController extends Controller
         
     
         // Generate PDF
-        $pdf = Pdf::loadView('transaksi.strukKembali', $data);
+        $pdf = Pdf::loadView('transaksi.strukKembali', $data)
+           ->setPaper('a4', 'portrait') // Set ukuran kertas
+           ->setOption('margin-top', 0)
+           ->setOption('margin-bottom', 0)
+           ->setOption('margin-left', 0)
+           ->setOption('margin-right', 0);
         $pdfPath = 'struk_peminjaman_'.$kodeTransaksi.'.pdf';
         $pdf->save(storage_path('app/public/'.$pdfPath));
     

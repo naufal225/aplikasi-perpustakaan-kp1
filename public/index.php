@@ -3,6 +3,8 @@
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
+
+
 define('LARAVEL_START', microtime(true));
 
 /*
@@ -53,3 +55,9 @@ $response = $kernel->handle(
 )->send();
 
 $kernel->terminate($request, $response);
+
+// Meningkatkan batas memori
+// ini_set('memory_limit', '256M');
+
+// require __DIR__.'/../vendor/autoload.php';
+// $app = require_once __DIR__.'/../bootstrap/app.php';

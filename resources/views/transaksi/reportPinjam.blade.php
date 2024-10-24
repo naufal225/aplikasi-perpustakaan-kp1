@@ -60,6 +60,16 @@
             right: 0;
             border-top: 1px solid #000;
         }
+        .header {
+        top: -20px; /* Adjust this value to move the header upwards */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .header img {
+        max-width: 150px; /* Ukuran logo */
+        margin-top: -30px; /* Adjust this value to move the image upwards */
+    }
         .header-content {
             display: flex;
             justify-content: space-between;
@@ -67,7 +77,7 @@
         }
         .header img {
             float: left;
-            max-width: 70px;
+            width: 120px;
         }
         .info {
             text-align: center;
@@ -109,7 +119,7 @@
     
     @foreach ($transaksi->chunk(15) as $chunk)
     <div class="header">
-        <img src="data:image/{{ pathinfo(public_path('img/apalah.png'), PATHINFO_EXTENSION) }};base64,{{ base64_encode(file_get_contents(public_path('img/apalah.png'))) }}" alt="Logo Perpustakaan">
+        <img src="data:image/{{ pathinfo(public_path('img/logoperpus.png'), PATHINFO_EXTENSION) }};base64,{{ base64_encode(file_get_contents(public_path('img/logoperpus.png'))) }}" alt="Logo Perpustakaan">
         <div class="info">
             <h2 style="font-size: 23px;margin-top: 0px;">{{ $nama_perpustakaan }}</h2>
             <p class="address" style="font-size: 13px;">{{ $alamat_perpustakaan }}</p>

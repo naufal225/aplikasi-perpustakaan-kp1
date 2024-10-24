@@ -12,7 +12,7 @@
 
   <link rel="stylesheet" href="{{ asset("css/rating.css") }}">
 
-  <link rel="icon" type="image/x-icon" href="img/apalah.png">
+  <link rel="icon" type="image/x-icon" href="{{ asset('img/logoperpus.png') }}">
 
   <!-- Include Bootstrap CSS from jsDelivr CDN -->
   <link href="{{ asset('css/bs/bootstrap.css') }}" rel="stylesheet">

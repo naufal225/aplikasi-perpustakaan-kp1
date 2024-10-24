@@ -153,7 +153,12 @@ class TransaksiPinjamController extends Controller
         ];
     
         // Generate PDF
-        $pdf = Pdf::loadView('transaksi.strukPinjam', $data);
+        $pdf = Pdf::loadView('transaksi.strukPinjam', $data)
+           ->setPaper('a4', 'portrait') // Set ukuran kertas
+           ->setOption('margin-top', 0)
+           ->setOption('margin-bottom', 0)
+           ->setOption('margin-left', 0)
+           ->setOption('margin-right', 0);
         $pdfPath = 'struk_peminjaman_'.$kode_transaksi.'.pdf';
         $pdf->save(storage_path('app/public/'.$pdfPath));
     

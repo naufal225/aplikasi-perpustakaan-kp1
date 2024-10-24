@@ -54,7 +54,8 @@ class MemberController extends Controller
             'nama_lengkap' => "required",
             'alamat' => 'required',
             'no_telp' => 'required',
-            'email' => 'required|email:dns'
+            'email' => 'required|email:dns',
+            "password" => "required|confirmed"
         ], [
             'kode_member.required' => 'Masukan kode member',
             'nama_lengkap.required' => 'Masukan nama member',
@@ -62,8 +63,11 @@ class MemberController extends Controller
             'no_telp.required' => 'Masukan no. Telp member',
             'email.required' => 'Masukan email member',
             'email.email' => 'Masukan email yang valid',
+            "password.required" => "Masukkan Password Anda",
+            "password.confirmed" => "Password harus terkonfirmasi",
         ]);
         
+        $validate['password'] = bcrypt($request->password);
 
         Members::create($validate);
 

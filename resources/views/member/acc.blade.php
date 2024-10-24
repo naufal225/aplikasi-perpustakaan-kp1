@@ -70,12 +70,12 @@
                         <form action="/konfirmasi-registrasi-member/tolak" method="post" style="display: inline;">
                             @csrf
                             <input type="hidden" name="id" value="{{ $item->id }}">
-                            <button type="submit" class="btn btn-danger"><i class="bi bi-x-circle"></i></button>
+                            <button type="submit" class="btn btn-danger" title="Tolak"><i class="bi bi-x-circle"></i></button>
                         </form>
                         <form action="/konfirmasi-registrasi-member/acc" method="post" style="display: inline;">
                             @csrf
                             <input type="hidden" name="id" value="{{ $item->id }}">
-                            <button type="submit" class="btn btn-success"><i class="bi bi-check"></i></button>
+                            <button type="submit" class="btn btn-success" title="Setujui"><i class="bi bi-check"></i></button>
                         </form>
                       @elseif($item->acc == "acc")
                           <p class="text-success">Disetujui</p>

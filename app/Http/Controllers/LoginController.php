@@ -29,13 +29,17 @@ class LoginController extends Controller
     }
 
     public function logout(Request $request) {
-        Auth::logout();
+    // Logout hanya dari guard 'admin'
+    Auth::guard('admin')->logout();
 
-        $request->session()->invalidate();
+    // Invalidasi session untuk guard 'admin' saja
+    $request->session()->invalidate();
 
-        $request->session()->regenerateToken();
+    // Regenerate CSRF token untuk keamanan
+    $request->session()->regenerateToken();
 
-        return redirect('/');
-    }
+    // Redirect setelah logout
+    return redirect('/');
+}
 
 }

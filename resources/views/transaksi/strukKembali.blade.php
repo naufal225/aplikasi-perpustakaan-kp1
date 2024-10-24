@@ -20,8 +20,15 @@
             margin: 20px 0;
         }
         .header {
-            text-align: center;
-        }
+        top: -20px; /* Adjust this value to move the header upwards */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .header img {
+        max-width: 150px; /* Ukuran logo */
+        margin-top: -30px; /* Adjust this value to move the image upwards */
+    }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -41,18 +48,34 @@
             margin-top: 20px;
             text-align: right;
         }
+        img {
+    width: 120px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+.info {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>{{ $nama_perpustakaan }}</h1>
-        <p>{{ $alamat_perpustakaan }}</p>
+        <img src="data:image/{{ pathinfo(public_path('img/logoperpus.png'), PATHINFO_EXTENSION) }};base64,{{ base64_encode(file_get_contents(public_path('img/logoperpus.png'))) }}" alt="Logo Perpustakaan" style="float: left">
+        <div class="info">
+            <h2 style="font-size: 23px;margin-top: 0px;">{{ $nama_perpustakaan }}</h2>
+            <p class="address" style="font-size: 13px;">{{ $alamat_perpustakaan }}</p>
+        </div>
     </div>
     <hr>
     <table>
         <tr>
-            <td class="no-border"><strong>Tanggal & Waktu:</strong></td>
+            <td class="no-border"><strong>Tanggal & Waktu Pengembalian:</strong></td>
             <td class="no-border">{{ now()->format('d-m-Y H:m:s') }}</td>
+        </tr>
+        <tr>
+            <td class="no-border"><strong>Tanggal & Waktu Peminjaman:</strong></td>
+            <td class="no-border">{{ $transaksi_data[0]['tgl_peminjaman'] }}</td>
         </tr>
         <tr>
             <td class="no-border"><strong>Kode Transaksi:</strong></td>

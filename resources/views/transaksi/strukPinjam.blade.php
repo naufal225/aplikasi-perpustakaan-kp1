@@ -20,8 +20,15 @@
             margin: 20px 0;
         }
         .header {
-            text-align: center;
-        }
+        top: -20px; /* Adjust this value to move the header upwards */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .header img {
+        max-width: 150px; /* Ukuran logo */
+        margin-top: -30px; /* Adjust this value to move the image upwards */
+    }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -41,12 +48,22 @@
             margin-top: 20px;
             text-align: right;
         }
+        img {
+    width: auto;
+    height: 120px;
+}   
+.info {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>{{ $nama_perpustakaan }}</h1>
-        <p>{{ $alamat_perpustakaan }}</p>
+        <img src="data:image/{{ pathinfo(public_path('img/logoperpus.png'), PATHINFO_EXTENSION) }};base64,{{ base64_encode(file_get_contents(public_path('img/logoperpus.png'))) }}" alt="Logo Perpustakaan" style="float: left;">
+        <div class="info">
+            <h2 style="font-size: 23px;margin-top: 0px;">{{ $nama_perpustakaan }}</h2>
+            <p class="address" style="font-size: 13px;">{{ $alamat_perpustakaan }}</p>
+        </div>
     </div>
     <hr>
     <table>

@@ -76,12 +76,14 @@ class KatalogController extends Controller
     }
 
     public function logout(Request $request) {
+        // Hanya logout guard "member"
         Auth::guard("member")->logout();
-
-        $request->session()->invalidate();
-
+    
+        // Regenerate token untuk mencegah session fixation, hanya regenerasi session untuk member
+        $request->session()->forget('member_guard'); // Menghapus session yang berhubungan dengan guard member
         $request->session()->regenerateToken();
-
+    
+        // Redirect setelah logout member, admin tetap login
         return redirect('/katalog');
     }
 
