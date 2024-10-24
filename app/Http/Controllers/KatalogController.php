@@ -13,7 +13,7 @@ class KatalogController extends Controller
 {
     public function index() {
         return view("katalog.katalog", [
-            "data" => Buku::all()
+            "data" => Buku::latest()->paginate(12)
         ]);
     }
 

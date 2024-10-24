@@ -142,7 +142,7 @@ class TransaksiPinjamController extends Controller
         }
     
         $data = [
-            'nama_perpustakaan' => 'PERPUSTAKAAN 123',
+            'nama_perpustakaan' => 'PERPUSTAKAAN CENDIKIA NUSANTARA',
             'alamat_perpustakaan' => 'Jl. Meranti Raya No.3, Desa Setia Mekar, Kec. Tambun Selatan, Kab. Bekasi, Jawa Barat, 17510',
             'tanggal_jam' => now(),
             'kode_transaksi' => $kode_transaksi,
@@ -336,7 +336,7 @@ class TransaksiPinjamController extends Controller
         $data = [
             'transaksi' => $transaksi,
             'pustakawan' => Auth::user()->nama_lengkap,
-            'nama_perpustakaan' => "PERPUSTAKAAN ABC",
+            'nama_perpustakaan' => "PERPUSTAKAAN CENDIKIA NUSANTARA",
             'alamat_perpustakaan' => 'Jl. Meranti Raya No.3, RT 3 RW 14, Desa Setia Mekar, Kec. Tambun Selatan, Kab. Bekasi 17510',
             'tanggal_jam' => Carbon::now()->format("d-m-Y H:m:s")
         ];

@@ -69,6 +69,9 @@
     </div>
   </div>
 
+  @include('utils.footer')
+
+
   {{-- Include necessary JS libraries --}}
   <script src="https://unpkg.com/feather-icons"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>

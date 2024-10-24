@@ -58,6 +58,9 @@
       </main>
     </div>
   </div>
+
+  @include('utils.footer')
+
   <script src="https://unpkg.com/feather-icons"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
   <script src="{{ asset("js/bs/bootstrap.js") }}"></script>

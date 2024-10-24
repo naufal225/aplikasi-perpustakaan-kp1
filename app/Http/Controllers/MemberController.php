@@ -126,6 +126,8 @@ class MemberController extends Controller
         $member = Members::where("kode_member", $kode_member)->first();
         $nama = $member->nama_lengkap;
 
+        $member->delete();
+
         return redirect('/kelola-data-member')->with("success", "Data Member \"$nama\" Berhasil Dihapus");
     }
 

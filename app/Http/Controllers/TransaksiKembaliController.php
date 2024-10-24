@@ -180,7 +180,7 @@ class TransaksiKembaliController extends Controller
         });
         
         $data = [
-            'nama_perpustakaan' => 'PERPUSTAKAAN ABC',
+            'nama_perpustakaan' => 'PERPUSTAKAAN CENDIKIA NUSANTARA',
             'alamat_perpustakaan' => 'Jl. Meranti Raya No.3, RT 3 RW 14, Desa Setia Mekar, Kec. Tambun Selatan, Kab. Bekasi 17510',
             'tanggal_jam' => Carbon::now()->format("d-m-Y H:i:s"),
             'kode_transaksi' => $kodeTransaksi,
@@ -335,7 +335,7 @@ class TransaksiKembaliController extends Controller
     $data = [
         'transaksi' => $transaksi,
         'pustakawan' => Auth::user()->nama_lengkap,
-        'nama_perpustakaan' => "PERPUSTAKAAN ABC",
+        'nama_perpustakaan' => "PERPUSTAKAAN CENDIKIA NUSANTARA",
         'alamat_perpustakaan' => "Jl. Meranti Raya No.3, RT 3 RW 14, Desa Setia Mekar, Kec. Tambun Selatan, Kab. Bekasi 17510",
         'tanggal_jam' => Carbon::now()->format("d-m-Y H:m:s")
     ];
