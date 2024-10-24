@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->call(function(): void {
             app(abstract: \App\Http\Controllers\TransaksiPinjamController::class)->updateStatus();
-        })->daily();
+        })->everyFifteenMinutes();
     }
 
     /**

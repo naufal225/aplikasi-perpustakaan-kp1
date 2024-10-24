@@ -115,8 +115,6 @@ class PustakawanController extends Controller
             'email' => 'required|email:dns',
         ]);
 
-        $validate["password"] = bcrypt($request->password);
-
         if($request->file('gambar')) {
             if($pustakawan->gambar != $request->gambar) {
                 Storage::delete($request->oldImage);

@@ -324,7 +324,10 @@ class TransaksiPinjamController extends Controller
         }
     
         if ($request->tanggal_awal && $request->tanggal_akhir) {
-            $query->whereBetween('tgl_peminjaman', [$request->tanggal_awal, $request->tanggal_akhir]);
+            $query->whereBetween('tgl_peminjaman', [
+                Carbon::parse($request->tanggal_awal)->startOfDay(), 
+                Carbon::parse($request->tanggal_akhir)->endOfDay()
+            ]);
         }
     
         $transaksi = $query->get();

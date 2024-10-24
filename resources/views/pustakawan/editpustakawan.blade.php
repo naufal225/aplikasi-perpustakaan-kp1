@@ -66,8 +66,8 @@
                         <input value="{{ old("gambar", $pustakawan->gambar) }}" class="form-control" type="file" name="gambar" id="gambar" onchange="previewGambar()">
                       </div>
                     </div>
-                    <button class="btn mt-4 btn-primary shadow" type="submit">Edit</button>
-            </div>
+                  </div>
+                  <button class="btn mt-4 btn-primary shadow" type="submit">Edit</button>
             
             
         </form>

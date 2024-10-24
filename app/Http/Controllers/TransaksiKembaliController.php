@@ -175,7 +175,7 @@ class TransaksiKembaliController extends Controller
                 'kondisi' => $item->kondisi,
                 'status' => $item->status,
                 'denda_total' => $item->denda_hilang_atau_rusak + $item->denda_keterlambatan,
-                'tgl_peminjaman' => $item->transaksi_pinjam->created_at->format('d-m-Y H:m:s')
+                'tgl_peminjaman' => Carbon::parse($item->transaksi_pinjam->tgl_peminjaman)->format('d-m-Y H:m:s')
             ];
         });
         
@@ -267,7 +267,7 @@ class TransaksiKembaliController extends Controller
         if ($telat) {
             // Menggunakan Carbon untuk mendapatkan tanggal saat ini
             $tanggalSekarang = Carbon::now(); // Mendapatkan tanggal sekarang
-            $estimasiKembali = Carbon::parse($transaksiPinjam->estimasi_tgl_kembali); // Mengonversi string ke objek Carbon
+            $estimasiKembali = Carbon::parse($transaksiPinjam[0]->estimasi_tgl_kembali); // Mengonversi string ke objek Carbon
         
             // Menghitung selisih hari
             $selisihHari = $tanggalSekarang->diffInDays($estimasiKembali);
@@ -323,7 +323,10 @@ class TransaksiKembaliController extends Controller
     }
 
     if ($request->tanggal_awal && $request->tanggal_akhir) {
-        $query->whereBetween('tgl_pengembalian', [$request->tanggal_awal, $request->tanggal_akhir]);
+        $query->whereBetween('tgl_pengembalian', [
+            Carbon::parse($request->tanggal_awal)->startOfDay(), 
+            Carbon::parse($request->tanggal_akhir)->endOfDay()
+        ]);
     }
 
     $transaksi = $query->get();
